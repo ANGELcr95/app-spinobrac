@@ -1,8 +1,8 @@
 import { FlatList, RefreshControl, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { deleteTask, getTasks } from '../api'
+import { deleteTask, getTasks } from '../../api'
 
-import TaskItem from './TaskItem'
+import TaskItem from './TaskList/TaskItem'
 import { useIsFocused } from '@react-navigation/native'
 
 const TaskList = () => {

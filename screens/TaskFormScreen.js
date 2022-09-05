@@ -2,7 +2,7 @@ import { Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 
-import Layout from '../components/Layout'
+import Layout from '../components/Layouts/Layout'
 import { getTask, saveTask, updateTask } from '../api'
 
 const TaskFormScreen = ({navigation, route}) => {  

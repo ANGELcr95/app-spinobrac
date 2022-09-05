@@ -7,11 +7,8 @@ expo doctor --fix-dependencies
 ## Dependencies
 ### Production
 npm install react-native-screens react-native-safe-area-context
-npm install @react-navigation/native-stack
-cors ( defines which devices can connect to the server ) 
-swagger-jsdoc ( documentation, poder cofigurar suagger ) 
-swagger-ui-express ( documentation: ver en una interfaz grafica )
-dotenv ( entorn variables )
+npm install @react-navigation/native-stack (para poder crear rutas)
+npm install @react-navigation/bottom-tabs   (para crear btns en bottom
 ### Development
 nodemon ( reinit server )
 @babel/core ( transpilador )
@@ -25,6 +22,8 @@ created routes
 
 ### components
 visual fragments code in project 
+
+### Layouts
 ## layout.js
 - share styles on screens also for components
 
@@ -50,7 +49,7 @@ estructuro esquelto
 - aplicacion de la base de datos (sql) solo guardar acrchivo de la estrucutura que se ejecuto en la consola de la base de datos(XAMPP)
 
 ### compilated deploy
-- expo build:andrid
+- expo build:android
 
 
 
