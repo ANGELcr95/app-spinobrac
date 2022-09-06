@@ -8,7 +8,8 @@ expo doctor --fix-dependencies
 ### Production
 npm install react-native-screens react-native-safe-area-context
 npm install @react-navigation/native-stack (para poder crear rutas)
-npm install @react-navigation/bottom-tabs   (para crear btns en bottom
+npm install @react-navigation/bottom-tabs   (para crear btns en bottom)
+@reduxjs/toolkit
 ### Development
 nodemon ( reinit server )
 @babel/core ( transpilador )

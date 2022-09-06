@@ -1,17 +1,22 @@
 import { Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useEffect, useState } from 'react'
-
-
+import React, { useContext, useEffect, useState } from 'react'
 
 import Layout from '../components/Layouts/Layout'
 import { getTask, saveTask, updateTask } from '../api'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleRouteId } from '../redux/routeSlice'
+import useUpContext from '../context/useUpContext'
 
-const ReportScreen = ({route}) => {  
+const ReportScreen = () => {  
   const [task, setTask] = useState({
     title: '',
     description: ''
   })
+  
+  // const dispatch = useDispatch();
+  // let [routeId] = useSelector((state) => state.routeId)
+  const context = useUpContext();
 
   const [editing, setEditing] = useState(false)
   const navigation = useNavigation()
@@ -20,10 +25,21 @@ const ReportScreen = ({route}) => {
 
   const handleSubmit = async () => {
     try {
-      if (editing) {
-        updateTask(route.params.id, task)
+      if (context.routedId) {
+        await updateTask(context.routedId, task)
+        // dispatch(toggleRouteId(null))
+        context.upRoutedId(null)
+        setTask({
+          title: '',
+          description: ''}
+        )
+        setEditing(false)
       } else {
         await saveTask(task)
+        setTask({
+          title: '',
+          description: ''}
+        )
       }
       navigation.navigate('RiskScreen')
     } catch (error) {
@@ -31,20 +47,16 @@ const ReportScreen = ({route}) => {
     }
   }
 
-
-
   useEffect(() => {
-    console.log(route);
-    if (route.params && route.params.id) {
-      navigation.setOptions({ headerTitle: 'Updating a Task'});
+    if (context.routedId) {
+      navigation.setOptions({ headerTitle: 'Actualizar reporte'});
       (async()=> {
-        const task = await getTask(route.params.id)
+        const task = await getTask(context.routedId)
         setTask({title: task.title, description: task.description})
+        setEditing(true)
       })()
-      setEditing(true)
-      
     }
-  }, [editing])
+  }, [context.routedId])
   
 
   return (
@@ -52,13 +64,13 @@ const ReportScreen = ({route}) => {
       <TextInput
         style={styles.input}
         onChangeText={(text) => handleChange('title', text)}
-        placeholder='Write Title'
+        placeholder='Empleado'
         value={task.title}
       />
       <TextInput
         style={styles.input}
         onChangeText={(text) => handleChange('description', text)}
-        placeholder='Write Description'
+        placeholder='Descripcion Reporte'
         value={task.description}
       />
 
@@ -67,7 +79,7 @@ const ReportScreen = ({route}) => {
            style={styles.buttonUpdate}
            onPress={handleSubmit}
          >
-           <Text style={styles.buttonText}>Update Task</Text>
+           <Text style={styles.buttonText}>Actualizar</Text>
          </TouchableOpacity>
 
       ):(
@@ -75,7 +87,7 @@ const ReportScreen = ({route}) => {
         style={styles.buttonSave}
         onPress={handleSubmit}
       >
-        <Text style={styles.buttonText}>Save Task</Text>
+        <Text style={styles.buttonText}>Reportar</Text>
       </TouchableOpacity>
       )
 

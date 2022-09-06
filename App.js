@@ -11,11 +11,17 @@ import routesIcons from './custom/routesIcons';
 import TabNavigator from './components/TabNavigator';
 
 
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+import { TodoApp } from './screens/TodoApp'; 
+
 import GLOBALS from './Globals';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StateProvider } from './context/StateContext';
+import useUpContext from './context/useUpContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator()
@@ -37,7 +43,6 @@ function StackReportScreen() {
   );
 }
 
-
 function StackRiskScreen() {
   return (
     <Stack.Navigator>
@@ -45,13 +50,14 @@ function StackRiskScreen() {
         name="RiskScreen" 
         component={RiskScreen}  
         options= {({navigation})=> ({
-          title: 'Tasks App',
-          height: 0,
+          title: 'Lista reportes',
           headerStyle: { backgroundColor: '#222f3e'},
           headerTitleStyle: { color: '#fff'},
           headerRight: () => (
-            <TouchableOpacity onPress={()=> navigation.navigate('ReportScreen')}> 
-              <Text style={{ color: '#fff', marginRight: 10, fontSize: 15}}>New</Text>
+            <TouchableOpacity onPress={()=> {
+              navigation.navigate('ReportScreen')
+              }}> 
+              <Text style={{ color: '#fff', marginRight: 10, fontSize: 15}}>Nuevo</Text>
             </TouchableOpacity>
             )
         })}
@@ -63,7 +69,9 @@ function StackRiskScreen() {
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <Provider store={store}>
+      <StateProvider>
+      <NavigationContainer>
       <Tab.Navigator
        screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
@@ -82,9 +90,11 @@ export default function App() {
           inactiveTintColor: GLOBALS.COLOR.ICONSDOWN,
         }}>
         <Tab.Screen name="Inicio" component={HomeScreen} />
+        <Tab.Screen name="todo" component={TodoApp} />
         <Tab.Screen 
-          name="Reporte"
+          name="ReportScreen"
           options= {()=> ({
+            title: "Reporte",
             headerShown: false
           })}
           component={StackReportScreen} />
@@ -96,5 +106,7 @@ export default function App() {
          component={StackRiskScreen} />
       </Tab.Navigator>
     </NavigationContainer>
+    </StateProvider>
+    </Provider>
   );
 }
