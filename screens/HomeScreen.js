@@ -1,13 +1,11 @@
+import { View, Text } from 'react-native'
 import React from 'react'
-
-import Layout from '../components/Layouts/Layout'
-import TaskList from '../components/HomeScreen/TaskList'
 
 const HomeScreen = () => {
   return (
-    <Layout>
-      <TaskList />
-    </Layout>
+    <View>
+      <Text>HomeScreen</Text>
+    </View>
   )
 }
 

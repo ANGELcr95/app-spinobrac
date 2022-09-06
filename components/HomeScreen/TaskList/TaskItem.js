@@ -10,7 +10,7 @@ const TaskItem = ({task, handleDelete}) => {
   return (
     <View style={styles.itemContainer}>
       <TouchableOpacity
-      onPress={()=>navigation.navigate('TaskFormScreen', {id: task.id})}
+      onPress={()=>navigation.navigate('ReportScreen', {id: task.id})}
       >
         <Text style={styles.itemTitle}>{task.title}</Text>
         <Text style={styles.description}>{task.description}</Text>

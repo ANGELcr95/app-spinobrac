@@ -2,16 +2,19 @@ import { Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 
 
+
 import Layout from '../components/Layouts/Layout'
 import { getTask, saveTask, updateTask } from '../api'
+import { useNavigation } from '@react-navigation/native'
 
-const TaskFormScreen = ({navigation, route}) => {  
+const ReportScreen = ({route}) => {  
   const [task, setTask] = useState({
     title: '',
     description: ''
   })
 
   const [editing, setEditing] = useState(false)
+  const navigation = useNavigation()
 
   const handleChange = (name, value) => setTask({...task,[name]: value})
 
@@ -22,7 +25,7 @@ const TaskFormScreen = ({navigation, route}) => {
       } else {
         await saveTask(task)
       }
-      navigation.navigate('HomeScreen')
+      navigation.navigate('RiskScreen')
     } catch (error) {
       console.error(error);
     }
@@ -31,6 +34,7 @@ const TaskFormScreen = ({navigation, route}) => {
 
 
   useEffect(() => {
+    console.log(route);
     if (route.params && route.params.id) {
       navigation.setOptions({ headerTitle: 'Updating a Task'});
       (async()=> {
@@ -38,8 +42,9 @@ const TaskFormScreen = ({navigation, route}) => {
         setTask({title: task.title, description: task.description})
       })()
       setEditing(true)
+      
     }
-  }, [])
+  }, [editing])
   
 
   return (
@@ -117,4 +122,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default TaskFormScreen
+export default ReportScreen
