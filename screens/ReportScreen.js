@@ -7,13 +7,15 @@ import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleRouteId } from '../redux/routeSlice'
 import useUpContext from '../context/useUpContext'
+import {timeDate} from '../custom/timeDate'
 
-const ReportScreen = () => {  
+const ReportScreen = () => {
   const [task, setTask] = useState({
     title: '',
-    description: ''
+    description: '',
+    date: ''
   })
-  
+
   // const dispatch = useDispatch();
   // let [routeId] = useSelector((state) => state.routeId)
   const context = useUpContext();
@@ -31,14 +33,22 @@ const ReportScreen = () => {
         context.upRoutedId(null)
         setTask({
           title: '',
-          description: ''}
+          description: '',
+          date: ''
+          }
         )
         setEditing(false)
       } else {
-        await saveTask(task)
+        await saveTask({
+          title: task.title,
+          description: task.description,
+          date: timeDate()
+          })
         setTask({
           title: '',
-          description: ''}
+          description: '',
+          date: ''
+          }
         )
       }
       navigation.navigate('RiskScreen')
@@ -52,12 +62,15 @@ const ReportScreen = () => {
       navigation.setOptions({ headerTitle: 'Actualizar reporte'});
       (async()=> {
         const task = await getTask(context.routedId)
-        setTask({title: task.title, description: task.description})
+        setTask({
+          title: task.title,
+          description: task.description,
+          date: task.date
+        })
         setEditing(true)
       })()
     }
-  }, [context.routedId])
-  
+  }, [context.routedId, task])
 
   return (
     <Layout>
@@ -92,7 +105,7 @@ const ReportScreen = () => {
       )
 
       }
-   
+
     </Layout>
   )
 }

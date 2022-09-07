@@ -1,27 +1,30 @@
+//Dependencies react Natigation && elemets
 import React from 'react'
-import { Text, 
-  TouchableOpacity // eject touch por ejemplo a otrruta uso navigation que es una funcion en el atributo options por que inicialmente retornaba un object pero necsitaba un parametro por eso el metodo
- } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+//Screens
 import RiskScreen from './screens/RiskScreen'
 import HomeScreen from './screens/HomeScreen';
 import ReportScreen from './screens/ReportScreen'
+
+//Styles Icons
 import routesIcons from './custom/routesIcons';
-import TabNavigator from './components/TabNavigator';
 
-
+//Redux && context
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import { TodoApp } from './screens/TodoApp'; 
+import { StateProvider } from './context/StateContext';
 
+// Globas variables
 import GLOBALS from './Globals';
 
+// Icons
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StateProvider } from './context/StateContext';
-import useUpContext from './context/useUpContext';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator()
@@ -36,7 +39,7 @@ function StackReportScreen() {
             title: "Reporte",
             headerStyle: { backgroundColor: GLOBALS.COLOR.PRIMARY},
             headerTitleStyle: { color: '#fff'},
-            headerTintColor: '#fff', // Change color of the icons
+            headerTintColor: '#fff', 
           })}
         />
       </Stack.Navigator>
@@ -99,8 +102,9 @@ export default function App() {
           })}
           component={StackReportScreen} />
         <Tab.Screen 
-          name="Empleados"
+          name="RiskScreen"
           options= {()=> ({
+            title: "Empleados",
             headerShown: false
           })}
          component={StackRiskScreen} />

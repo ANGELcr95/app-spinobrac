@@ -12,6 +12,8 @@ export const getTask = async (id) => {
 
 
 export const saveTask = async (newTask) => {
+    console.log(newTask);
+    
     const res = await fetch(API, {
         method: 'POST',
         headers: {Accept: 'application/json', 'Content-Type': 'application/json'},

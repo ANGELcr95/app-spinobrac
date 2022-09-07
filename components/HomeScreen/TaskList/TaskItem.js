@@ -1,17 +1,31 @@
-import React from 'react'
+//Dependencies react Natigation && elemets
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+
+//Redux && context
 import { useDispatch } from 'react-redux'
 import { toggleRouteId } from '../../../redux/routeSlice'
 import useUpContext from '../../../context/useUpContext'
 
-// se crae componente exclusivamente para poder configurar estilos
-const TaskItem = ({task, handleDelete}) => {
-  const context = useUpContext()
+//Styles Icons
+import { AntDesign } from '@expo/vector-icons'; 
+import GLOBALS from '../../../Globals'
+import { shortDate } from '../../../custom/timeDate'
 
-  
+
+// se crea componente exclusivamente para poder configurar estilos
+const TaskItem = ({task, handleDelete}) => {
+const [date, setdate] = useState(null)
+
+  const context = useUpContext()
   const navigation = useNavigation()
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setdate(shortDate(task.date))
+  }, [task.date])
+  
 
   return (
     <View style={styles.itemContainer}>
@@ -23,26 +37,27 @@ const TaskItem = ({task, handleDelete}) => {
 
       }}
       >
-        <Text style={styles.itemTitle}>{task.title}</Text>
+        <Text style={styles.itemTitle}>👷{task.title}</Text>
         <Text style={styles.description}>{task.description}</Text>
+        <Text style={styles.date}>{date}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity 
-        style={styles.buttonDelete}
         onPress={()=> handleDelete(task.id)}
         >
-        <Text style={styles.textButtonDelete}> Delete </Text>
+         <AntDesign name="delete" size={GLOBALS.SIZE.MEDIUM} color={GLOBALS.COLOR.ICON_DELETE} />
       </TouchableOpacity>
+    
     </View>
   )
 }
 
 const styles = StyleSheet.create({
     itemContainer: {
-        backgroundColor: '#333333',
-        padding: 20,
-        marginVertical: 8,
-        borderRadius: 5,
+        backgroundColor: GLOBALS.COLOR.SECONDARY,
+        padding: 18,
+        marginVertical: 2,
+        borderRadius: 30,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
@@ -52,9 +67,13 @@ const styles = StyleSheet.create({
     },
     description: {
         color: 'gray'
+    },
+    date: {
+      color: GLOBALS.COLOR.ICONS,
+      fontStyle: 'italic',
+      fontSize: GLOBALS.FONT.EXTRA_SMALL
     }, 
     buttonDelete: {
-        backgroundColor: '#ee5253',
         paddingHorizontal: 4,
         paddingVertical: 10,
         borderRadius: 5
