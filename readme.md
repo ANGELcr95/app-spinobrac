@@ -1,14 +1,23 @@
 ## APP MOBILE
 Languages:react native
+expo init
 ## Eject Web
 expo start --web
 ## Fixed Dependencies
 expo doctor --fix-dependencies
 ## Dependencies
 ### Production
+npm install @react-navigation/native
 npm install react-native-screens react-native-safe-area-context
-npm install @react-navigation/native-stack (para poder crear rutas)
+npm install @react-navigation/drawer 
 npm install @react-navigation/bottom-tabs   (para crear btns en bottom)
+npm install @react-navigation/stack (genera btn para devolverse)
+npx expo install react-native-gesture-handler react-native-reanimated
+
+
+npm install @react-navigation/native-stack (para poder crear rutas)
+npm install @react-navigation/drawer (drawer left)
+
 @reduxjs/toolkit
 ### Development
 nodemon ( reinit server )

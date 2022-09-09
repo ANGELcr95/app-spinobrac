@@ -13,8 +13,12 @@ const TaskList = () => {
   const isFocused = useIsFocused() // sabe si retorne a la pagina funciona como true o false
 
   const loadTasks = async () => {
+    try {
       const data = await getTasks()
       setTasks(data)
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {

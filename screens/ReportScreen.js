@@ -1,13 +1,13 @@
 import { Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useContext, useEffect, useState } from 'react'
 
-import Layout from '../components/Layouts/Layout'
 import { getTask, saveTask, updateTask } from '../api'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleRouteId } from '../redux/routeSlice'
 import useUpContext from '../context/useUpContext'
 import {timeDate} from '../custom/timeDate'
+import LayoutSecondary from '../components/Layouts/LayoutSecondary'
 
 const ReportScreen = () => {
   const [task, setTask] = useState({
@@ -73,7 +73,7 @@ const ReportScreen = () => {
   }, [context.routedId, task])
 
   return (
-    <Layout>
+    <LayoutSecondary>
       <TextInput
         style={styles.input}
         onChangeText={(text) => handleChange('title', text)}
@@ -106,7 +106,7 @@ const ReportScreen = () => {
 
       }
 
-    </Layout>
+    </LayoutSecondary>
   )
 }
 

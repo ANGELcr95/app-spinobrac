@@ -1,4 +1,4 @@
-const API = 'http://192.168.10.14:3000/tasks'
+const API = 'http://192.168.10.15:3000/tasks'
 
 export const getTasks = async () => {
     const res = await fetch(API)
@@ -12,8 +12,6 @@ export const getTask = async (id) => {
 
 
 export const saveTask = async (newTask) => {
-    console.log(newTask);
-    
     const res = await fetch(API, {
         method: 'POST',
         headers: {Accept: 'application/json', 'Content-Type': 'application/json'},

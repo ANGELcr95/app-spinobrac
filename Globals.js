@@ -2,6 +2,7 @@ export default {
     COLOR: {
       PRIMARY: '#000020',
       SECONDARY: '#2d4069',
+      THETIARY:'#ffffff',
       ICONS: '#6EA8DA',
       ICONSDOWN: '#c2c2c2',
       ICON_DELETE:'#ff5232',

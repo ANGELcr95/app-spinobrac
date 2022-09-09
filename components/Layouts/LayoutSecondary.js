@@ -2,10 +2,10 @@ import React from 'react'
 import { View, StyleSheet, StatusBar } from 'react-native'
 import GLOBALS from '../../Globals'
 
-const Layout = ({children}) => {
+const LayoutSecondary = ({children}) => {
   return (
     <View style={styles.container}>
-        <StatusBar backgroundColor={GLOBALS.COLOR.PRIMARY}/>
+        <StatusBar backgroundColor={GLOBALS.COLOR.PRIMARY} />
         { children }
     </View>
   )
@@ -13,11 +13,14 @@ const Layout = ({children}) => {
 
 const styles =  StyleSheet.create({ // creo  estyles dentro de esteobject que funciona como clases
     container: {
-        backgroundColor: GLOBALS.COLOR.THETIARY,
+        backgroundColor: GLOBALS.COLOR.PRIMARY,
         paddingHorizontal: 20,
         flex:1,
-        alignItems: 'center'
+        alignItems: 'center',
+        position:'absolute',
+        top:-60,
+        zIndex:1000
     }
 })
 
-export default Layout
+export default LayoutSecondary

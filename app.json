@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "myapp",
-    "slug": "myapp",
+    "name": "Spinobrac",
+    "slug": "Spinobrac",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
