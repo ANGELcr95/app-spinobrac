@@ -15,16 +15,16 @@ const RiskScreen = () => {
     
     <Layout>
       <View style={styles.container}>
-      <View style={styles.containerHeader}>
-        <Text style={styles.header}>Lista Reportes</Text>
-      </View>
+        <View style={styles.containerHeader}>
+          <Text style={styles.header}>Lista Reportes</Text>
+        </View>
         <TouchableOpacity
           style={styles.buttonReport}
           onPress={()=>{
-            navigation.navigate('ReportScreen')
+            navigation.navigate('Reporte')
           }}
         >
-        <Entypo name="new-message" size={24} color={GlOBALS.COLOR.ICONS} />
+        <Entypo name="new-message" size={GlOBALS.SIZE.SMALL} color={GlOBALS.COLOR.ICONS} />
         </TouchableOpacity>
       </View>
       <TaskList/>

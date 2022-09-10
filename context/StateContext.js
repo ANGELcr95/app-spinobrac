@@ -4,16 +4,16 @@ export const StateContext = createContext()
 
 export const StateProvider = (props) => {
     const [routedId, setRoutedId] = useState(null)
-    const [change, setChange] = useState(null)
+    const [title, setTitle] = useState(null)
 
     const contextValue ={
         routedId,
         upRoutedId(routedId){
             setRoutedId(routedId)
         },
-        change,
-        upChange(change){
-            setChange(change)
+        title,
+        upTitle(title){
+            setTitle(title)
         }
     }
 

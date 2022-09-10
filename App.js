@@ -42,9 +42,10 @@ function StackReportScreen() {
   return (
     <Stack.Navigator>
         <Stack.Screen
-          name="ReportScreen"
+          name="Reporte"
           component={ReportScreen}
           options= {()=> ({
+            title: "Reporte",
             headerShown: false
           })}
         />
@@ -60,7 +61,8 @@ function StackRiskScreen() {
         component={RiskScreen}
         options= {()=> ({
           title: "Lista",
-          headerShown: false
+          headerShown: false,
+          
         })}
         // options= {({navigation})=> ({
         //   title: 'Lista reportes',
@@ -87,7 +89,7 @@ function StackAddWorker() {
   return (
     <Stack.Navigator>
         <Stack.Screen
-          name="ReportScreen"
+          name="Reporte"
           component={AddWorker}
           options= {()=> ({
             title: "Reporte",
@@ -134,13 +136,13 @@ const BottomTabNavigator = () => {
       })}
      component={HomeScreen} />
      <Tab.Screen name="todo" component={TodoApp} />
-     <Tab.Screen
+     {/* <Tab.Screen
        name="ReportScreen"
        options= {()=> ({
          title: "Reporte",
          headerShown: false
        })}
-       component={StackReportScreen} />
+       component={StackReportScreen} /> */}
      <Tab.Screen
       name="RiskScreen"
       component={StackRiskScreen}
@@ -175,7 +177,7 @@ const CustomDrawerContent = (props) => {
                       {descriptor.options.title}
                     </Text>
                   </View>
-                  {focused ?<Ionicons name='arrow-back-outline' size={GLOBALS.SIZE.MEDIUM} color={GLOBALS.COLOR.ICONSDOWN}/> : null }
+                  {focused ?<Ionicons name='arrow-back-outline' size={GLOBALS.SIZE.MEDIUM} color={GLOBALS.COLOR.ICONS}/> : null }
                   
                 </View>
                 
@@ -206,8 +208,13 @@ const DrawerNavigator = () => {
         borderBottomEndRadius: 20,
         borderBottomStartRadius: 20,
       },
+      headerTitleStyle: {
+        fontSize: GLOBALS.FONT.EXTRA_BIG,
+        textAlign: 'center',
+        fontWeight: GLOBALS.WEIGHT.MEDIUM,
+      },
       headerTitleAlign: "center",
-      headerTintColor: "#FFF",
+      headerTintColor: GLOBALS.COLOR.THETIARY,
       headerLeft: () => (
         <TouchableOpacity onPress={() => navigation.toggleDrawer()} style={styles.headerLeft}>
            <MaterialIcons name="menu-open" size={GLOBALS.SIZE.EXTRA_BIG} color={GLOBALS.COLOR.ICONSDOWN} />
@@ -221,9 +228,10 @@ const DrawerNavigator = () => {
           title: 'Spinobrac',
         }}
       />
-      <Drawer.Screen name="ReportScreen" component={StackReportScreen}
+      <Drawer.Screen name="Reporte" component={StackReportScreen}
         options={{
           title: 'Reporte',
+          headerShown: false
         }}
       />
       <Drawer.Screen name="RiskScreen" component={StackRiskScreen}
@@ -257,17 +265,18 @@ const styles = StyleSheet.create({
   },
   drawerView:{
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent:'space-between'
   },
   drawerViewtFocused:{
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent:'space-between',
     marginLeft:12
   },
   headerLeft: {
     marginLeft: 15,
+
   },
   // drawer content
   drawerLabel: {

@@ -3,10 +3,14 @@ export default {
       PRIMARY: '#000020',
       SECONDARY: '#2d4069',
       THETIARY:'#ffffff',
+      RED:'#ff5232',
       ICONS: '#6EA8DA',
       ICONSDOWN: '#c2c2c2',
       ICON_DELETE:'#ff5232',
       WHITE: '#ffffff',
+    },
+    COLOR_TRANSAPARENT: {
+      THETIARY:'rgba(250, 250, 250, 0.95)',
     },
     SIZE: {
       EXTRA_SMALL: 18,
@@ -18,8 +22,14 @@ export default {
     FONT: {
       EXTRA_SMALL: 10,
       SMALL: 12,
-      MEDIUM: 14,
-      BIG: 16,
-      EXTRA_BIG:18
+      MEDIUM: 16,
+      BIG: 20,
+      EXTRA_BIG:24,
+    },
+    WEIGHT:{
+      SMALL:'300',
+      MEDIUM:'600',
+      BIG:'800',
+      EXTRA_BIG:'900'
     }
   };

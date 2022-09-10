@@ -5,7 +5,7 @@ const routesIcons =(focused,route)  =>  {
             return focused ? 'home': 'home-outline';
         case 'RiskScreen':
             return focused ?  'people': 'people-outline';
-        case 'ReportScreen':
+        case 'Reporte':
             return focused ? 'list': 'list-outline';
         case 'Worker':
             return focused ? 'person-add': 'person-add-outline';
