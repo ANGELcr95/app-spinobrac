@@ -89,10 +89,10 @@ function StackAddWorker() {
   return (
     <Stack.Navigator>
         <Stack.Screen
-          name="Reporte"
+          name="AddWorker"
           component={AddWorker}
           options= {()=> ({
-            title: "Reporte",
+            title: "AddWorker",
             headerStyle: { backgroundColor: GLOBALS.COLOR.PRIMARY},
             headerTitleStyle: { color: '#fff'},
             headerTintColor: '#fff',

@@ -3,6 +3,7 @@ export default {
       PRIMARY: '#000020',
       SECONDARY: '#2d4069',
       THETIARY:'#ffffff',
+      FOURTH:'#288ba8',
       RED:'#ff5232',
       ICONS: '#6EA8DA',
       ICONSDOWN: '#c2c2c2',

@@ -31,7 +31,7 @@ const [date, setdate] = useState(null)
     <View style={styles.itemContainer}>
       <TouchableOpacity
       onPress={()=>{
-        navigation.navigate('ReportScreen', {id: task.id})
+        navigation.navigate('Reporte', {id: task.id})
         dispatch(toggleRouteId(task.id))
         context.upRoutedId(task.id)
 

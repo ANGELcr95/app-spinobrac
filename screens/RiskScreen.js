@@ -6,10 +6,13 @@ import { StyleSheet, Text, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Entypo } from '@expo/vector-icons';
 import GlOBALS from '../Globals'
+import useUpContext from '../context/useUpContext'
 
 const RiskScreen = () => {
 
   const navigation = useNavigation()
+
+  const context = useUpContext();
 
   return (
     
@@ -22,6 +25,7 @@ const RiskScreen = () => {
           style={styles.buttonReport}
           onPress={()=>{
             navigation.navigate('Reporte')
+            context.upRoutedId(null)
           }}
         >
         <Entypo name="new-message" size={GlOBALS.SIZE.SMALL} color={GlOBALS.COLOR.ICONS} />
