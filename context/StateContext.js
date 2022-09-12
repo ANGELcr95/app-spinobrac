@@ -5,6 +5,7 @@ export const StateContext = createContext()
 export const StateProvider = (props) => {
     const [routedId, setRoutedId] = useState(null)
     const [title, setTitle] = useState(null)
+    const [worker, setWorker] = useState(null)
 
     const contextValue ={
         routedId,
@@ -14,6 +15,10 @@ export const StateProvider = (props) => {
         title,
         upTitle(title){
             setTitle(title)
+        },
+        worker,
+        upWorker(worker){
+            setWorker(worker)
         }
     }
 

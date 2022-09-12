@@ -10,7 +10,7 @@ import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@rea
 import RiskScreen from './screens/RiskScreen'
 import HomeScreen from './screens/HomeScreen';
 import ReportScreen from './screens/ReportScreen'
-import AddWorker from './screens/AddWorker';
+import WorkerScreen from './screens/WorkerScreen';
 
 //Styles Icons
 import routesIcons from './custom/routesIcons';
@@ -27,7 +27,6 @@ import GLOBALS from './Globals';
 // Icons
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { MaterialIcons } from '@expo/vector-icons';
-import { notInitialized } from 'react-redux/es/utils/useSyncExternalStore';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator();
@@ -85,14 +84,15 @@ function StackRiskScreen() {
 }
 
 
-function StackAddWorker() {
+function StackWorkerScreen() {
   return (
     <Stack.Navigator>
         <Stack.Screen
-          name="AddWorker"
-          component={AddWorker}
+          name="Agregar"
+          component={WorkerScreen}
           options= {()=> ({
-            title: "AddWorker",
+            title: "WorkerScreen",
+            headerShown: false,
             headerStyle: { backgroundColor: GLOBALS.COLOR.PRIMARY},
             headerTitleStyle: { color: '#fff'},
             headerTintColor: '#fff',
@@ -101,10 +101,6 @@ function StackAddWorker() {
       </Stack.Navigator>
   );
 }
-
-
-
-
 
 
 
@@ -239,9 +235,10 @@ const DrawerNavigator = () => {
           title: 'Lista',
         }}
       />
-      <Drawer.Screen name="Worker" component={StackAddWorker}
+      <Drawer.Screen name="Worker" component={StackWorkerScreen}
         options={{
           title: 'Agregar',
+          headerShown: false
         }}
       />
     </Drawer.Navigator>

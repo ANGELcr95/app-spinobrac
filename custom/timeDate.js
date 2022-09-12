@@ -5,7 +5,6 @@ export const timeDate = () => {
     return formatted_date;
 }
 
-
 export const shortDate = (date) => {
     if (date) {
         const dateUtil = date.split('T')

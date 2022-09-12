@@ -1,6 +1,6 @@
 import { FlatList, RefreshControl, Text } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { deleteTask, getTasks } from '../../api'
+import { deleteTask, getTasks } from '../../services/reports'
 
 import TaskItem from './TaskList/TaskItem'
 import { useIsFocused } from '@react-navigation/native'

@@ -1,17 +1,17 @@
-const API = 'http://192.168.10.15:3000/workers'
+const API = 'http://192.168.10.13:3000/tasks'
 
-export const getWorkers = async () => {
+export const getTasks = async () => {
     const res = await fetch(API)
     return await res.json()
 }
 
-export const getWorker = async (dni) => {
-    const res = await fetch(`${API}/${dni}`)
+export const getTask = async (id) => {
+    const res = await fetch(`${API}/${id}`)
     return await res.json()
 }
 
 
-export const saveWork = async (newTask) => {
+export const saveTask = async (newTask) => {
     const res = await fetch(API, {
         method: 'POST',
         headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
@@ -21,15 +21,15 @@ export const saveWork = async (newTask) => {
     return res.json
 }
 
-export const deleteWork = async (dni) => {
-    await fetch(`${API}/${dni}`, {
+export const deleteTask = async (id) => {
+    await fetch(`${API}/${id}`, {
         method: 'DELETE'
     })
 }
 
 
-export const updateWork = async (dni, taskUpdate) => {
-    const res = await fetch(`${API}/${dni}`, {
+export const updateTask = async (id, taskUpdate) => {
+    const res = await fetch(`${API}/${id}`, {
         method: 'PUT',
         headers: {Accept: 'application/json', 'Content-Type': 'application/json'},
         body: JSON.stringify(taskUpdate)
