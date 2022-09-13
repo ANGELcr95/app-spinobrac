@@ -110,13 +110,56 @@ const ReporForm = () => {
 
   return (
     <View style={styles.cotainer}>
+      <View style={styles.containerBox}>
+        <View style={{
+          width: '10%',
+          height:30,
+          backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+          borderTopLeftRadius: 25,
+          borderTopRightRadius: context.routedId || context.option ? 10 :0,
+        }}>      
+        </View>
+        <View style={{
+          width: '30%',
+          height:30,
+          backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+      
+        }}>      
+        </View>
+        <View style={{
+              width:'20%',
+              height:30,
+              backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+              borderTopRightRadius: 10,
+              borderTopLeftRadius: 10,
+        }}>      
+        </View>
+        <View style={{
+          width: '30%',
+          height:30,
+          backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+        }}>      
+        </View>
+        <View style={{
+          width:'10%',
+          height:30,
+          backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+          borderTopRightRadius: 25,
+          borderTopLeftRadius: context.routedId || context.option ? 10 :0,
+        }}>      
+        </View>
+      </View>
+
       {!context.routedId ? (
         <View style={styles.cotainerDropDown}>
           {renderLabel()}
           <Dropdown
             style={[
               styles.dropdown,
-              isFocus && { borderColor: GLOBALS.COLOR.ICONS, borderWidth: 1 },
+              isFocus && { 
+                borderColor: GLOBALS.COLOR.ICONS,
+                borderWidth: 2
+              },
             ]}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
@@ -160,23 +203,56 @@ const ReporForm = () => {
         theme={{ colors: { primary: GLOBALS.COLOR.ICONS } }}
       />
       {context.routedId ? (
+        <View style={{
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+        }}>
         <Button
           mode="contained-tonal"
           onPress={handleSubmit}
           buttonColor={GLOBALS.COLOR.FOURTH}
           textColor={GLOBALS.COLOR.WHITE}
+          style={{
+            marginTop: 13,
+            marginBottom: 7,
+          }}
         >
           <Text style={styles.buttonText}>Actualizar</Text>
         </Button>
+            <Button
+            mode="contained-tonal"
+            onPress={() => {
+              context.upRoutedId(null)
+              context.upOption(null)
+            }}
+            buttonColor={GLOBALS.COLOR.ICONSDOWN}
+            textColor={GLOBALS.COLOR.WHITE}
+            style={{
+              marginTop: 13,
+              marginBottom: 7,
+            }}
+          >
+            <Text style={styles.buttonText}>Cancelar</Text>
+          </Button>
+          </View>
       ) : (
         <Button
           mode="contained-tonal"
-          onPress={handleSubmit}
+          onPress={()=>{
+            handleSubmit()
+            context.upOption(null)
+          }}
           buttonColor={GLOBALS.COLOR.RED}
           textColor={GLOBALS.COLOR.WHITE}
+          style={{
+            marginTop: 13,
+            marginBottom: 7,
+          }}
         >
           Reportar
         </Button>
+        
       )}
     </View>
   );
@@ -186,7 +262,8 @@ const styles = StyleSheet.create({
   cotainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    width: '90%',
+    marginTop: -20,
+    width: '89%',
     backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
     shadowColor: GLOBALS.COLOR.PRIMARY,
     shadowOffset: {
@@ -196,12 +273,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 10,
-    paddingTop: 10,
+    paddingTop: 25,
     borderRadius: 25,
   },
-
+  containerBox: {
+    position: 'absolute',
+    top: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    backgroundColor: GLOBALS.COLOR.PRIMARY,
+  },
   input: {
     width: '80%',
+    marginTop: 10,
   },
   buttonSave: {
     padding: 10,
@@ -210,7 +295,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: GLOBALS.COLOR.RED,
     width: '60%',
-    marginTop: 10,
+    marginTop: 5,
   },
   buttonText: {
     textAlign: 'center',
@@ -232,6 +317,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 8,
     color: 'black',
+    marginTop: 10,
   },
   icon: {
     marginRight: 5,

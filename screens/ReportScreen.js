@@ -19,7 +19,7 @@ const ReportScreen = ({ route }) => {
 const styles = StyleSheet.create({
   cotainer:{
     position: 'relative',
-    top: 150,
+    top: 190,
     flex: 1,
     zIndex: 1
   }

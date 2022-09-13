@@ -1,26 +1,23 @@
 import { View, Text, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReporForm from './ReporTitle/ReporForm';
 import GLOBALS from '../../Globals';
+import ReportOption from './ReporTitle/ReportOption';
+import useUpContext from '../../context/useUpContext';
 
 const ReportTitle = () => {
+  const context = useUpContext();
+
+  useEffect(() => {
+
+  }, [context.routedId])
+  
+
   return (
     <View style={styles.cotainer}>
-      <View style={styles.header}>
-        <View style={styles.option}>
-          <Text style={{ color: 'black' }}>Report</Text>
-        </View>
-        <View style={styles.option}>
-          <Text style={{ color: 'black' }}>Update</Text>
-        </View>
-      </View>
-      <View style={styles.containerBullet}>
-        <View style={styles.Bullet}>
-          <Text style={{ color: 'black' }}>Report2</Text>
-        </View>
-        <View style={styles.Bullet}>
-          <Text style={{ color: 'black' }}>Update2</Text>
-        </View>
+      <View style={styles.options}>
+        <ReportOption  title="Reportar" colores={!context.routedId ? GLOBALS.COLOR.RED : null}/>
+        { context.routedId || context.option ? <ReportOption title="Actualizar" colores={context.routedId ? GLOBALS.COLOR.FOURTH :null}  />: null}
       </View>
       <ReporForm />
     </View>
@@ -34,7 +31,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '90%',
     marginLeft: '5%',
-    backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
     shadowColor: GLOBALS.COLOR.PRIMARY,
     shadowOffset: {
       width: 0,
@@ -43,25 +39,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 10,
-    top: 100,
-    paddingTop: 10,
+    top: 85,
+    paddingTop: 5,
     borderRadius: 25,
   },
-  header: {
+  options: {
+    width: '89%',
     flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-evenly',
-  },
-  containerBullet: {
-    flexDirection: 'row',
-    width: '100%',
-    justifyContent: 'space-evenly',
-  },
-  Bullet: {
-    height: 9,
-    width: 80,
-    backgroundColor: 'black',
-  },
+    justifyContent: 'space-around',
+    marginBottom: 5
+  }
 });
 
 export default ReportTitle;

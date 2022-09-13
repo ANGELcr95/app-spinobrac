@@ -6,6 +6,7 @@ export const StateProvider = (props) => {
     const [routedId, setRoutedId] = useState(null)
     const [title, setTitle] = useState(null)
     const [worker, setWorker] = useState(null)
+    const [option, setOption] = useState(null)
 
     const contextValue ={
         routedId,
@@ -19,6 +20,10 @@ export const StateProvider = (props) => {
         worker,
         upWorker(worker){
             setWorker(worker)
+        },
+        option,
+        upOption(option){
+            setOption(option)
         }
     }
 

@@ -26,6 +26,7 @@ const RiskScreen = () => {
           onPress={()=>{
             navigation.navigate('Reporte')
             context.upRoutedId(null)
+            context.upOption(null);
           }}
         >
         <Entypo name="new-message" size={GlOBALS.SIZE.SMALL} color={GlOBALS.COLOR.ICONS} />

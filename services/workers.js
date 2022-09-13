@@ -1,4 +1,4 @@
-const API = 'http://192.168.10.13:3000/workers'
+const API = 'http://192.168.10.11:3000/workers'
 
 export const getWorkers = async () => {
     const res = await fetch(API)

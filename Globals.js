@@ -11,7 +11,7 @@ export default {
       WHITE: '#ffffff',
     },
     COLOR_TRANSAPARENT: {
-      THETIARY:'rgba(250, 250, 250, 0.95)',
+      THETIARY:'rgba(250, 250, 250, 0.98)',
     },
     SIZE: {
       EXTRA_SMALL: 18,
