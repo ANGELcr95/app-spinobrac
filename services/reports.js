@@ -1,4 +1,5 @@
-const API = 'http://192.168.10.11:3000/tasks'
+import GLOBALS from "../Globals"
+const API = `${GLOBALS.API}/tasks`
 
 export const getTasks = async () => {
     const res = await fetch(API)

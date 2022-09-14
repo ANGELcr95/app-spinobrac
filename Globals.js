@@ -1,10 +1,13 @@
 export default {
+    API: 'http://192.168.10.15:3000',
     COLOR: {
       PRIMARY: '#000020',
       SECONDARY: '#2d4069',
       THETIARY:'#ffffff',
       FOURTH:'#288ba8',
       RED:'#ff5232',
+      GREEN:'#00722e',
+      YELLOW:'#d0d015',
       ICONS: '#6EA8DA',
       ICONSDOWN: '#c2c2c2',
       ICON_DELETE:'#ff5232',

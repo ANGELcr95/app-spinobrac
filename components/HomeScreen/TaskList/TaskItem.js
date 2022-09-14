@@ -13,10 +13,13 @@ import { AntDesign } from '@expo/vector-icons';
 import GLOBALS from '../../../Globals'
 import { shortDate } from '../../../custom/timeDate'
 
+import AwesomeAlert from 'react-native-awesome-alerts';
+
 
 // se crea componente exclusivamente para poder configurar estilos
 const TaskItem = ({task, handleDelete}) => {
 const [date, setdate] = useState(null)
+const [showAlert, setShowAlert] = useState(false)
 
   const context = useUpContext()
   const navigation = useNavigation()
@@ -29,6 +32,31 @@ const [date, setdate] = useState(null)
 
   return (
     <View style={styles.itemContainer}>
+        <AwesomeAlert
+          show={showAlert}
+          // showProgress={false}
+          title="Eliminar"
+          titleStyle={{fontSize:36,marginBottom:10}}
+          messageStyle={{fontSize:16,marginBottom:10,textAlign:'center', color:GLOBALS.COLOR.SECONDARY, fontWeight:GLOBALS.WEIGHT.MEDIUM}}
+          message= {`Eliminara reporte (${task.description}) de ${task.title}`}
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="Cancelar"
+          confirmText="Eliminar"
+          cancelButtonStyle={{width:100,alignItems:'center'}}
+          confirmButtonStyle={{width:100,alignItems:'center'}}
+          confirmButtonColor={GLOBALS.COLOR.RED}
+          cancelButtonColor={GLOBALS.COLOR.ICONSDOWN}
+          onCancelPressed={() => {
+            setShowAlert(false)
+          }}
+          onConfirmPressed={() => {
+            handleDelete(task.id)
+            setShowAlert(false)
+          }}
+        />
       <TouchableOpacity
       onPress={()=>{
         navigation.navigate('Reporte', {id: task.id})
@@ -43,7 +71,10 @@ const [date, setdate] = useState(null)
       </TouchableOpacity>
 
       <TouchableOpacity 
-        onPress={()=> handleDelete(task.id)}
+        onPress={()=> {
+         
+          setShowAlert(true);
+        }}
         >
          <AntDesign name="delete" size={GLOBALS.SIZE.MEDIUM} color={GLOBALS.COLOR.ICON_DELETE} />
       </TouchableOpacity>

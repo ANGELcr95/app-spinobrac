@@ -2,11 +2,13 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 import GLOBALS from '../../../Globals'
 import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 
-const HeaderSecondary = ({title}) => {
+const HeaderSecondaryTwo = ({title}) => {
   const navigation = useNavigation()
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -18,7 +20,12 @@ const HeaderSecondary = ({title}) => {
       <View style={styles.containerHeader}>
         <Text style={styles.header}>{title}</Text>
       </View>
-
+      <TouchableOpacity
+        style={styles.buttonBack}
+        onPress={() => navigation.navigate('WorkerScreen')}
+      >
+        <AntDesign name="left" size={GLOBALS.SIZE.BIG} color={GLOBALS.COLOR.ICONSDOWN} />
+      </TouchableOpacity>
   </View>
   )
 }
@@ -29,9 +36,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     width:'100%',
-    height: 150,
-    borderBottomLeftRadius: 45,
-    borderBottomRightRadius: 45,
     backgroundColor:GLOBALS.COLOR.PRIMARY
   },
   containerHeader: {
@@ -50,8 +54,13 @@ const styles = StyleSheet.create({
   buttonMenu: {
     marginLeft: 15,
     marginTop: 8,
+  },
+  buttonBack: {
+    position: 'absolute',
+    right: 15,
+    top: 10,
   }
 
 })
 
-export default HeaderSecondary
+export default HeaderSecondaryTwo

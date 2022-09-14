@@ -13,6 +13,7 @@ npm install @react-navigation/drawer
 npm install @react-navigation/bottom-tabs   (para crear btns en bottom)
 npm install @react-navigation/stack (genera btn para devolverse)
 npx expo install react-native-gesture-handler react-native-reanimated
+npm i react-native-modal-datetime-picker @react-native-community/datetimepicker
 
 
 npm install @react-navigation/native-stack (para poder crear rutas)

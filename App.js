@@ -27,6 +27,7 @@ import GLOBALS from './Globals';
 // Icons
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { MaterialIcons } from '@expo/vector-icons';
+import UpWorkerUpSreeen from './screens/UpWorkerUpSreeen';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator();
@@ -102,6 +103,24 @@ function StackWorkerScreen() {
   );
 }
 
+function StackUpWorkerScreen() {
+  return (
+    <Stack.Navigator>
+        <Stack.Screen
+          name="Datos Empleado"
+          component={UpWorkerUpSreeen}
+          options= {()=> ({
+            title: "Datos Empleado",
+            headerShown: false,
+            headerStyle: { backgroundColor: GLOBALS.COLOR.PRIMARY},
+            headerTitleStyle: { color: '#fff'},
+            headerTintColor: '#fff',
+          })}
+        />
+      </Stack.Navigator>
+  );
+}
+
 
 
 //Tab----------------
@@ -127,11 +146,18 @@ const BottomTabNavigator = () => {
      }}>
      <Tab.Screen name="Home" 
       options= {()=> ({
-        title: "Spinobrac",
+        title: "Inicio",
         headerShown: false
       })}
      component={HomeScreen} />
-     <Tab.Screen name="todo" component={TodoApp} />
+     <Tab.Screen name="Todo" 
+     component={TodoApp}
+      options= {()=> ({
+        title: "Tareas",
+        headerShown: false
+      })}
+      />
+     
      {/* <Tab.Screen
        name="ReportScreen"
        options= {()=> ({
@@ -162,6 +188,9 @@ const CustomDrawerContent = (props) => {
         Object.entries(props.descriptors).map(([key, descriptor], index) => {
           const focused = index === props.state.index
           let iconName = routesIcons(focused,descriptor.route.name)
+          if (!descriptor.options.title) {
+            return
+          }
           return (
             <DrawerItem
               key={key}
@@ -235,9 +264,14 @@ const DrawerNavigator = () => {
           title: 'Lista',
         }}
       />
-      <Drawer.Screen name="Worker" component={StackWorkerScreen}
+      <Drawer.Screen name="WorkerScreen" component={StackWorkerScreen}
         options={{
           title: 'Agregar',
+          headerShown: false
+        }}
+      />
+      <Drawer.Screen name="Datos Empleado" component={StackUpWorkerScreen}
+        options={{
           headerShown: false
         }}
       />

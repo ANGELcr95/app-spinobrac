@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
+import Layout from "../components/Layouts/Layout";
 import { addTodo } from "../redux/todoSlice";
 
 export const TodoApp = () => {
@@ -18,21 +19,23 @@ export const TodoApp = () => {
  
   
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Todo App</Text>
+    <Layout>
       <View style={styles.container}>
-      <TextInput placeholder="Todo" value={text} onChangeText={setText} style={styles.input} />
-      <TouchableOpacity title="Add" onPress={handleSumbit}>
-      <Text style={styles.title}>Todo </Text>
+        <Text style={styles.title}>Todo App</Text>
+        <View style={styles.container}>
+        <TextInput placeholder="Todo" value={text} onChangeText={setText} style={styles.input} />
+        <TouchableOpacity title="Add" onPress={handleSumbit}>
+        <Text style={styles.title}>Todo </Text>
 
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </View>
+      {todos.map((todo, index) => (
+          <Text  key={todo.id}>{`${index + 1}. ${
+            todo.text
+          }`}</Text>
+        ))}
     </View>
-    {todos.map((todo, index) => (
-        <Text  key={todo.id}>{`${index + 1}. ${
-          todo.text
-        }`}</Text>
-      ))}
-    </View>
+    </Layout>
   );
 };
 

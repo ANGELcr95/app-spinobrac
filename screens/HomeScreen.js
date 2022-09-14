@@ -1,11 +1,13 @@
 import { View, Text } from 'react-native'
 import React from 'react'
+import Layout from '../components/Layouts/Layout'
 
 const HomeScreen = () => {
   return (
-    <View>
+     
+    <Layout>
       <Text>HomeScreen</Text>
-    </View>
+    </Layout>
   )
 }
 

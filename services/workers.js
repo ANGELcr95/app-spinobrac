@@ -1,4 +1,5 @@
-const API = 'http://192.168.10.11:3000/workers'
+import GLOBALS from "../Globals"
+const API = `${GLOBALS.API}/workers`
 
 export const getWorkers = async () => {
     const res = await fetch(API)
@@ -7,7 +8,10 @@ export const getWorkers = async () => {
 
 export const getWorker = async (dni) => {
     const res = await fetch(`${API}/${dni}`)
-    return await res.json()
+    if (res.status === 203) {
+        return res.status
+    }
+    return res.json()
 }
 
 export const saveWork = async (newTask) => {

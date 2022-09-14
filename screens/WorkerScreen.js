@@ -22,7 +22,7 @@ const WorkerScreen = ({ route }) => {
 
 const styles = StyleSheet.create({
   cotainer:{
-    top:120,
+    top:135,
     zIndex: 1,
     paddingHorizontal: 25,
     height:'80%'

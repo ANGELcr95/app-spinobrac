@@ -20,6 +20,8 @@ const ReporForm = () => {
   });
   const [workers, setWorkers] = useState([]);
   const isFocused = useIsFocused(); // sabe si retorne a la pagina funciona como true o false
+  const [disabled, setdisabled] = useState(true)
+
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -58,6 +60,10 @@ const ReporForm = () => {
   // let [routeId] = useSelector((state) => state.routeId)
 
   const handleChange = (name, value) => setTask({ ...task, [name]: value });
+
+  useEffect(() => {
+    task.title && task.description ? setdisabled(false) : setdisabled(true)
+  }, [task])
 
   const handleSubmit = async () => {
     try {
@@ -150,48 +156,50 @@ const ReporForm = () => {
         </View>
       </View>
 
-      {!context.routedId ? (
-        <View style={styles.cotainerDropDown}>
-          {renderLabel()}
-          <Dropdown
-            style={[
-              styles.dropdown,
-              isFocus && { 
-                borderColor: GLOBALS.COLOR.ICONS,
-                borderWidth: 2
-              },
-            ]}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={workers}
-            search
-            maxHeight={300}
-            labelField="label"
-            valueField="value"
-            placeholder={!isFocus ? 'Selecionar Empleado' : '...'}
-            searchPlaceholder="Buscar..."
-            value={task.title}
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
-            onChange={(item) => {
-              handleChange('title', item.value);
-              setIsFocus(false);
-              setValue(null);
-            }}
-          />
-        </View>
+      {context.routedId &&  task.title? (
+           <TextInput
+           style={styles.input}
+           mode="outlined"
+           editable={false}
+           label="Empleado"
+           value={task.title}
+           outlineColor={GLOBALS.COLOR.SECONDARY}
+           theme={{ colors: { primary: GLOBALS.COLOR.ICONS } }}
+         />
+       
       ) : (
-        <TextInput
-          style={styles.input}
-          mode="outlined"
-          onChangeText={(text) => handleChange('title', text)}
-          label="Empleado"
+        <View style={styles.cotainerDropDown}>
+        {renderLabel()}
+        <Dropdown
+          style={[
+            styles.dropdown,
+            isFocus && { 
+              borderColor: GLOBALS.COLOR.ICONS,
+              borderWidth: 2
+            },
+          ]}
+          placeholderStyle={styles.placeholderStyle}
+          selectedTextStyle={styles.selectedTextStyle}
+          inputSearchStyle={styles.inputSearchStyle}
+          iconStyle={styles.iconStyle}
+          data={workers}
+          search
+          maxHeight={300}
+          labelField="label"
+          valueField="value"
+          placeholder={!isFocus ? 'Selecionar Empleado' : '...'}
+          searchPlaceholder="Buscar..."
           value={task.title}
-          outlineColor={GLOBALS.COLOR.SECONDARY}
-          theme={{ colors: { primary: GLOBALS.COLOR.ICONS } }}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
+          onChange={(item) => {
+            handleChange('title', item.value);
+            setIsFocus(false);
+            setValue(null);
+          }}
         />
+      </View>
+     
       )}
       <TextInput
         style={styles.input}
@@ -202,13 +210,14 @@ const ReporForm = () => {
         outlineColor={GLOBALS.COLOR.SECONDARY}
         theme={{ colors: { primary: GLOBALS.COLOR.ICONS } }}
       />
-      {context.routedId ? (
+      {context.routedId && task.title? (
         <View style={{
           width: '100%',
           flexDirection: 'row',
           justifyContent: 'space-evenly',
         }}>
         <Button
+         disabled={disabled}
           mode="contained-tonal"
           onPress={handleSubmit}
           buttonColor={GLOBALS.COLOR.FOURTH}
@@ -238,6 +247,7 @@ const ReporForm = () => {
           </View>
       ) : (
         <Button
+          disabled={disabled}
           mode="contained-tonal"
           onPress={()=>{
             handleSubmit()

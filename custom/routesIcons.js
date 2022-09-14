@@ -7,7 +7,9 @@ const routesIcons =(focused,route)  =>  {
             return focused ?  'people': 'people-outline';
         case 'Reporte':
             return focused ? 'list': 'list-outline';
-        case 'Worker':
+        case 'Todo':
+            return focused ? 'layers': 'layers-outline';
+        case 'WorkerScreen':
             return focused ? 'person-add': 'person-add-outline';
     }
 }

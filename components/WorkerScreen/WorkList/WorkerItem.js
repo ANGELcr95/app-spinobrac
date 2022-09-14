@@ -1,30 +1,73 @@
 //Dependencies react Natigation && elemets
-import React from 'react';
+import React,{ useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 //Styles Icons
 import { AntDesign } from '@expo/vector-icons';
 import GLOBALS from '../../../Globals';
 
+import { useNavigation } from '@react-navigation/native'
+import AwesomeAlert from 'react-native-awesome-alerts';
+import useUpContext from '../../../context/useUpContext';
+
+
 // se crea componente exclusivamente para poder configurar estilos
 const WorkerItem = ({ worker, handleDelete }) => {
+  const [showAlert, setShowAlert] = useState(false)
+  const navigation = useNavigation()
+  
+const context = useUpContext()
 
   return (
     <View style={styles.itemContainer}>
+           <AwesomeAlert
+            show={showAlert}
+            // showProgress={false}
+            title="Eliminar"
+            titleStyle={{fontSize:36,marginBottom:10}}
+            messageStyle={{fontSize:16,marginBottom:10,textAlign:'center',color:GLOBALS.COLOR.SECONDARY, fontWeight:GLOBALS.WEIGHT.MEDIUM}}
+            message= {`${worker.name} con cc ${worker.document_number}`}
+            closeOnTouchOutside={false}
+            closeOnHardwareBackPress={false}
+            showCancelButton={true}
+            showConfirmButton={true}
+            cancelText="Cancelar"
+            confirmText="Eliminar"
+            cancelButtonStyle={{width:100,alignItems:'center'}}
+            confirmButtonStyle={{width:100,alignItems:'center'}}
+            confirmButtonColor={GLOBALS.COLOR.RED}
+            cancelButtonColor={GLOBALS.COLOR.ICONSDOWN}
+            onCancelPressed={() => {
+              setShowAlert(false)
+            }}
+            onConfirmPressed={() => {
+              handleDelete(worker.document_number)
+              setShowAlert(false)
+            }}
+        />
       <TouchableOpacity
-        onPress={() => {
-          // navigationk.navigate('Reporte', {dni: worker.document_number})
-          // dispatch(toggleRouteId(worker.id))
-          // context.upRoutedId(worker.document_number)
-        }}
-      >
+          style={styles.buttonUpdate}
+          onPress={() => {
+              context.upWorker(worker.document_number)
+              navigation.navigate('Datos Empleado', {dni: worker.document_number})
+            }
+          }
+        >
+        <AntDesign
+          name="pushpin"
+          size={GLOBALS.SIZE.MEDIUM}
+          color={GLOBALS.COLOR.GREEN}
+        />
+      </TouchableOpacity>
+
+      <View>
         <Text style={styles.itemTitle}>{worker.name}</Text>
         <Text style={styles.dni}>cc {worker.document_number}</Text>
-      </TouchableOpacity>
+      </View>
 
       <TouchableOpacity
         style={styles.buttonDelete}
-        onPress={() => handleDelete(worker.document_number)}
+        onPress={() => setShowAlert(true)}
       >
         <AntDesign
           name="deleteuser"
@@ -65,6 +108,11 @@ const styles = StyleSheet.create({
     right: 15,
     bottom: 15,
   },
+  buttonUpdate: {
+    position: 'absolute',
+    left: 15,
+    bottom: 15,
+  }
 });
 
 export default WorkerItem;

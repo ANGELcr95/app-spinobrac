@@ -8,16 +8,11 @@ import useUpContext from '../../context/useUpContext';
 const ReportTitle = () => {
   const context = useUpContext();
 
-  useEffect(() => {
-
-  }, [context.routedId])
-  
-
   return (
     <View style={styles.cotainer}>
       <View style={styles.options}>
         <ReportOption  title="Reportar" colores={!context.routedId ? GLOBALS.COLOR.RED : null}/>
-        { context.routedId || context.option ? <ReportOption title="Actualizar" colores={context.routedId ? GLOBALS.COLOR.FOURTH :null}  />: null}
+        { context.routedId  || context.option ? <ReportOption title="Actualizar" colores={context.routedId ? GLOBALS.COLOR.FOURTH :null}  />: null}
       </View>
       <ReporForm />
     </View>

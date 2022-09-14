@@ -1,7 +1,7 @@
 import { Text, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import GLOBALS from '../../Globals';
-import { saveWork } from '../../services/workers';
+import { getWorker, saveWork } from '../../services/workers';
 
 import { Button } from 'react-native-paper';
 import { TextInput } from 'react-native-paper';
@@ -14,11 +14,20 @@ const WorkerForm = ({ setNewUser, newUser }) => {
     name: '',
     dni: null,
   });
+  const [showAlert, setShowAlert] = useState(false)
+  const [showAlertExist, setShowAlertExist] = useState(false)
   const [disabled, setdisabled] = useState(true)
 
   const handleChange = (name, value) => setWorker({ ...worker, [name]: value });
 
   const handleSubmit = async () => {
+   
+    const res = await getWorker(worker.dni);
+    if (res !== 203){
+      setShowAlertExist(true)
+      return
+    }
+
     try {
       await saveWork({
         name: worker.name,
@@ -40,34 +49,37 @@ const WorkerForm = ({ setNewUser, newUser }) => {
     worker.dni && worker.name ? setdisabled(false) : setdisabled(true)
   }, [worker])
 
-    const [showAlert, setShowAlert] = useState(false)
- 
-
-
   return (
     <View style={styles.cotainer}>
         <AwesomeAlert
           show={showAlert}
-          // showProgress={false}
           title="Exitoso"
           titleStyle={{fontSize:36,marginBottom:10}}
-          messageStyle={{fontSize:16,marginBottom:10}}
-          message="Registro agregado satisfactoriamente"
+          messageStyle={{fontSize:16,marginBottom:10, textAlign: 'center'}}
+          message={`Registro de ${worker.name} agregado satisfactoriamente`}
           closeOnTouchOutside={false}
-          // closeOnHardwareBackPress={false}
-          // showCancelButton={true}
           showConfirmButton={true}
-          // cancelText="No"
           confirmText="Cerrar"
-          // cancelButtonStyle={{width:100,alignItems:'center',marginTop:10}}
           confirmButtonStyle={{width:180,alignItems:'center',}}
           confirmButtonColor="green"
-          // cancelButtonColor="#DD6B55"
-        //   onCancelPressed={() => {
-        //  setShowAlert(false)
-        //   }}
           onConfirmPressed={() => {
-         setShowAlert(false)
+          setShowAlert(false)
+          }}
+        />
+          <AwesomeAlert
+          show={showAlertExist}
+          title="Alerta"
+          titleStyle={{fontSize:36,marginBottom:10}}
+          messageStyle={{fontSize:16,marginBottom:10, textAlign: 'center' }}
+          message={`! Numero de identifiacion ya registrado (${worker.dni}) verifique por favor`}
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          confirmText="Cerrar"
+          showConfirmButton={true}
+          confirmButtonStyle={{width:180,alignItems:'center',backgroundColor: GLOBALS.COLOR.YELLOW }}
+          confirmButtonColor="green"
+          onConfirmPressed={() => {
+            setShowAlertExist(false)
           }}
         />
 
@@ -91,6 +103,7 @@ const WorkerForm = ({ setNewUser, newUser }) => {
         theme={{ colors: { primary: GLOBALS.COLOR.ICONS } }}
       />
       <Button
+        style={styles.button}
         disabled={disabled}
         mode="contained-tonal"
         onPress={handleSubmit}
@@ -127,14 +140,9 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
   },
-  buttonSave: {
-    padding: 10,
-    paddingBottom: 10,
-    borderRadius: 5,
-    marginBottom: 10,
-    backgroundColor: GLOBALS.COLOR.RED,
-    width: '60%',
-    marginTop: 10,
+  button: {
+    marginTop: 15,
+    marginBottom: 5,
   },
   buttonText: {
     textAlign: 'center',
