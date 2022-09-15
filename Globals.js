@@ -1,5 +1,5 @@
 export default {
-    API: 'http://192.168.10.15:3000',
+    API: 'http://192.168.10.14:3000',
     COLOR: {
       PRIMARY: '#000020',
       SECONDARY: '#2d4069',
