@@ -17,6 +17,8 @@ const ReporForm = () => {
     title: '',
     description: '',
     date: '',
+    file: '',
+    document_number: ''
   });
   const [workers, setWorkers] = useState([]);
   const isFocused = useIsFocused(); // sabe si retorne a la pagina funciona como true o false
@@ -46,6 +48,8 @@ const ReporForm = () => {
         let data = {
           label: element.name,
           value: element.name,
+          file:element.file,
+          document_number: element.document_number,
         };
         return data;
       });
@@ -75,6 +79,8 @@ const ReporForm = () => {
           title: '',
           description: '',
           date: '',
+          file:'',
+          document_number:''
         });
         context.upRoutedId(null);
       } else {
@@ -82,11 +88,15 @@ const ReporForm = () => {
           title: task.title,
           description: task.description,
           date: timeDate(),
+          file: task.file,
+          document_number: task.document_number
         });
         setTask({
           title: '',
           description: '',
           date: '',
+          file:'',
+          document_number:''
         });
       }
       navigation.navigate('RiskScreen');
@@ -100,6 +110,8 @@ const ReporForm = () => {
       title: '',
       description: '',
       date: '',
+      file:'',
+      document_number:''
     });
     if (context.routedId) {
       navigation.setOptions({ headerTitle: 'Actualizar reporte' });
@@ -109,6 +121,8 @@ const ReporForm = () => {
           title: task.title,
           description: task.description,
           date: task.date,
+          file:task.file,
+          document_number:task.document_number,
         });
       })();
     }
@@ -193,7 +207,13 @@ const ReporForm = () => {
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           onChange={(item) => {
-            handleChange('title', item.value);
+
+            setTask({ ...task, 
+              ['title']: item.value,
+              ['file']: item.file,
+              ['document_number']: item.document_number,
+            });
+
             setIsFocus(false);
             setValue(null);
           }}

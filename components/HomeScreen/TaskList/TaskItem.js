@@ -12,6 +12,8 @@ import useUpContext from '../../../context/useUpContext'
 import { AntDesign } from '@expo/vector-icons'; 
 import GLOBALS from '../../../Globals'
 import { shortDate } from '../../../custom/timeDate'
+import { Avatar } from 'react-native-paper';
+
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 
@@ -58,6 +60,7 @@ const [showAlert, setShowAlert] = useState(false)
           }}
         />
       <TouchableOpacity
+      style={styles.itemContainerData}
       onPress={()=>{
         navigation.navigate('Reporte', {id: task.id})
         dispatch(toggleRouteId(task.id))
@@ -65,9 +68,14 @@ const [showAlert, setShowAlert] = useState(false)
 
       }}
       >
-        <Text style={styles.itemTitle}>👷{task.title}</Text>
-        <Text style={styles.description}>{task.description}</Text>
-        <Text style={styles.date}>{date}</Text>
+        <View  style={styles.itemContainerImage} >
+          {task.file ? <Avatar.Image source={{ uri: task.file }} size={50} /> : <Avatar.Image size={50} source={require('../../../assets/img/worker.png')}/>}
+        </View>
+        <View>
+          <Text style={styles.itemTitle}>👷{task.title}</Text>
+          <Text style={styles.description}>{task.description}</Text>
+          <Text style={styles.date}>{date}</Text>
+        </View>
       </TouchableOpacity>
 
       <TouchableOpacity 
@@ -91,7 +99,15 @@ const styles = StyleSheet.create({
         borderRadius: 30,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+    },
+    itemContainerData: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      width:'70%',
+    },
+    itemContainerImage: {
+      marginRight: 10
     },
     itemTitle: {
         color: '#ffffff'
