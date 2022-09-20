@@ -129,6 +129,8 @@ const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
     screenOptions={({ route }) => ({
+      tabBarActiveTintColor: GLOBALS.COLOR.ICONS,
+      tabBarinactiveTintColor: GLOBALS.COLOR.ICONSDOWN,
        tabBarIcon: ({ focused, color, size }) => {
          let iconName = routesIcons(focused, route.name)
        return <Ionicons name={iconName} size={size} color={color}/>;
@@ -138,12 +140,9 @@ const BottomTabNavigator = () => {
          paddingBottom:10,
          paddingTop:10,
          backgroundColor: GLOBALS.COLOR.PRIMARY
-     },
+     }
    })}
-     tabBarOptions={{
-       activeTintColor: GLOBALS.COLOR.ICONS,
-       inactiveTintColor: GLOBALS.COLOR.ICONSDOWN,
-     }}>
+    >
      <Tab.Screen name="Home" 
       options= {()=> ({
         title: "Inicio",

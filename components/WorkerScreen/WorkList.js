@@ -10,12 +10,9 @@ const WorkList = ({ newUser }) => {
   const isFocused = useIsFocused(); // sabe si retorne a la pagina funciona como true o false
 
   const loadWorkers = async () => {
-    try {
       const data = await getWorkers();
-      setWorkers(data);
-    } catch (error) {
-      console.error(error);
-    }
+      !data.status ? setWorkers(data): setWorkers([])
+      
   };
 
   useEffect(() => {

@@ -42,7 +42,6 @@ const ReporForm = () => {
   };
 
   const loadReports = async () => {
-    try {
       const data = await getWorkers();
       let names = data.map(function (element) {
         let data = {
@@ -55,9 +54,7 @@ const ReporForm = () => {
       });
 
       setWorkers(names);
-    } catch (error) {
-      console.error(error);
-    }
+   
   };
 
   // const dispatch = useDispatch();
@@ -70,44 +67,41 @@ const ReporForm = () => {
   }, [task])
 
   const handleSubmit = async () => {
-    try {
-      if (context.routedId) {
-        await updateTask(context.routedId, task);
-        // dispatch(toggleRouteId(null))
-        context.upRoutedId(null);
-        setTask({
-          title: '',
-          description: '',
-          date: '',
-          file:'',
-          document_number:''
-        });
-        context.upRoutedId(null);
-      } else {
-        await saveTask({
-          title: task.title,
-          description: task.description,
-          date: timeDate(),
-          file: task.file,
-          document_number: task.document_number
-        });
-        setTask({
-          title: '',
-          description: '',
-          date: '',
-          file:'',
-          document_number:''
-        });
+    if (context.routedId) {
+      await updateTask(context.routedId, task);
+      // dispatch(toggleRouteId(null))
+      context.upRoutedId(null);
+      setTask({
+        title: '',
+        description: '',
+        date: '',
+        file:'',
+        document_number:''
+      });
+      context.upRoutedId(null);
+    } else {
+       const response =   await saveTask({
+        title: task.title,
+        description: task.description,
+        date: timeDate(),
+        file: task.file,
+        document_number: task.document_number
+      });
+      if (response.status === 200) {
+          setTask({
+            title: '',
+            description: '',
+            date: '',
+            file:'',
+            document_number:''
+          });
+        }
       }
       navigation.navigate('RiskScreen');
-    } catch (error) {
-      console.error(error);
-    }
   };
   useEffect(() => {
     loadReports();
-    setTask({
-      title: '',
+    setTask({ title: '',
       description: '',
       date: '',
       file:'',
@@ -117,12 +111,18 @@ const ReporForm = () => {
       navigation.setOptions({ headerTitle: 'Actualizar reporte' });
       (async () => {
         const task = await getTask(context.routedId);
-        setTask({
+        !task.status ?  setTask({
           title: task.title,
           description: task.description,
           date: task.date,
           file:task.file,
           document_number:task.document_number,
+        }) : setTask({
+          title: '',
+          description: '',
+          date: '',
+          file:'',
+          document_number:''
         });
       })();
     }

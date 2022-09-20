@@ -1,5 +1,5 @@
 export default {
-    API: 'https://spinobrac.herokuapp.com',
+    API: 'http://192.168.10.10:3000',
     COLOR: {
       PRIMARY: '#000020',
       SECONDARY: '#2d4069',

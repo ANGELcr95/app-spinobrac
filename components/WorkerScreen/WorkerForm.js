@@ -21,14 +21,9 @@ const WorkerForm = ({ setNewUser, newUser }) => {
   const handleChange = (name, value) => setWorker({ ...worker, [name]: value });
 
   const handleSubmit = async () => {
-   
     const res = await getWorker(worker.dni);
-    if (res !== 203){
-      setShowAlertExist(true)
-      return
-    }
-
-    try {
+    
+    if (res === 203){
       await saveWork({
         name: worker.name,
         dni: worker.dni,
@@ -37,12 +32,12 @@ const WorkerForm = ({ setNewUser, newUser }) => {
       setNewUser(!newUser);
       setdisabled(true)
       setShowAlert(true);
-      
-
-
-    } catch (error) {
-      console.error(error);
+      return
     }
+    if (res.status !== 404) {
+      setShowAlertExist(true)
+    }
+      
   };
 
   useEffect(() => {

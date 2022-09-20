@@ -73,20 +73,16 @@ const DataWorkerUp = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      await updateWork(
-       data.dni,
-       {
-        name: data.name,
-        eps: data.eps,
-        date_born: data.date_born,
-        file: data.result ? data.result :null
-       }
-      )
-      setShowAlert(true);
-    } catch (error) {
-      console.error(error);
-    }
+    await updateWork(
+      data.dni,
+      {
+      name: data.name,
+      eps: data.eps,
+      date_born: data.date_born,
+      file: data.result ? data.result :null
+      }
+    )
+    setShowAlert(true);
   };
 
   useEffect(() => {

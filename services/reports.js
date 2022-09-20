@@ -1,12 +1,12 @@
 import GLOBALS from "../Globals"
 const API = `${GLOBALS.API}/tasks`
 
-export const getTasks = async () => {
+export const getTasks = async () => { //checked
     const res = await fetch(API)
-    return await res.json()
+    return res.json()
 }
 
-export const getTask = async (id) => {
+export const getTask = async (id) => { //checked
     const res = await fetch(`${API}/${id}`)
     return await res.json()
 }
@@ -19,12 +19,13 @@ export const saveTask = async (newTask) => {
         body: JSON.stringify(newTask)
     })
 
-    return res.json
+    return res.status
 }
 
 export const deleteTask = async (id) => {
     await fetch(`${API}/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {Accept: 'application/json', 'Content-Type': 'application/json'}
     })
 }
 
