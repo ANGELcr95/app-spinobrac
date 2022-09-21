@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     top:135,
     zIndex: 1,
     paddingHorizontal: 25,
-    height:'80%'
+    height:'60%'
   }
 })  
 
