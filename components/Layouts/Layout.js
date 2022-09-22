@@ -14,7 +14,7 @@ const Layout = ({children}) => {
 const styles =  StyleSheet.create({ // creo  estyles dentro de esteobject que funciona como clases
     container: {
         backgroundColor: GLOBALS.COLOR.THETIARY,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         flex:1,
         alignItems: 'center'
     }

@@ -11,6 +11,8 @@ import RiskScreen from './screens/RiskScreen'
 import HomeScreen from './screens/HomeScreen';
 import ReportScreen from './screens/ReportScreen'
 import WorkerScreen from './screens/WorkerScreen';
+import ActivityScreen  from './screens/ActivityScreen';
+import UpWorkerUpSreeen from './screens/UpWorkerUpSreeen';
 
 //Styles Icons
 import routesIcons from './custom/routesIcons';
@@ -18,7 +20,6 @@ import routesIcons from './custom/routesIcons';
 //Redux && context
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
-import { TodoApp } from './screens/TodoApp';
 import { StateProvider } from './context/StateContext';
 
 // Globas variables
@@ -27,7 +28,6 @@ import GLOBALS from './Globals';
 // Icons
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { MaterialIcons } from '@expo/vector-icons';
-import UpWorkerUpSreeen from './screens/UpWorkerUpSreeen';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator();
@@ -150,9 +150,9 @@ const BottomTabNavigator = () => {
       })}
      component={HomeScreen} />
      <Tab.Screen name="Todo" 
-     component={TodoApp}
+     component={ActivityScreen}
       options= {()=> ({
-        title: "Tareas",
+        title: "Actividades",
         headerShown: false
       })}
       />

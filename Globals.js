@@ -7,6 +7,7 @@ export default {
       FOURTH:'#288ba8',
       RED:'#ff5232',
       GREEN:'#00722e',
+      GREEN_LIGTH:'#00b347',
       YELLOW:'#d0d015',
       ICONS: '#6EA8DA',
       ICONSDOWN: '#c2c2c2',
@@ -15,6 +16,7 @@ export default {
     },
     COLOR_TRANSAPARENT: {
       THETIARY:'rgba(250, 250, 250, 0.98)',
+      SECONDARY: 'rgba(45, 64, 105, 0.15)',
     },
     SIZE: {
       EXTRA_SMALL: 18,

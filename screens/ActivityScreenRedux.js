@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import Layout from "../components/Layouts/Layout";
 import { addTodo } from "../redux/todoSlice";
 
-export const TodoApp = () => {
+export const ActivityScreen = () => {
 
     const [text, setText] = useState();
   const dispatch = useDispatch();
@@ -52,3 +52,5 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
 });
+
+export default ActivityScreen
