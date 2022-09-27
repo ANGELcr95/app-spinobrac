@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 
 //Screens
+import LoginScreen from './screens/LoginScreen';
 import RiskScreen from './screens/RiskScreen'
 import HomeScreen from './screens/HomeScreen';
 import ReportScreen from './screens/ReportScreen'
@@ -28,6 +29,9 @@ import GLOBALS from './Globals';
 // Icons
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useState } from 'react';
+import InitScreen from './screens/InitScreen';
+import Profile from './components/Profile';
 
 const Drawer = createDrawerNavigator()
 const Tab = createBottomTabNavigator();
@@ -37,6 +41,36 @@ const Stack = createNativeStackNavigator()
 
 
 //------stack-----
+
+function StackInitScreen() {
+  return (
+    <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={InitScreen}
+          options= {()=> ({
+            headerShown: false
+          })}
+        />
+      </Stack.Navigator>
+  );
+}
+
+
+export function StackLoginScreen() {
+  return (
+    <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options= {()=> ({
+            title: "LOGIN",
+            headerShown: false
+          })}
+        />
+      </Stack.Navigator>
+  );
+}
 
 function StackReportScreen() {
   return (
@@ -112,7 +146,7 @@ function StackUpWorkerScreen() {
           options= {()=> ({
             title: "Datos Empleado",
             headerShown: false,
-            headerStyle: { backgroundColor: GLOBALS.COLOR.PRIMARY},
+            headerStyle: { backgroundColor: GLOBALS.COLOR.SECONDARY},
             headerTitleStyle: { color: '#fff'},
             headerTintColor: '#fff',
           })}
@@ -180,6 +214,8 @@ const BottomTabNavigator = () => {
 //-------------CustomDrawer-------------
 const CustomDrawerContent = (props) => {
   return (
+    <View style={{flex:1}}>
+    <Profile/>
     <DrawerContentScrollView
       style={styles.drawerContent}
     {...props}>
@@ -191,6 +227,7 @@ const CustomDrawerContent = (props) => {
             return
           }
           return (
+          
             <DrawerItem
               key={key}
               label={() => (
@@ -205,23 +242,25 @@ const CustomDrawerContent = (props) => {
                   
                 </View>
                 
-              )}
-              onPress={() => descriptor.navigation.navigate(descriptor.route.name)}
-              style={[styles.drawerItem]}
-              // style={[styles.drawerItem, focused ? styles.drawerItemFocused : null]}
-              // cuando precio le doy stylo a drawer
-            />
+                )}
+                onPress={() => descriptor.navigation.navigate(descriptor.route.name)}
+                style={[styles.drawerItem]}
+                // style={[styles.drawerItem, focused ? styles.drawerItemFocused : null]}
+                // cuando precio le doy stylo a drawer
+                />
+          
           )
         })
       }
     </DrawerContentScrollView>
+    </View>
   )
 }
 
 
 
 //Drawer-------------
-const DrawerNavigator = () => {
+export const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
     useLegacyImplementation={true}
@@ -246,7 +285,7 @@ const DrawerNavigator = () => {
       ),
     })}
     drawerContent={(props) => <CustomDrawerContent {...props} />}
-    >
+    > 
       <Drawer.Screen name="Home" component={BottomTabNavigator}
         options={{
           title: 'Spinobrac',
@@ -281,8 +320,10 @@ const DrawerNavigator = () => {
 const styles = StyleSheet.create({
   drawerContent: {
     backgroundColor: GLOBALS.COLOR.SECONDARY,
-    paddingRight: 10,
-    paddingTop: 20,
+    paddingRight: 15,
+    borderTopRightRadius: 50,
+    marginTop: -50,
+
   },
   drawerItem: {
     width: '100%',
@@ -312,6 +353,7 @@ const styles = StyleSheet.create({
   drawerLabel: {
     fontSize: GLOBALS.SIZE.EXTRA_SMALL,
     marginLeft:20,
+    color: GLOBALS.COLOR.ICONSDOWN,
   },
   drawerLabelFocused: {
     fontSize: GLOBALS.SIZE.EXTRA_SMALL,
@@ -321,13 +363,12 @@ const styles = StyleSheet.create({
   }
 })
 
-
 export default function App() {
   return (
     <Provider store={store}>
       <StateProvider>
         <NavigationContainer>
-          <DrawerNavigator />
+          <StackInitScreen/>
         </NavigationContainer>
       </StateProvider>
     </Provider>

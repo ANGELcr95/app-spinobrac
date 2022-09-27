@@ -27,10 +27,6 @@ const DataWorkerUp = () => {
     result:null
   });
 
-
-
-
-
   const [disabled, setdisabled] = useState(true)
 
   const [showAlert, setShowAlert] = useState(false)
@@ -155,7 +151,7 @@ const DataWorkerUp = () => {
               onPress={showDatePicker}
               name="calendar"
               size={GLOBALS.SIZE.MEDIUM}
-              color={GLOBALS.COLOR.ICONS}
+              color={GLOBALS.COLOR.PRIMARY}
               />
           </TouchableOpacity>
           <TouchableOpacity

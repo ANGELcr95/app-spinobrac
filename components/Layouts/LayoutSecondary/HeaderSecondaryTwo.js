@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     width:'100%',
-    backgroundColor:GLOBALS.COLOR.PRIMARY
+    backgroundColor:GLOBALS.COLOR.SECONDARY
   },
   containerHeader: {
     position: 'absolute',

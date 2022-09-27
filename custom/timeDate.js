@@ -16,3 +16,24 @@ export const shortDate = (date) => {
         return dateUtil[0];
     }
 }
+
+
+export const mostrarSaludo = ()=>{
+    let text
+    let date = new Date(); 
+    let hour = date.getHours();
+   
+    if(hour >= 0 && hour < 12){
+      text = "Buenos Días";
+    }
+   
+    if(hour >= 12 && hour < 18){
+      text = "Buenas Tardes";
+    }
+   
+    if(hour >= 18 && hour < 24){
+      text = "Buenas Noches";
+    }
+
+    return text
+}

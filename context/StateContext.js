@@ -7,6 +7,11 @@ export const StateProvider = (props) => {
     const [title, setTitle] = useState(null)
     const [worker, setWorker] = useState(null)
     const [option, setOption] = useState(null)
+    const [user, setUser] = useState({
+        dni:12376,
+        name: '',
+        file:null
+    })
 
     const contextValue ={
         routedId,
@@ -24,6 +29,10 @@ export const StateProvider = (props) => {
         option,
         upOption(option){
             setOption(option)
+        },
+        user,
+        upUser(user){
+            setUser(user)
         }
     }
 

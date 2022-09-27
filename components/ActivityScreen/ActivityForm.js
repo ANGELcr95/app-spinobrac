@@ -3,14 +3,14 @@ import { Text, StyleSheet, View, TextInput } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
-//Styles
-import { Dropdown } from 'react-native-element-dropdown';
-import { Modal, Portal, Button } from 'react-native-paper';
-
 //Components
 import useUpContext from '../../context/useUpContext';
 import { timeDate } from '../../custom/timeDate';
 import { getWorkers } from '../../services/workers'; 
+
+//Styles
+import { Dropdown } from 'react-native-element-dropdown';
+import { Modal, Portal, Button } from 'react-native-paper';
 
 // Globas variables
 import GLOBALS from '../../Globals';
