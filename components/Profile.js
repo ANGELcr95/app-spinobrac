@@ -29,7 +29,7 @@ const Profile = () => {
           {context.user.file ? <Avatar.Image source={{ uri: context.user.file }} size={100} /> : <Avatar.Image  size={100} source={require('../assets/img/worker.png')}/>}
         </View>
         <View>
-          <Text style={styles.name}>{`!Hola ${context.user.name}`}  </Text>
+          <Text style={styles.name}>!Hola</Text><Text style={styles.fullName}>{context.user.name}</Text>
         </View>
         <View>
           <Text style={styles.greeting}>{mostrarSaludo()}</Text>
@@ -64,6 +64,14 @@ const styles =  StyleSheet.create({ // creo  estyles dentro de esteobject que fu
     fontSize: GLOBALS.FONT.BIG,
     fontWeight: GLOBALS.WEIGHT.SMALL,
     color: GLOBALS.COLOR.THETIARY,
+    textAlign: 'center',
+  },
+  fullName: { 
+    fontSize: GLOBALS.FONT.BIG,
+    fontWeight: GLOBALS.WEIGHT.SMALL,
+    color: GLOBALS.COLOR.THETIARY,
+    textAlign: 'center',
+    fontWeight: GLOBALS.WEIGHT.MEDIUM,
   },
   greeting: {
     fontSize: GLOBALS.FONT.MEDIUM,

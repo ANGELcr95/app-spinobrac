@@ -163,7 +163,7 @@ const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
     screenOptions={({ route }) => ({
-      tabBarActiveTintColor: GLOBALS.COLOR.ICONS,
+      tabBarActiveTintColor: GLOBALS.COLOR.PRIMARY,
       tabBarinactiveTintColor: GLOBALS.COLOR.ICONSDOWN,
        tabBarIcon: ({ focused, color, size }) => {
          let iconName = routesIcons(focused, route.name)
@@ -173,7 +173,7 @@ const BottomTabNavigator = () => {
          height:65,
          paddingBottom:10,
          paddingTop:10,
-         backgroundColor: GLOBALS.COLOR.PRIMARY
+         backgroundColor: GLOBALS.COLOR.SECONDARY
      }
    })}
     >

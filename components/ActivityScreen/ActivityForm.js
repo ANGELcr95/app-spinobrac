@@ -42,7 +42,7 @@ const ActivityForm = () => {
   const renderLabel = () => {
     if (value || isFocus) {
       return (
-        <Text style={[styles.label, isFocus && { color: GLOBALS.COLOR.ICONS }]}>
+        <Text style={[styles.label, isFocus && { color: GLOBALS.COLOR.WHITE }]}>
           Empleado
         </Text>
       );
@@ -151,7 +151,7 @@ const ActivityForm = () => {
             style={[
                 styles.dropdown,
                 isFocus && { 
-                borderColor: GLOBALS.COLOR.ICONS,
+                borderColor: GLOBALS.COLOR.WHITE,
                 borderWidth: 2
                 },
             ]}
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   cotainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: GLOBALS.COLOR.PRIMARY,
+    backgroundColor: GLOBALS.COLOR.SECONDARY,
     shadowColor: GLOBALS.COLOR.FOURTH,
     shadowOffset: {
       width: 20,
@@ -239,7 +239,6 @@ const styles = StyleSheet.create({
     width: '80%',
     marginTop: 10,
     padding: 10,
-    backgroundColor: GLOBALS.COLOR.PRIMARY,
     color: GLOBALS.COLOR.WHITE,
     borderColor: GLOBALS.COLOR.WHITE,
     borderWidth: 1,
@@ -283,7 +282,6 @@ const styles = StyleSheet.create({
   },
   label: {
     position: 'absolute',
-    backgroundColor: GLOBALS.COLOR.PRIMARY,
     left: 40,
     top: -7,
     zIndex: 999,

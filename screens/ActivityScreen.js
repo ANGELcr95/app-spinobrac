@@ -83,7 +83,7 @@ export const ActivityScreen = () => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'center',
-            backgroundColor: GLOBALS.COLOR.PRIMARY,
+            backgroundColor: GLOBALS.COLOR.SECONDARY,
             borderRadius: 10,
             width: '90%',
             marginHorizontal: '5%'
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   fadingContainer: {
-    backgroundColor: GLOBALS.COLOR.PRIMARY,
+    backgroundColor: GLOBALS.COLOR.SECONDARY,
     borderRadius:10,
     height: 0,
   },
@@ -202,7 +202,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: GLOBALS.COLOR.PRIMARY,
     borderRadius: 10,
     width: '90%',
     marginHorizontal: '5%'

@@ -25,6 +25,7 @@ const LoginScreen = () => {
     dni: null,
     password: null
   })
+  const [warning, setWarning] = useState('')
 
   const context = useUpContext();
 
@@ -35,12 +36,17 @@ const LoginScreen = () => {
       console.log(res);
       
       if (res) {
+        setWarning('')
         context.upUser({
           dni: res.document_number,
           name: res.name,
-          file:null
+          file:res.file,
+          role:res.role
         })
+        return
       }
+
+      setWarning('Comuniquese con administrador o revise que los campos esten correctamente diligenciados')
       
   };
 
@@ -90,6 +96,9 @@ const LoginScreen = () => {
           ><Entypo name="login" size={GLOBALS.SIZE.SMALL} color={GLOBALS.COLOR.WHITE} />
             <Text style={styles.meniTitle}>Iniciar</Text>
           </TouchableOpacity>
+          <View style={styles.boxWarning}>
+            <Text style={styles.warningText}>{warning}</Text>
+          </View>
       </View>
     </LayoutLogin>
   )
@@ -124,6 +133,14 @@ const styles =  StyleSheet.create({ // creo  estyles dentro de esteobject que fu
     fontSize: GLOBALS.FONT.BIG,
     color: GLOBALS.COLOR.THETIARY,
     marginLeft: 10
+  },
+  boxWarning: {
+    marginTop: 10,
+  },
+  warningText:{
+    color: GLOBALS.COLOR.RED,
+    fontSize: GLOBALS.FONT.SMALL,
+    textAlign: 'center'
   }
 })
 

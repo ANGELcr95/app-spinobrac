@@ -16,7 +16,7 @@ const WorkerItem = ({ worker, handleDelete }) => {
   const [showAlert, setShowAlert] = useState(false)
   const navigation = useNavigation()
   
-const context = useUpContext()
+  const context = useUpContext()
 
   return (
     <View style={styles.itemContainer}>
@@ -64,7 +64,7 @@ const context = useUpContext()
         <Text style={styles.itemTitle}>{worker.name}</Text>
         <Text style={styles.dni}>cc {worker.document_number}</Text>
       </View>
-
+      {context.user.role == 'Root'?
       <TouchableOpacity
         style={styles.buttonDelete}
         onPress={() => setShowAlert(true)}
@@ -74,7 +74,8 @@ const context = useUpContext()
           size={GLOBALS.SIZE.MEDIUM}
           color={GLOBALS.COLOR.ICON_DELETE}
         />
-      </TouchableOpacity>
+      </TouchableOpacity>: null
+      }
     </View>
   );
 };
@@ -112,6 +113,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 15,
     bottom: 15,
+    zIndex: 1,
   }
 });
 

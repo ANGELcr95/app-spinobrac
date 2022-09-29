@@ -13,27 +13,47 @@ import { useEffect } from 'react';
 
 import AwesomeAlert from 'react-native-awesome-alerts';
 import * as ImagePicker from 'expo-image-picker';
+import { Dropdown } from 'react-native-element-dropdown';
+import { Ionicons } from '@expo/vector-icons';
+
 
 
 import { Button } from 'react-native-paper'
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 const DataWorkerUp = () => {
   const [data, setData] = useState({
     dni: null,
     name: '',
+    password: '',
     eps: null,
     date_born: null,
-    result:null
+    result:null,
+    role:null,
   });
 
+  const [role]= useState([
+    {
+      label:'Administrativo',
+      value:'Administrativo'
+    }, 
+    {
+      label: 'Operativo',
+      value: 'Operativo'
+    }
+  ])
+
   const [disabled, setdisabled] = useState(true)
+  const [passWord, setPassWord] = useState(null)
 
   const [showAlert, setShowAlert] = useState(false)
 
   const context = useUpContext()
   const navigation = useNavigation()
-  // const isFocused = useIsFocused();
+
+  const [isFocus, setIsFocus] = useState(false);
+
+  
   
   useEffect(() => {
     if (context.worker) {
@@ -43,10 +63,13 @@ const DataWorkerUp = () => {
         setData({
           dni: worker.document_number,
           name: worker.name,
+          password: '',
           eps: worker.eps,
           date_born:worker.date_born ? shortDate(worker.date_born): null,
-          result: worker.file 
+          result: worker.file, 
+          role: worker.role ? worker.role: 'Operativo'
         });
+        setPassWord(worker.password);
       })();
     }
   }, [context.worker]);
@@ -69,21 +92,37 @@ const DataWorkerUp = () => {
   };
 
   const handleSubmit = async () => {
+    let passwordUtil 
+    if (data.role == 'Administrativo') {
+      if (data.password ) {
+        passwordUtil = data.password
+      } else {
+        passwordUtil = null
+      }
+    } else {
+      passwordUtil = null
+    }
     await updateWork(
       data.dni,
       {
       name: data.name,
+      password: passwordUtil,
       eps: data.eps,
       date_born: data.date_born,
-      file: data.result ? data.result :null
+      file: data.result ? data.result :null,
+      role: data.role
       }
     )
     setShowAlert(true);
   };
 
   useEffect(() => {
-    data.name ? setdisabled(false) : setdisabled(true)
-  }, [data])
+    if (data.role == 'Administrativo') {
+      data.name && passWord || data.password ? setdisabled(false) : setdisabled(true)  
+    } else {
+      data.name ? setdisabled(false) : setdisabled(true)
+    }
+  }, [data, passWord])
 
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -140,10 +179,41 @@ const DataWorkerUp = () => {
           style={styles.input}
           editable={false}
           value={`${data.dni} `}
-
+          
           />
         </View>
         <DataWorkerItem placeholder={'Nombre'} value={data.name} code={'name'}  handleChange={ handleChange} iconName={'person-circle'} />
+          {context.user.role == 'Root'? (<>
+        <View style={styles.cotainerDropDown}>
+          <Ionicons name='body' size={GLOBALS.SIZE.MEDIUM} color={GLOBALS.COLOR.THETIARY}/>
+          <Dropdown
+              style={[
+                  styles.dropdown,
+                  isFocus && { 
+                  borderColor: GLOBALS.COLOR.WHITE,
+                  },
+              ]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              data={role}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? data.role : '...'}
+              value={data.role}
+              defaultValue={data.role}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={(item) => {
+              handleChange('role', item.value)
+              setIsFocus(false);
+            }}
+          />
+        </View>
+        { data.role != 'Operativo' ? <DataWorkerItem placeholder={ passWord ? 'Existente': 'Nueva'}  code={'password'}  handleChange={ handleChange} iconName={'key'}/>: null } 
+        </>)
+        : null}
         <DataWorkerItem placeholder={'EPS'} value={data.eps} code={'eps'}  handleChange={ handleChange} iconName={'md-medkit-outline'}/>
         <View style={styles.item}>
           <TouchableOpacity>
@@ -181,7 +251,7 @@ const DataWorkerUp = () => {
           disabled={disabled}
           mode="contained-tonal"
           onPress={handleSubmit}
-          buttonColor={GLOBALS.COLOR.FOURTH}
+          buttonColor={GLOBALS.COLOR.WHITE}
           textColor={GLOBALS.COLOR.WHITE}
           labelStyle={{ color: disabled && GLOBALS.COLOR.ICONSDOWN }}
         >
@@ -227,8 +297,46 @@ const styles = StyleSheet.create({
     },
     button:{
       marginTop:30
-    }
-
+    },
+    cotainerDropDown: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 15,
+      marginRight: 10,
+    },
+    dropdown: {
+      backgroundColor: GLOBALS.COLOR_TRANSAPARENT.PRIMARY,
+      borderBottomWidth:1,
+      color: GLOBALS.COLOR.THETIARY,
+      borderBottomColor: GLOBALS.COLOR.THETIARY,
+      height: 40,
+      fontSize: GLOBALS.FONT.MEDIUM,
+      alignItems: 'center',
+      width: '80%',
+      marginHorizontal: 10,
+      textAlign: 'center'
+    },
+    placeholderStyle: {
+      fontSize:  GLOBALS.FONT.MEDIUM,
+      color: GLOBALS.COLOR.PRIMARY,
+      textAlign: 'center',
+      marginLeft: 20,
+    },
+    selectedTextStyle: {
+      fontSize: GLOBALS.FONT.MEDIUM,
+      color: GLOBALS.COLOR.WHITE,
+      textAlign: 'center',
+      marginLeft: 20,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
   });
 
 export default DataWorkerUp
