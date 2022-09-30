@@ -37,8 +37,8 @@ const WorkList = ({ newUser }) => {
 
   return (
     <FlatList
-      style={{ width: '100%' }}
       data={workers}
+      numColumns={2}
       keyExtractor={(worker) => `${worker.id} `}
       renderItem={renderItem}
       refreshControl={

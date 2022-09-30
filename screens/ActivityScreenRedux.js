@@ -7,7 +7,7 @@ import { addTodo } from "../redux/todoSlice";
 
 export const ActivityScreen = () => {
 
-    const [text, setText] = useState();
+  const [text, setText] = useState();
   const dispatch = useDispatch();
 
   function handleSumbit(){

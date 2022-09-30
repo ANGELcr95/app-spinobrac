@@ -8,10 +8,10 @@ export const StateProvider = (props) => {
     const [worker, setWorker] = useState(null)
     const [option, setOption] = useState(null)
     const [user, setUser] = useState({
-        dni:12345678,
-        name: 'Daniel Pantoa',
-        file:'http://192.168.10.13:3000/static/img/resize-image1664319772226.jpg',
-        role:'Administrativo'
+        dni:null,
+        name: '',
+        file:null,
+        role:''
     })
 
     const contextValue ={

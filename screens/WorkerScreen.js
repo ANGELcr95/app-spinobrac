@@ -25,7 +25,7 @@ const WorkerScreen = ({ route }) => {
         <View style={{
           top:context.user.role == 'Root' ? 135 : 0,
           zIndex: 1,
-          paddingHorizontal: 25,
+          paddingHorizontal: '1%',
           height:context.user.role == 'Root' ? '60%' : '78%' 
         }}>
         <WorkList newUser={newUser} user={context.user.role}/>

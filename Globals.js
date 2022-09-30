@@ -1,5 +1,5 @@
 export default {
-    API: 'http://192.168.10.13:3000',
+    API: 'https://spinobrac.herokuapp.com',
     COLOR: {
       PRIMARY: '#d40b11',
       SECONDARY: '#000000',
@@ -13,10 +13,13 @@ export default {
       ICONSDOWN: '#474b4e',
       ICON_DELETE:'#ff5232',
       WHITE: '#ffffff',
+      BLACK: '#000000',
     },
     COLOR_TRANSAPARENT: {
       THETIARY:'rgba(250, 250, 250, 0.98)',
-      SECONDARY: 'rgba(45, 64, 105, 0.15)',
+      GREEN_LIGTH:'rgba(0, 179, 71, 0.25)',
+      SECONDARY: 'rgba(45, 64, 105, 0.35)',
+      SECONDARY_MEDIUM: 'rgba(45, 64, 105, 0.40)',
     },
     SIZE: {
       EXTRA_SMALL: 18,

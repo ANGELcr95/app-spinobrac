@@ -10,10 +10,11 @@ const TaskList = () => {
   const [tasks, setTasks] = useState([])
   const [refreshing, setrefreshing] = useState(false)
 
-  const isFocused = useIsFocused() // sabe si retorne a la pagina funciona como true o false
+  const isFocused = useIsFocused() // sabe si retorne a la p=agina funciona como true o false
 
   const loadTasks = async () => {
     const data = await getTasks()
+    data.reverse()
     !data.status ? setTasks(data) : setTasks([])
   }
 

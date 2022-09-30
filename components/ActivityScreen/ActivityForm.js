@@ -19,15 +19,20 @@ import GLOBALS from '../../Globals';
 import { getTask, saveTask, updateTask } from '../../services/workers'
 
 //Icons
-import { Octicons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons';
+import { saveActivity } from '../../services/activities';
 
-const ActivityForm = () => {
-  const [task, setTask] = useState({
-    title: '',
+const ActivityForm = ({hideModal, setUpdateActivity, updateActivity, setTitle}) => {
+  const [acivity, setAcivity] = useState({
+    operativo: '',
     description: '',
     date: '',
-    file: '',
-    document_number: ''
+    file_operativo: '',
+    document_oper: '',
+    administrativo: '',
+    file_admin: '',
+    document_admin: '',
+    done: ''
   });
   const [workers, setWorkers] = useState([]);
   const isFocused = useIsFocused(); // sabe si retorne a la pagina funciona como true o false
@@ -36,7 +41,6 @@ const ActivityForm = () => {
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
-  const navigation = useNavigation();
   const context = useUpContext();
 
   const renderLabel = () => {
@@ -57,85 +61,67 @@ const ActivityForm = () => {
           label: element.name,
           value: element.name,
           file:element.file,
-          document_number: element.document_number,
+          document_number: element.document_number
         };
         return data;
       });
 
       setWorkers(names);
-   
   };
 
   // const dispatch = useDispatch();
   // let [routeId] = useSelector((state) => state.routeId)
 
-  const handleChange = (name, value) => setTask({ ...task, [name]: value });
+  const handleChange = (name, value) => setAcivity({ ...acivity, [name]: value });
 
   useEffect(() => {
-    task.title && task.description ? setdisabled(false) : setdisabled(true)
-  }, [task])
+    acivity.operativo && acivity.description ? setdisabled(false) : setdisabled(true)
+  }, [acivity])
 
   const handleSubmit = async () => {
-    if (context.routedId) {
-      await updateTask(context.routedId, task);
-      // dispatch(toggleRouteId(null))
-      context.upRoutedId(null);
-      setTask({
-        title: '',
-        description: '',
-        date: '',
-        file:'',
-        document_number:''
-      });
-      context.upRoutedId(null);
-    } else {
-       const response =   await saveTask({
-        title: task.title,
-        description: task.description,
+    
+       const response =   await saveActivity({
+        operativo: acivity.operativo,
+        description: acivity.description,
         date: timeDate(),
-        file: task.file,
-        document_number: task.document_number
+        file_operativo: acivity.file_operativo,
+        document_oper: acivity.document_oper,
+        administrativo: acivity.administrativo,
+        file_admin: acivity.file_admin,
+        document_admin: acivity.document_admin,
+        done: acivity.done,
       });
       if (response.status === 200) {
-          setTask({
-            title: '',
+          setAcivity({
+            operativo: '',
             description: '',
             date: '',
-            file:'',
-            document_number:''
+            file_operativo: '',
+            document_oper: '',
+            administrativo: '',
+            file_admin: '',
+            document_admin: '',
+            done: ''
           });
         }
-      }
-      navigation.navigate('RiskScreen');
+        setUpdateActivity(!updateActivity)
+        hideModal()
+        setTitle('Todos')
   };
   useEffect(() => {
     loadReports();
-    setTask({ title: '',
+    setAcivity({   
+      operativo: '',
       description: '',
       date: '',
-      file:'',
-      document_number:''
+      file_operativo: '',
+      document_oper: '',
+      administrativo: '',
+      file_admin: '',
+      document_admin: '',
+      done: ''
     });
-    if (context.routedId) {
-      navigation.setOptions({ headerTitle: 'Actualizar reporte' });
-      (async () => {
-        const task = await getTask(context.routedId);
-        !task.status ?  setTask({
-          title: task.title,
-          description: task.description,
-          date: task.date,
-          file:task.file,
-          document_number:task.document_number,
-        }) : setTask({
-          title: '',
-          description: '',
-          date: '',
-          file:'',
-          document_number:''
-        });
-      })();
-    }
-  }, [context.routedId, isFocused]);
+  }, [isFocused]);
 
   return (
     <View style={styles.cotainer}>
@@ -143,7 +129,7 @@ const ActivityForm = () => {
             position: 'absolute',
             top: -25,
         }}>
-            <Octicons name="rocket" size={60} color={GLOBALS.COLOR.WHITE} />
+            <Ionicons name="md-build" size={60} color={GLOBALS.COLOR.WHITE} />
         </View>
         <View style={styles.cotainerDropDown}>
             {renderLabel()}
@@ -166,15 +152,19 @@ const ActivityForm = () => {
             valueField="value"
             placeholder={!isFocus ? 'Selecionar Empleado' : '...'}
             searchPlaceholder="Buscar..."
-            value={task.title}
+            value={acivity.title}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
             onChange={(item) => {
 
-            setTask({ ...task, 
-              ['title']: item.value,
-              ['file']: item.file,
-              ['document_number']: item.document_number,
+            setAcivity({ ...acivity, 
+              ['operativo']: item.value,
+              ['file_operativo']: item.file,
+              ['document_oper']: item.document_number,
+              ['administrativo']: context.user.name,
+              ['file_admin']: context.user.file,
+              ['document_admin']: context.user.dni,
+              ['done']: 0,
             });
 
             setIsFocus(false);
@@ -188,14 +178,13 @@ const ActivityForm = () => {
         onChangeText={(text) => handleChange('description', text)}
         placeholder="Descripcion Actividad"
         placeholderTextColor={GLOBALS.COLOR.ICONSDOWN} 
-        value={task.description}
+        value={acivity.description}
       />
         <Button
             disabled={disabled}
             mode="contained-tonal"
             onPress={()=>{
             handleSubmit()
-            context.upOption(null)
             }}
             buttonColor={GLOBALS.COLOR.GREEN}
             textColor={GLOBALS.COLOR.WHITE}
