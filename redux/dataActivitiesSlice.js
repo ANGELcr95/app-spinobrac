@@ -5,26 +5,22 @@ const dataActivitiesSlice = createSlice({
   initialState:{
     activities: null,
     activitiesShow: null,
-    pending:null
+    dateShow:null
   },
   reducers: {
     setActivities(state, action) {
       state.activities = action.payload
-      console.log("actualize");
-      
     },
     showActivities(state, action) {
       state.activitiesShow = action.payload
     },
-    toggleActivity(state, action) {
-      const todo = state.find(todo => todo.id === action.payload)
-      if (todo) {
-        todo.completed = !todo.completed
-      }
+    setDateShow(state, action) {
+      state.dateShow = action.payload
+      
     }
   }
 })
 
-export const { setActivities, showActivities, toggleActivity } = dataActivitiesSlice.actions
+export const { setActivities, showActivities, setDateShow } = dataActivitiesSlice.actions
 
 export default dataActivitiesSlice.reducer

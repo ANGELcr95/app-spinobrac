@@ -1,5 +1,5 @@
 export default {
-    API: 'https://spinobrac.herokuapp.com',
+    API: 'http://192.168.10.17:3000',
     COLOR: {
       PRIMARY: '#d40b11',
       SECONDARY: '#000000',
@@ -18,8 +18,9 @@ export default {
     COLOR_TRANSAPARENT: {
       THETIARY:'rgba(250, 250, 250, 0.98)',
       GREEN_LIGTH:'rgba(0, 179, 71, 0.25)',
-      SECONDARY: 'rgba(45, 64, 105, 0.35)',
+      SECONDARY: 'rgba(45, 64, 105, 0.2)',
       SECONDARY_MEDIUM: 'rgba(45, 64, 105, 0.40)',
+      THETIARY: 'rgba(254, 1, 3, 0.15)',
     },
     SIZE: {
       EXTRA_SMALL: 18,

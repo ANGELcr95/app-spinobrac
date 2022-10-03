@@ -26,8 +26,11 @@ const ActivityItem = ({
   setRenderActivity,
   renderActivity,
   setVisibleSnack,
+  dateShow
 }) => {
   const [date, setdate] = useState(null);
+  const [showDate, setShowDate] = useState(false);
+
   const [showAlert, setShowAlert] = useState(false);
   const [isSwitchOn, setIsSwitchOn] = useState(false);
  
@@ -40,6 +43,16 @@ const ActivityItem = ({
 
   useEffect(() => {
     setdate(shortDate(activity.date));
+
+    setShowDate(false)
+    
+    for (let i = 0; i < dateShow.length; i++) {
+      if (dateShow[i].index == activity.index && activity.index != 0) {  
+        setShowDate(true)
+        break
+      }
+    }
+    
     activity.done['data'][0] ? setIsSwitchOn(true) : setIsSwitchOn(false);
   }, [activity]);
 
@@ -52,124 +65,153 @@ const ActivityItem = ({
   };
 
   return (
-    <View
-      style={{
-        backgroundColor: isSwitchOn
-          ? GLOBALS.COLOR_TRANSAPARENT.GREEN_LIGTH
-          : GLOBALS.COLOR_TRANSAPARENT.SECONDARY,
-        paddingHorizontal: 12,
-        paddingVertical: 5,
-        marginVertical: 2,
-        borderRadius: 15,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <AwesomeAlert
-        show={showAlert}
-        // showProgress={false}
-        title="Eliminar"
-        titleStyle={{ fontSize: 36, marginBottom: 10 }}
-        messageStyle={{
-          fontSize: 16,
-          marginBottom: 10,
-          textAlign: 'center',
-          color: GLOBALS.COLOR.SECONDARY,
-          fontWeight: GLOBALS.WEIGHT.MEDIUM,
+    <>
+    {showDate &&
+      <View style={styles.showDateContainer}>
+        <Text style={styles.showDate}>{ date }</Text>
+      </View>
+      }
+      <View
+        style={{
+          backgroundColor: isSwitchOn
+            ? GLOBALS.COLOR_TRANSAPARENT.THETIARY
+            : GLOBALS.COLOR_TRANSAPARENT.SECONDARY,
+          paddingHorizontal: 12,
+          paddingVertical: 5,
+          marginVertical: 5,
+          borderRadius: 20,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderTopLeftRadius: context.user.dni == activity.document_admin ? 40 : 0,
+          borderBottomRightRadius: context.user.dni == activity.document_admin ? 40 : 20,
+          borderTopRightRadius: context.user.dni == activity.document_admin ? 0 : 40,
+          borderBottomLeftRadius: context.user.dni == activity.document_admin ? 20 : 40,
+          borderWidth: context.user.dni == activity.document_admin ? 2 : 0,
+          borderColor: context.user.dni == activity.document_admin && GLOBALS.COLOR.RED,
         }}
-        message={`Eliminara actividad asignada a ${activity.user}`}
-        closeOnTouchOutside={false}
-        closeOnHardwareBackPress={false}
-        showCancelButton={true}
-        showConfirmButton={true}
-        cancelText="Cancelar"
-        confirmText="Eliminar"
-        cancelButtonStyle={{ width: 100, alignItems: 'center' }}
-        confirmButtonStyle={{ width: 100, alignItems: 'center' }}
-        confirmButtonColor={GLOBALS.COLOR.RED}
-        cancelButtonColor={GLOBALS.COLOR.ICONSDOWN}
-        onCancelPressed={() => {
-          setShowAlert(false);
-        }}
-        onConfirmPressed={() => {
-          handleDelete(activity.id);
-          setShowAlert(false);
-        }}
-      />
-      <View style={styles.containerActivity}>
-        <View style={styles.containerAdmin}>
-          <TouchableOpacity
-            style={styles.itemContainerData}
-            onPress={() => {
-              context.upRoutedId(activity.id);
-            }}
-          >
-            <View style={styles.itemContainerImage}>
-              {activity.file_admin ? (
-                <Avatar.Image source={{ uri: activity.file_admin }} size={30} />
+      >
+        <AwesomeAlert
+          show={showAlert}
+          // showProgress={false}
+          title="Eliminar"
+          titleStyle={{ fontSize: 36, marginBottom: 10 }}
+          messageStyle={{
+            fontSize: 16,
+            marginBottom: 10,
+            textAlign: 'center',
+            color: GLOBALS.COLOR.SECONDARY,
+            fontWeight: GLOBALS.WEIGHT.MEDIUM,
+          }}
+          message={`Eliminara actividad asignada a ${activity.user}`}
+          closeOnTouchOutside={false}
+          closeOnHardwareBackPress={false}
+          showCancelButton={true}
+          showConfirmButton={true}
+          cancelText="Cancelar"
+          confirmText="Eliminar"
+          cancelButtonStyle={{ width: 100, alignItems: 'center' }}
+          confirmButtonStyle={{ width: 100, alignItems: 'center' }}
+          confirmButtonColor={GLOBALS.COLOR.RED}
+          cancelButtonColor={GLOBALS.COLOR.ICONSDOWN}
+          onCancelPressed={() => {
+            setShowAlert(false);
+          }}
+          onConfirmPressed={() => {
+            handleDelete(activity.id);
+            setShowAlert(false);
+          }}
+        />
+        
+        <View style={styles.containerActivity}>
+          <View style={styles.containerAdmin}>
+            <TouchableOpacity
+              style={styles.itemContainerData}
+              onPress={() => {
+                context.upRoutedId(activity.id);
+              }}
+            >
+              <View style={styles.itemContainerImage}>
+                {activity.file_admin ? (
+                  <Avatar.Image source={{ uri: activity.file_admin }} size={30} />
+                ) : (
+                  <Avatar.Image
+                    size={30}
+                    source={require('../../../assets/img/worker.png')}
+                  />
+                )}
+              </View>
+              <View style={styles.administrativeContainer}>
+                <Text style={styles.administrative}>
+                  {activity.administrativo}
+                </Text>
+                <Text style={styles.date}>{date}</Text>
+              </View>
+            </TouchableOpacity>
+            {context.user.dni == activity.document_admin &&
+            <>
+              <TouchableOpacity onPress={() => setShowAlert(true)}>
+                <Foundation
+                  name="page-delete"
+                  size={GLOBALS.SIZE.MEDIUM}
+                  color={GLOBALS.COLOR.ICON_DELETE}
+                />
+              </TouchableOpacity>
+              <Switch
+                style={styles.switch}
+                trackColor={{
+                  true: GLOBALS.COLOR.GREEN_LIGTH,
+                  false: GLOBALS.COLOR.ICONSDOWN,
+                }}
+                thumbColor={GLOBALS.COLOR.WHITE}
+                value={isSwitchOn}
+                onValueChange={() => {
+                  updateActivityFunction()
+                  setVisibleSnack(true)
+                  setTimeout(() => {
+                    setVisibleSnack(false)
+                  }, 2000);
+                }}
+              />
+            </>
+            }
+          </View>
+
+          <View style={styles.containerOperative}>
+            <View style={styles.operative}>
+              <Text style={styles.operativeTitle}>{activity.operativo}</Text>
+              <Text style={styles.descriptionTitle}>{activity.description}</Text>
+            </View>
+            <View style={styles.switchOperative}>
+              {activity.file ? (
+                <Avatar.Image source={{ uri: activity.file }} size={50} />
               ) : (
                 <Avatar.Image
-                  size={30}
+                  size={50}
                   source={require('../../../assets/img/worker.png')}
                 />
               )}
             </View>
-            <View>
-              <Text style={styles.administrative}>
-                {activity.administrativo}
-              </Text>
-              <Text style={styles.date}>{date}</Text>
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setShowAlert(true)}>
-            <Foundation
-              name="page-delete"
-              size={GLOBALS.SIZE.MEDIUM}
-              color={GLOBALS.COLOR.ICON_DELETE}
-            />
-          </TouchableOpacity>
-          <Switch
-            style={styles.switch}
-            trackColor={{
-              true: GLOBALS.COLOR.GREEN_LIGTH,
-              false: GLOBALS.COLOR.ICONSDOWN,
-            }}
-            thumbColor={GLOBALS.COLOR.WHITE}
-            value={isSwitchOn}
-            onValueChange={() => {
-              updateActivityFunction()
-              setVisibleSnack(true)
-              setTimeout(() => {
-                setVisibleSnack(false)
-              }, 1000);
-            }}
-          />
-        </View>
-
-        <View style={styles.containerOperative}>
-          <View style={styles.operative}>
-            <Text style={styles.operativeTitle}>{activity.operativo}</Text>
-            <Text style={styles.descriptionTitle}>{activity.description}</Text>
-          </View>
-          <View style={styles.switchOperative}>
-            {activity.file ? (
-              <Avatar.Image source={{ uri: activity.file }} size={50} />
-            ) : (
-              <Avatar.Image
-                size={50}
-                source={require('../../../assets/img/worker.png')}
-              />
-            )}
           </View>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  showDateContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 5
+  },
+  showDate: {
+    backgroundColor: GLOBALS.COLOR.BLACK,
+    color: GLOBALS.COLOR.WHITE,
+    borderRadius: 20,
+    paddingVertical: 3,
+    paddingHorizontal: 10,
+  },
   itemContainerData: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -210,10 +252,14 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     marginBottom: 7,
   },
+  administrativeContainer: {
+    width: '100%',
+  },
   administrative: {
     color: GLOBALS.COLOR.BLACK,
     fontWeight: GLOBALS.WEIGHT.MEDIUM,
     fontSize: GLOBALS.FONT.MEDIUM,
+    width: '85%',
   },
   containerOperative: {
     flexDirection: 'row',

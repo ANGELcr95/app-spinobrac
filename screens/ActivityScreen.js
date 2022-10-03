@@ -1,6 +1,12 @@
 //Dependencies react Natigation && elemets
 import React, { useEffect, useState, useRef } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Animated } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Animated
+} from 'react-native';
 
 //Components
 import LayoutTertiary from '../components/Layouts/LayoutTertiary';
@@ -15,8 +21,9 @@ import { Modal, IconButton, Snackbar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActivities, showActivities } from '../redux/dataActivitiesSlice';
+import { setActivities, setDateShow, showActivities } from '../redux/dataActivitiesSlice';
 import { getActivities } from '../services/activities';
+import { shortDate } from '../custom/timeDate';
 
 export const ActivityScreen = () => {
   const [visible, setVisible] = useState(false);
@@ -79,9 +86,31 @@ export const ActivityScreen = () => {
   const { activities } = useSelector((state) => state.activities);
 
   const load = async () => {
-    const data = await getActivities();
+    let data = await getActivities();
     data.reverse();
+       
+    data = data.map(function (element, index) {
+      element.index = index
+      return element
+    });
+
+    let dates = data.map(function (element, index) {
+      let date = {
+        date: shortDate(element.date),
+        index: index
+      };
+      return date;
+    });
+
+    let hash = {};
+    dates = dates.filter(function(current) {
+      let exists = !hash[current.date];
+      hash[current.date] = true;
+      return exists;
+    });
+
     dispatch(setActivities(data));
+    dispatch(setDateShow(dates));
   };
 
   useEffect(() => {
@@ -90,15 +119,68 @@ export const ActivityScreen = () => {
 
   const statusActivity = (done) => {
     if (done == null) {
+      
+      let dates = activities.map(function (element, index) {
+        let date = {
+          date: shortDate(element.date),
+          index: index
+        };
+        return date;
+      });
+  
+      let hash = {};
+      dates = dates.filter(function(current) {
+        let exists = !hash[current.date];
+        hash[current.date] = true;
+        return exists;
+      });
+      
       dispatch(showActivities(activities));
-      setTitle('Todos')
+      dispatch(setDateShow(dates));
+      setTitle('Todos');
       return;
     }
-    const status = activities.filter(
+    let status = activities.filter(
       (activity) => activity.done['data'][0] === done
     );
+      
+    status = status.map(function (element, index) {
+      let object ={
+        administrativo: element.administrativo, 
+        date: element.date, 
+        description: element.description, 
+        document_admin: element.document_admin, 
+        document_oper: element.document_oper, 
+        done: element.done, 
+        type: element.type, 
+        file_admin: element.file_admin, 
+        file_operativo: element.file_operativo, 
+        id: element.id , 
+        index: index, 
+        operativo: element.operativo
+      }
+      
+      return object
+    });
+
+    let dates = status.map(function (element, index) {
+      let date = {
+        date: shortDate(element.date),
+        index: index
+      };
+      return date;
+    });
+
+    let hash = {};
+    dates = dates.filter(function(current) {
+      let exists = !hash[current.date];
+      hash[current.date] = true;
+      return exists;
+    });
+
     dispatch(showActivities(status));
-    done ? setTitle('Completado'): setTitle('Pendiente')
+    dispatch(setDateShow(dates));
+    done ? setTitle('Completado') : setTitle('Pendiente');
   };
 
   return (
@@ -112,6 +194,7 @@ export const ActivityScreen = () => {
         }}
       >
         <View style={styles.containerTitle}>
+          <Text style={styles.title}>{title}</Text>
           <TouchableOpacity
             mode="contained-tonal"
             onPress={showModal}
@@ -124,18 +207,17 @@ export const ActivityScreen = () => {
               justifyContent: 'center',
               backgroundColor: GLOBALS.COLOR.SECONDARY,
               borderRadius: 10,
-              width: '50%',
-              marginHorizontal: '5%',
+              width: '45%',
+              marginRight: '2.5%',
             }}
           >
             <Ionicons
               name="add"
               size={GLOBALS.SIZE.BIG}
               color={GLOBALS.COLOR.WHITE}
-              />
+            />
             <Text style={styles.meniTitle}>Actividad</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>{title}</Text>
         </View>
 
         <Modal
@@ -166,6 +248,7 @@ export const ActivityScreen = () => {
           setRenderActivity={setRenderActivity}
           updateActivity={updateActivity}
           setVisibleSnack={setVisibleSnack}
+          setTitle={setTitle}
         />
       </View>
 
@@ -192,7 +275,7 @@ export const ActivityScreen = () => {
               <TouchableOpacity
                 mode="contained-tonal"
                 onPress={() => {
-                  statusActivity()
+                  statusActivity();
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -213,7 +296,7 @@ export const ActivityScreen = () => {
               <TouchableOpacity
                 mode="contained-tonal"
                 onPress={() => {
-                  statusActivity(0)
+                  statusActivity(0);
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -234,7 +317,7 @@ export const ActivityScreen = () => {
               <TouchableOpacity
                 mode="contained-tonal"
                 onPress={() => {
-                  statusActivity(1)
+                  statusActivity(1);
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -288,11 +371,11 @@ export const ActivityScreen = () => {
         </Animated.View>
       </View>
       <Snackbar
-      style={{
-        position: 'absolute',
-        bottom:0,
-        zIndex: 1,
-      }}
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          zIndex: 1,
+        }}
         visible={visibleSnack}
         onDismiss={onDismissSnackBar}
       >
@@ -311,12 +394,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: GLOBALS.FONT.BIG,
     fontWeight: GLOBALS.WEIGHT.MEDIUM,
-    width: '35%',
-    textAlign: 'center'
+    width: '45%',
+    marginHorizontal: '2.5%',
+    textAlign: 'center',
   },
   containerTitle: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '100%',
   },
   fadingContainer: {
     height: 0,

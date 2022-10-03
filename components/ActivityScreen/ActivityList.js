@@ -5,26 +5,51 @@ import { useIsFocused } from '@react-navigation/native'
 
 //Redux && context
 import { useDispatch, useSelector } from 'react-redux'
-import { setActivities, showActivities } from '../../redux/dataActivitiesSlice'
+import { setActivities, setDateShow, showActivities } from '../../redux/dataActivitiesSlice'
 
 //Components
 import ActivityItem from './ActivityList/ActivityItem'
 
 //Services
 import { deleteActivity, getActivities } from '../../services/activities'
+import { shortDate } from '../../custom/timeDate'
 
-const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVisibleSnack}) => {
+const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVisibleSnack, setTitle}) => {
 
   // const [activities, setActivity] = useState(useSelector((state) => state.dataActivitiesSlice.all))
   const [refreshing, setrefreshing] = useState(false)
   const { activitiesShow } = useSelector((state) => state.activities)
+  const { dateShow } = useSelector((state) => state.activities)
+
 
   const isFocused = useIsFocused() // sabe si retorne a la pagina funciona como true o false
   const dispatch = useDispatch();
 
   const loadActivities = async () => {
-    const data = await getActivities()
+    let data = await getActivities()
     data.reverse()
+    
+    data = data.map(function (element, index) {
+      element.index = index
+      return element
+    });
+
+    let dates = data.map(function (element, index) {
+      let date = {
+        date: shortDate(element.date),
+        index: index
+      };
+      return date;
+    });
+
+    let hash = {};
+    dates = dates.filter(function(current) {
+      let exists = !hash[current.date];
+      hash[current.date] = true;
+      return exists;
+    });
+
+    dispatch(setDateShow(dates));
     
     // !data.status ? dispatch(setActivities(data)) : dispatch(setActivities([]))
     dispatch(setActivities(data))
@@ -40,6 +65,7 @@ const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVis
 
   const onRefresh = React.useCallback(async() => { // esto solo es para poder usar aasync y await con ese mtodo nativo 
     setrefreshing(true)
+    setTitle('Todos')
     await loadActivities()
     setrefreshing(false)
   })
@@ -50,7 +76,7 @@ const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVis
   }
 
   const renderItem = ({item}) => {
-    return <ActivityItem setVisibleSnack={setVisibleSnack} activity={item} handleDelete={handleDelete} renderActivity={renderActivity} setRenderActivity={setRenderActivity} />
+    return <ActivityItem dateShow={dateShow} setVisibleSnack={setVisibleSnack} activity={item} handleDelete={handleDelete} renderActivity={renderActivity} setRenderActivity={setRenderActivity} />
   }
 
   return (

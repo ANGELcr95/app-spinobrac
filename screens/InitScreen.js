@@ -8,10 +8,7 @@ import useUpContext from '../context/useUpContext'
 const InitScreen = () => {
   const context = useUpContext();
   useEffect(() => {
-
     console.log(context.user);
-    
- 
   }, [context.user.dni])
   
 
