@@ -17,13 +17,14 @@ import ActivityList from '../components/ActivityScreen/ActivityList';
 import GLOBALS from '../Globals';
 
 //Styles
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Modal, IconButton, Snackbar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActivities, setDateShow, showActivities } from '../redux/dataActivitiesSlice';
 import { getActivities } from '../services/activities';
-import { shortDate } from '../custom/timeDate';
+import { shortDate, timeDate } from '../custom/timeDate';
 
 export const ActivityScreen = () => {
   const [visible, setVisible] = useState(false);
@@ -183,6 +184,63 @@ export const ActivityScreen = () => {
     done ? setTitle('Completado') : setTitle('Pendiente');
   };
 
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+  
+
+  const handleConfirm = (date) => {
+    let dateUtil = timeDate(date)
+    let statusDate = activities.filter(
+      (activity) => shortDate(activity.date) == dateUtil
+    );
+      
+    statusDate = statusDate.map(function (element, index) {
+      let object ={
+        administrativo: element.administrativo, 
+        date: element.date, 
+        description: element.description, 
+        document_admin: element.document_admin, 
+        document_oper: element.document_oper, 
+        done: element.done, 
+        type: element.type, 
+        file_admin: element.file_admin, 
+        file_operativo: element.file_operativo, 
+        id: element.id , 
+        index: index, 
+        operativo: element.operativo
+      }
+      
+      return object
+    });
+
+    // let dates = statusDate.map(function (element, index) {
+    //   let date = {
+    //     date: shortDate(element.date),
+    //     index: index
+    //   };
+    //   return date;
+    // });
+
+    // let hash = {};
+    // dates = dates.filter(function(current) {
+    //   let exists = !hash[current.date];
+    //   hash[current.date] = true;
+    //   return exists;
+    // });
+
+    dispatch(setDateShow([]));
+    dispatch(showActivities(statusDate));
+    setTitle(dateUtil);
+    hideDatePicker();
+  };
+
   return (
     <LayoutTertiary>
       <View
@@ -232,6 +290,12 @@ export const ActivityScreen = () => {
             setTitle={setTitle}
           />
         </Modal>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+        />
       </View>
       <View
         style={{
@@ -334,6 +398,29 @@ export const ActivityScreen = () => {
                 />
                 <Text style={styles.meniTitle}>Completado</Text>
               </TouchableOpacity>
+
+              
+              <TouchableOpacity
+                mode="contained-tonal"
+                onPress={() => {
+                  showDatePicker()
+                  setFirstTouch(true);
+                  setShowMenu(!showMenu);
+                  startImageRotateFunction();
+                  showBoxFunction();
+                }}
+                activeOpacity={0.9}
+                style={styles.boxTitle}
+              >
+                <MaterialCommunityIcons
+                  style={styles.menuIcon}
+                  name="calendar"
+                  size={GLOBALS.SIZE.BIG}
+                  color={GLOBALS.COLOR.WHITE}
+                />
+                <Text style={styles.meniTitle}>Fecha</Text>
+              </TouchableOpacity>
+        
             </View>
           ) : null}
         </Animated.View>

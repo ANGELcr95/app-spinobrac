@@ -1,6 +1,6 @@
 //Dependencies react Natigation && elemets
 import React, { useEffect, useState } from 'react'
-import { FlatList, RefreshControl, Text } from 'react-native'
+import { FlatList, RefreshControl, Text, View } from 'react-native'
 import { useIsFocused } from '@react-navigation/native'
 
 //Redux && context
@@ -13,6 +13,7 @@ import ActivityItem from './ActivityList/ActivityItem'
 //Services
 import { deleteActivity, getActivities } from '../../services/activities'
 import { shortDate } from '../../custom/timeDate'
+import NoFound from '../NoFound'
 
 const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVisibleSnack, setTitle}) => {
 
@@ -77,6 +78,14 @@ const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVis
 
   const renderItem = ({item}) => {
     return <ActivityItem dateShow={dateShow} setVisibleSnack={setVisibleSnack} activity={item} handleDelete={handleDelete} renderActivity={renderActivity} setRenderActivity={setRenderActivity} />
+  }
+  
+  if (activitiesShow && activitiesShow.length == 0) {
+    return (
+      <View>
+        <NoFound/>
+      </View>
+    )
   }
 
   return (

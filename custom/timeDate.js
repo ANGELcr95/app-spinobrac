@@ -3,8 +3,19 @@ export const timeDate = (dat) => {
     let date = new Date();
     let formatted_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     if (dat){
+      let day = dat.getDate()
+      let month = dat.getMonth() + 1
+      
+      if (parseInt(day) < 9){
+        day = "0"+ day
+      }
+
+      if (parseInt(month) < 10){
+        month = "0"+ month
+      }
+        
         date = dat
-        formatted_date = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        formatted_date = date.getFullYear() + "-" + month + "-" + day;
     }
     
     return formatted_date;

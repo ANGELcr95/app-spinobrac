@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
     shadowColor: GLOBALS.COLOR.PRIMARY,
     shadowOffset: {
-      width: 0,
+      width: 1,
       height: 5,
     },
     shadowOpacity: 0.34,

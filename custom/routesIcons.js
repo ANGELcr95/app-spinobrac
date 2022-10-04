@@ -1,8 +1,8 @@
 
 const routesIcons =(focused,route)  =>  {
     switch(route) {
-        case 'Home':
-            return focused ? 'home': 'home-outline';
+        case 'Herramientas':
+            return focused ? 'construct': 'construct-outline';
         case 'RiskScreen':
             return focused ?  'people': 'people-outline';
         case 'Reporte':

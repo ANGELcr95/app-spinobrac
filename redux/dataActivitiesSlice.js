@@ -16,7 +16,6 @@ const dataActivitiesSlice = createSlice({
     },
     setDateShow(state, action) {
       state.dateShow = action.payload
-      
     }
   }
 })

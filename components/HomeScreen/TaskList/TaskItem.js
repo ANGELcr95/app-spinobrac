@@ -93,7 +93,7 @@ const [showAlert, setShowAlert] = useState(false)
 
 const styles = StyleSheet.create({
     itemContainer: {
-        backgroundColor: GLOBALS.COLOR.SECONDARY,
+        backgroundColor: GLOBALS.COLOR_TRANSAPARENT.SECONDARY_MEDIUM,
         padding: 18,
         marginVertical: 2,
         borderRadius: 30,
@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
       marginRight: 10
     },
     itemTitle: {
-        color: '#ffffff'
+        color: GLOBALS.COLOR.WHITE,
+        fontSize: GLOBALS.FONT.MEDIUM
     },
     description: {
         color: 'gray'

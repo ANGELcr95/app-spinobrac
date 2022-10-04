@@ -47,7 +47,7 @@ const ActivityItem = ({
     setShowDate(false)
     
     for (let i = 0; i < dateShow.length; i++) {
-      if (dateShow[i].index == activity.index && activity.index != 0) {  
+      if (dateShow[i].index == activity.index) {  
         setShowDate(true)
         break
       }
@@ -74,7 +74,7 @@ const ActivityItem = ({
       <View
         style={{
           backgroundColor: isSwitchOn
-            ? GLOBALS.COLOR_TRANSAPARENT.THETIARY
+            ? GLOBALS.COLOR_TRANSAPARENT.FOURTH
             : GLOBALS.COLOR_TRANSAPARENT.SECONDARY,
           paddingHorizontal: 12,
           paddingVertical: 5,
@@ -103,7 +103,7 @@ const ActivityItem = ({
             color: GLOBALS.COLOR.SECONDARY,
             fontWeight: GLOBALS.WEIGHT.MEDIUM,
           }}
-          message={`Eliminara actividad asignada a ${activity.user}`}
+          message={`Eliminara actividad asignada a ${activity.operativo}`}
           closeOnTouchOutside={false}
           closeOnHardwareBackPress={false}
           showCancelButton={true}

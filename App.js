@@ -177,9 +177,9 @@ const BottomTabNavigator = () => {
      }
    })}
     >
-     <Tab.Screen name="Home" 
+     <Tab.Screen name="Herramientas" 
       options= {()=> ({
-        title: "Inicio",
+        title: "Herramientas",
         headerShown: false
       })}
      component={HomeScreen} />
@@ -286,7 +286,7 @@ export const DrawerNavigator = () => {
     })}
     drawerContent={(props) => <CustomDrawerContent {...props} />}
     > 
-      <Drawer.Screen name="Home" component={BottomTabNavigator}
+      <Drawer.Screen name="Herramientas" component={BottomTabNavigator}
         options={{
           title: 'Spinobrac',
         }}
@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
     marginLeft: '5%',
     flexDirection: 'column',
-    height:49,
+    height:55,
     marginBottom: 0
   },
   drawerView:{

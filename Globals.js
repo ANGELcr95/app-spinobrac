@@ -20,7 +20,7 @@ export default {
       GREEN_LIGTH:'rgba(0, 179, 71, 0.25)',
       SECONDARY: 'rgba(45, 64, 105, 0.2)',
       SECONDARY_MEDIUM: 'rgba(45, 64, 105, 0.40)',
-      THETIARY: 'rgba(254, 1, 3, 0.15)',
+      FOURTH: 'rgba(254, 1, 3, 0.06)',
     },
     SIZE: {
       EXTRA_SMALL: 18,
