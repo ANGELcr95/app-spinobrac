@@ -4,6 +4,10 @@ import { deleteTask, getTasks } from '../../services/reports'
 
 import TaskItem from './TaskList/TaskItem'
 import { useIsFocused } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
+import { setTask } from '../../redux/dataTasksSlice'
+import { getWorkers } from '../../services/workers'
+import { setWorkers } from '../../redux/dataWorkersSlice'
 
 const TaskList = () => {
 
@@ -11,15 +15,33 @@ const TaskList = () => {
   const [refreshing, setrefreshing] = useState(false)
 
   const isFocused = useIsFocused() // sabe si retorne a la p=agina funciona como true o false
+  const dispatch = useDispatch();
+
+  const loadReports = async () => {
+    const data = await getWorkers();
+    let names = data.map(function (element) {
+      let data = {
+        label: element.name,
+        value: element.name,
+        file: element.file,
+        document_number: element.document_number,
+      };
+      return data;
+    });
+
+    dispatch(setWorkers(names))
+  };
 
   const loadTasks = async () => {
     const data = await getTasks()
     data.reverse()
     !data.status ? setTasks(data) : setTasks([])
+    dispatch(setTask(data))
   }
 
   useEffect(() => {
     loadTasks()
+    loadReports()
   }, [isFocused])
 
   const onRefresh = React.useCallback(async() => { // esto solo es para poder usar aasync y await con ese mtodo nativo 

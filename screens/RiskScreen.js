@@ -7,6 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Entypo } from '@expo/vector-icons';
 import GlOBALS from '../Globals'
 import useUpContext from '../context/useUpContext'
+import { Ionicons } from '@expo/vector-icons'; 
 
 const RiskScreen = () => {
 
@@ -18,6 +19,14 @@ const RiskScreen = () => {
     
     <Layout>
       <View style={styles.container}>
+      <TouchableOpacity
+          style={styles.buttonReport}
+          onPress={()=>{
+            navigation.navigate('Indicadores')
+          }}
+        >
+          <Ionicons name="md-bar-chart" size={GlOBALS.SIZE.SMALL} color={GlOBALS.COLOR.ICONS} />
+        </TouchableOpacity>
         <View style={styles.containerHeader}>
           <Text style={styles.header}>Lista Reportes</Text>
         </View>
@@ -51,7 +60,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'relative',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignItems: 'center',
     width:'100%',
     height: 30,

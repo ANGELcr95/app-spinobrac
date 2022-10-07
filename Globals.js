@@ -1,5 +1,5 @@
 export default {
-    API: 'http://192.168.10.17:3000',
+    API: 'http://192.168.10.13:3000',
     COLOR: {
       PRIMARY: '#d40b11',
       SECONDARY: '#000000',
@@ -14,6 +14,8 @@ export default {
       ICON_DELETE:'#ff5232',
       WHITE: '#ffffff',
       BLACK: '#000000',
+      BLUE:'#176079',
+      GREY:'#cdcdcd'
     },
     COLOR_TRANSAPARENT: {
       THETIARY:'rgba(250, 250, 250, 0.98)',
@@ -21,6 +23,8 @@ export default {
       SECONDARY: 'rgba(45, 64, 105, 0.2)',
       SECONDARY_MEDIUM: 'rgba(45, 64, 105, 0.40)',
       FOURTH: 'rgba(254, 1, 3, 0.06)',
+      FIFTH: 'rgba(11, 45, 57, 0.9)',
+      SIXTH:'rgba(220, 220, 220, 0.6)',
     },
     SIZE: {
       EXTRA_SMALL: 18,

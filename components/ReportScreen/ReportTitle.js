@@ -11,8 +11,8 @@ const ReportTitle = () => {
   return (
     <View style={styles.cotainer}>
       <View style={styles.options}>
-        <ReportOption  title="Reportar" colores={!context.routedId ? GLOBALS.COLOR.RED : null}/>
-        { context.routedId  || context.option ? <ReportOption title="Actualizar" colores={context.routedId ? GLOBALS.COLOR.FOURTH :null}  />: null}
+        <ReportOption  title="Reportar" colores={!context.routedId ? GLOBALS.COLOR.WHITE : null}/>
+        { context.routedId  || context.option ? <ReportOption title="Actualizar" colores={context.routedId ? GLOBALS.COLOR.WHITE :null}  />: null}
       </View>
       <ReporForm />
     </View>
@@ -26,15 +26,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '90%',
     marginLeft: '5%',
-    shadowColor: GLOBALS.COLOR.PRIMARY,
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
-    top: 85,
+    top: 70,
     paddingTop: 5,
     borderRadius: 25,
   },

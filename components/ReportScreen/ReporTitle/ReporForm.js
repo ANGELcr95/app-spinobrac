@@ -12,23 +12,58 @@ import { useIsFocused, useNavigation } from '@react-navigation/native';
 import useUpContext from '../../../context/useUpContext';
 import { timeDate } from '../../../custom/timeDate';
 import { getWorkers } from '../../../services/workers';
+import { useSelector } from 'react-redux';
 const ReporForm = () => {
   const [task, setTask] = useState({
     title: '',
     description: '',
     date: '',
     file: '',
-    document_number: ''
+    document_number: '',
+    administrativo: '',
+    document_admin: '',
+    type_risk: '',
   });
-  const [workers, setWorkers] = useState([]);
+  const { workers } = useSelector((state) => state.workers);
   const isFocused = useIsFocused(); // sabe si retorne a la pagina funciona como true o false
-  const [disabled, setdisabled] = useState(true)
+  const [disabled, setdisabled] = useState(true);
 
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
 
+  const [valueType, setValueType] = useState(null);
+  const [isFocusType, setIsFocusType] = useState(false);
+
   const navigation = useNavigation();
   const context = useUpContext();
+
+  
+  const [risks]= useState([
+    {
+      label:'Biologico',
+      value:'Biologico'
+    }, 
+    {
+      label: 'Fisico',
+      value: 'Fisico'
+    }, 
+    {
+      label: 'Ergonomico',
+      value: 'Ergonomico'
+    }, 
+    {
+      label: 'Psicologico',
+      value: 'Psicologico'
+    }, 
+    {
+      label: 'Mecanico',
+      value: 'Mecanico'
+    }, 
+    {
+      label: 'Ambiental',
+      value: 'Ambiental'
+    }
+  ])
 
   const renderLabel = () => {
     if (value || isFocus) {
@@ -41,20 +76,15 @@ const ReporForm = () => {
     return null;
   };
 
-  const loadReports = async () => {
-      const data = await getWorkers();
-      let names = data.map(function (element) {
-        let data = {
-          label: element.name,
-          value: element.name,
-          file:element.file,
-          document_number: element.document_number,
-        };
-        return data;
-      });
-
-      setWorkers(names);
-   
+  const renderLabelRisk = () => {
+    if (isFocusType || valueType) {
+      return (
+        <Text style={[styles.label, isFocusType && { color: GLOBALS.COLOR.ICONS }]}>
+          Tipo Riesgo
+        </Text>
+      );
+    }
+    return null;
   };
 
   // const dispatch = useDispatch();
@@ -63,8 +93,8 @@ const ReporForm = () => {
   const handleChange = (name, value) => setTask({ ...task, [name]: value });
 
   useEffect(() => {
-    task.title && task.description ? setdisabled(false) : setdisabled(true)
-  }, [task])
+    task.title && task.description && task.type_risk? setdisabled(false) : setdisabled(true);
+  }, [task]);
 
   const handleSubmit = async () => {
     if (context.routedId) {
@@ -75,55 +105,75 @@ const ReporForm = () => {
         title: '',
         description: '',
         date: '',
-        file:'',
-        document_number:''
+        file: '',
+        document_number: '',
+        administrativo: '',
+        document_admin: '',
+        type_risk: '',
       });
       context.upRoutedId(null);
     } else {
-       const response =   await saveTask({
+      const response = await saveTask({
         title: task.title,
         description: task.description,
         date: timeDate(),
         file: task.file,
-        document_number: task.document_number
+        document_number: task.document_number,
+        administrativo: context.user.name,
+        document_admin: context.user.dni,
+        type_risk: task.type_risk, 
       });
       if (response.status === 200) {
-          setTask({
-            title: '',
-            description: '',
-            date: '',
-            file:'',
-            document_number:''
-          });
-        }
+        setTask({
+          title: '',
+          description: '',
+          date: '',
+          file: '',
+          document_number: '',
+          administrativo: '',
+          document_admin: '',
+          type_risk: '',
+        });
       }
-      navigation.navigate('RiskScreen');
+    }
+    navigation.navigate('RiskScreen');
   };
   useEffect(() => {
-    loadReports();
-    setTask({ title: '',
+    setTask({
+      title: '',
       description: '',
       date: '',
-      file:'',
-      document_number:''
+      file: '',
+      document_number: '',
+      administrativo: '',
+      document_admin: '',
+      type_risk: '',
     });
     if (context.routedId) {
       navigation.setOptions({ headerTitle: 'Actualizar reporte' });
       (async () => {
         const task = await getTask(context.routedId);
-        !task.status ?  setTask({
-          title: task.title,
-          description: task.description,
-          date: task.date,
-          file:task.file,
-          document_number:task.document_number,
-        }) : setTask({
-          title: '',
-          description: '',
-          date: '',
-          file:'',
-          document_number:''
-        });
+        !task.status
+          ? setTask({
+              title: task.title,
+              description: task.description,
+              date: task.date,
+              file: task.file,
+              document_number: task.document_number,
+              administrativo: context.user.name,
+              document_admin: context.user.dni,
+              type_risk: task.type_risk,
+            })
+          : setTask({
+              title: '',
+              description: '',
+              date: '',
+              file: '',
+              document_number: '',
+              administrativo: '',
+              document_admin: '',
+              type_risk: '',
+            });
       })();
     }
   }, [context.routedId, isFocused]);
@@ -131,96 +181,134 @@ const ReporForm = () => {
   return (
     <View style={styles.cotainer}>
       <View style={styles.containerBox}>
-        <View style={{
-          width: '10%',
-          height:30,
-          backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
-          borderTopLeftRadius: 25,
-          borderTopRightRadius: context.routedId || context.option ? 10 :0,
-        }}>      
-        </View>
-        <View style={{
-          width: '30%',
-          height:30,
-          backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
-      
-        }}>      
-        </View>
-        <View style={{
-              width:'20%',
-              height:30,
-              backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
-        }}>      
-        </View>
-        <View style={{
-          width: '30%',
-          height:30,
-          backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
-        }}>      
-        </View>
-        <View style={{
-          width:'10%',
-          height:30,
-          backgroundColor:GLOBALS.COLOR_TRANSAPARENT.THETIARY,
-          borderTopRightRadius: 25,
-          borderTopLeftRadius: context.routedId || context.option ? 10 :0,
-        }}>      
-        </View>
-      </View>
-
-      {context.routedId &&  task.title? (
-           <TextInput
-           style={styles.input}
-           mode="outlined"
-           editable={false}
-           label="Empleado"
-           value={task.title}
-           outlineColor={GLOBALS.COLOR.SECONDARY}
-           theme={{ colors: { primary: GLOBALS.COLOR.ICONS } }}
-         />
-       
-      ) : (
-        <View style={styles.cotainerDropDown}>
-        {renderLabel()}
-        <Dropdown
-          style={[
-            styles.dropdown,
-            isFocus && { 
-              borderColor: GLOBALS.COLOR.ICONS,
-              borderWidth: 2
-            },
-          ]}
-          placeholderStyle={styles.placeholderStyle}
-          selectedTextStyle={styles.selectedTextStyle}
-          inputSearchStyle={styles.inputSearchStyle}
-          iconStyle={styles.iconStyle}
-          data={workers}
-          search
-          maxHeight={300}
-          labelField="label"
-          valueField="value"
-          placeholder={!isFocus ? 'Selecionar Empleado' : '...'}
-          searchPlaceholder="Buscar..."
-          value={task.title}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
-          onChange={(item) => {
-
-            setTask({ ...task, 
-              ['title']: item.value,
-              ['file']: item.file,
-              ['document_number']: item.document_number,
-            });
-
-            setIsFocus(false);
-            setValue(null);
+        <View
+          style={{
+            width: '10%',
+            height: 30,
+            backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: context.routedId || context.option ? 10 : 0,
           }}
-        />
+        ></View>
+        <View
+          style={{
+            width: '30%',
+            height: 30,
+            backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+          }}
+        ></View>
+        <View
+          style={{
+            width: '20%',
+            height: 30,
+            backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+            borderTopRightRadius: 10,
+            borderTopLeftRadius: 10,
+          }}
+        ></View>
+        <View
+          style={{
+            width: '30%',
+            height: 30,
+            backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+          }}
+        ></View>
+        <View
+          style={{
+            width: '10%',
+            height: 30,
+            backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+            borderTopRightRadius: 25,
+            borderTopLeftRadius: context.routedId || context.option ? 10 : 0,
+          }}
+        ></View>
       </View>
-     
+
+      {context.routedId && task.title ? (
+        <TextInput
+          style={styles.input}
+          mode="outlined"
+          editable={false}
+          label="Empleado"
+          value={task.title}
+          outlineColor={GLOBALS.COLOR.SECONDARY}
+          theme={{ colors: { primary: GLOBALS.COLOR.ICONS } }}
+        />
+      ) : (
+        <>
+          <View style={styles.cotainerDropDown}>
+            {renderLabel()}
+            <Dropdown
+              style={[
+                styles.dropdown,
+                isFocus && {
+                  borderColor: GLOBALS.COLOR.ICONS,
+                  borderWidth: 2,
+                },
+              ]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={workers}
+              search
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus ? 'Selecionar Empleado' : '...'}
+              searchPlaceholder="Buscar..."
+              value={task.title}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
+              onChange={(item) => {
+                setTask({
+                  ...task,
+                  ['title']: item.value,
+                  ['file']: item.file,
+                  ['document_number']: item.document_number,
+                });
+
+                setIsFocus(false);
+                setValue(null);
+              }}
+            />
+          </View>
+      
+        </>
       )}
+          <View style={styles.cotainerDropDown}>
+            {renderLabelRisk()}
+            <Dropdown
+              style={[
+                styles.dropdown,
+                isFocusType && {
+                  borderColor: GLOBALS.COLOR.ICONS,
+                  borderWidth: 2,
+                },
+              ]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={risks}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocusType ? task.type_risk ? task.type_risk : 'Tipo de Riesgo' : '...'}
+              value={task.type_risk}
+              onFocus={() => setIsFocusType(true)}
+              onBlur={() => setIsFocusType(false)}
+              onChange={(item) => {
+                setTask({
+                  ...task,
+                  ['type_risk']: item.value,
+                });
+
+                setIsFocusType(false);
+                setValueType(null);
+              }}
+            />
+          </View>
       <TextInput
         style={styles.input}
         mode="outlined"
@@ -230,59 +318,57 @@ const ReporForm = () => {
         outlineColor={GLOBALS.COLOR.SECONDARY}
         theme={{ colors: { primary: GLOBALS.COLOR.ICONS } }}
       />
-      {context.routedId && task.title? (
-        <View style={{
-          width: '100%',
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-        }}>
-        <Button
-         disabled={disabled}
-          mode="contained-tonal"
-          onPress={handleSubmit}
-          buttonColor={GLOBALS.COLOR.FOURTH}
-          textColor={GLOBALS.COLOR.WHITE}
+      {context.routedId && task.title ? (
+        <View
           style={{
-            marginTop: 13,
-            marginBottom: 7,
+            width: '100%',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
           }}
         >
-          <Text style={styles.buttonText}>Actualizar</Text>
-        </Button>
-            <Button
+          <Button
             mode="contained-tonal"
             onPress={() => {
-              context.upRoutedId(null)
-              context.upOption(null)
+              context.upRoutedId(null);
+              context.upOption(null);
             }}
             buttonColor={GLOBALS.COLOR.ICONSDOWN}
             textColor={GLOBALS.COLOR.WHITE}
             style={{
-              marginTop: 13,
               marginBottom: 7,
             }}
           >
             <Text style={styles.buttonText}>Cancelar</Text>
           </Button>
-          </View>
+          <Button
+            disabled={disabled}
+            mode="contained-tonal"
+            onPress={handleSubmit}
+            buttonColor={GLOBALS.COLOR.BLUE}
+            textColor={GLOBALS.COLOR.WHITE}
+            style={{
+              marginBottom: 7,
+            }}
+          >
+            <Text style={styles.buttonText}>Actualizar</Text>
+          </Button>
+        </View>
       ) : (
         <Button
           disabled={disabled}
           mode="contained-tonal"
-          onPress={()=>{
-            handleSubmit()
-            context.upOption(null)
+          onPress={() => {
+            handleSubmit();
+            context.upOption(null);
           }}
           buttonColor={GLOBALS.COLOR.RED}
           textColor={GLOBALS.COLOR.WHITE}
           style={{
-            marginTop: 13,
             marginBottom: 7,
           }}
         >
           Reportar
         </Button>
-        
       )}
     </View>
   );
@@ -295,14 +381,15 @@ const styles = StyleSheet.create({
     marginTop: -20,
     width: '89%',
     backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
-    shadowColor: GLOBALS.COLOR.PRIMARY,
+    shadowColor: GLOBALS.COLOR.BLACK,
     shadowOffset: {
-      width: 1,
-      height: 5,
+      width: 0,
+      height: 8,
     },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-    elevation: 10,
+    shadowOpacity: 0.46,
+    shadowRadius: 11.14,
+    
+    elevation: 17,
     paddingTop: 25,
     borderRadius: 25,
   },
@@ -316,7 +403,8 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '80%',
-    marginTop: 10,
+    marginTop: 2,
+    marginBottom: 7,
   },
   buttonSave: {
     padding: 10,
@@ -337,6 +425,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
+    marginBottom: 10
   },
 
   dropdown: {

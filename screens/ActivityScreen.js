@@ -420,6 +420,27 @@ export const ActivityScreen = () => {
                 />
                 <Text style={styles.meniTitle}>Fecha</Text>
               </TouchableOpacity>
+
+              <TouchableOpacity
+                mode="contained-tonal"
+                onPress={() => {
+                  showDatePicker()
+                  setFirstTouch(true);
+                  setShowMenu(!showMenu);
+                  startImageRotateFunction();
+                  showBoxFunction();
+                }}
+                activeOpacity={0.9}
+                style={styles.boxTitle}
+              >
+                <MaterialCommunityIcons
+                  style={styles.menuIcon}
+                  name="calendar"
+                  size={GLOBALS.SIZE.BIG}
+                  color={GLOBALS.COLOR.WHITE}
+                />
+                <Text style={styles.meniTitle}>Fecha</Text>
+              </TouchableOpacity>
         
             </View>
           ) : null}

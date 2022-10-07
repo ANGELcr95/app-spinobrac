@@ -14,6 +14,7 @@ import ReportScreen from './screens/ReportScreen'
 import WorkerScreen from './screens/WorkerScreen';
 import ActivityScreen  from './screens/ActivityScreen';
 import UpWorkerUpSreeen from './screens/UpWorkerUpSreeen';
+import StatisticsScreen from './screens/StatisticsScreen';
 
 //Styles Icons
 import routesIcons from './custom/routesIcons';
@@ -87,6 +88,21 @@ function StackReportScreen() {
   );
 }
 
+function StackActivityScreen() {
+  return (
+    <Stack.Navigator>
+        <Stack.Screen
+          name="Todo"
+          component={ActivityScreen}
+          options= {()=> ({
+            title: "Actividades",
+            headerShown: false
+          })}
+        />
+      </Stack.Navigator>
+  );
+}
+
 function StackRiskScreen() {
   return (
     <Stack.Navigator>
@@ -137,6 +153,25 @@ function StackWorkerScreen() {
   );
 }
 
+function StackStaticsScreen() {
+  return (
+    <Stack.Navigator>
+        <Stack.Screen
+          name="Indicadores"
+          component={StatisticsScreen}
+          options= {()=> ({
+            title: "Indicadores",
+            headerShown: false,
+            headerStyle: { backgroundColor: GLOBALS.COLOR.PRIMARY},
+            headerTitleStyle: { color: '#fff'},
+            headerTintColor: '#fff',
+          })}
+        />
+      </Stack.Navigator>
+  );
+}
+
+
 function StackUpWorkerScreen() {
   return (
     <Stack.Navigator>
@@ -177,14 +212,14 @@ const BottomTabNavigator = () => {
      }
    })}
     >
-     <Tab.Screen name="Herramientas" 
+     <Tab.Screen name="Tools" 
       options= {()=> ({
         title: "Herramientas",
         headerShown: false
       })}
      component={HomeScreen} />
      <Tab.Screen name="Todo" 
-     component={ActivityScreen}
+     component={StackActivityScreen}
       options= {()=> ({
         title: "Actividades",
         headerShown: false
@@ -286,15 +321,14 @@ export const DrawerNavigator = () => {
     })}
     drawerContent={(props) => <CustomDrawerContent {...props} />}
     > 
-      <Drawer.Screen name="Herramientas" component={BottomTabNavigator}
+      <Drawer.Screen name="Tools" component={BottomTabNavigator}
         options={{
           title: 'Spinobrac',
         }}
       />
-      <Drawer.Screen name="Reporte" component={StackReportScreen}
+      <Drawer.Screen name="Todo" component={StackActivityScreen}
         options={{
-          title: 'Reporte',
-          headerShown: false
+          title: 'Actividades',
         }}
       />
       <Drawer.Screen name="RiskScreen" component={StackRiskScreen}
@@ -309,6 +343,16 @@ export const DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen name="Datos Empleado" component={StackUpWorkerScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Drawer.Screen name="Reporte" component={StackReportScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+      <Drawer.Screen name="Indicadores" component={StackStaticsScreen}
         options={{
           headerShown: false
         }}

@@ -19,14 +19,14 @@ const WorkerScreen = ({ route }) => {
         { context.user.role == 'Root'? <WorkerForm setNewUser={setNewUser} newUser={newUser}/> : null}
         { context.user.role == 'Root'? null: 
           <View style={ styles.containerIcon}>
-            <MaterialCommunityIcons name="file-edit" size={90} color={GLOBALS.COLOR.WHITE} />
+            <MaterialCommunityIcons name="file-edit" size={60} color={GLOBALS.COLOR.WHITE} />
           </View>
         }
         <View style={{
-          top:context.user.role == 'Root' ? 135 : 0,
+          top:context.user.role == 'Root' ? 180 :10,
           zIndex: 1,
           paddingHorizontal: '1%',
-          height:context.user.role == 'Root' ? '60%' : '78%' 
+          height:context.user.role == 'Root' ? '60%' : '82%' 
         }}>
         <WorkList newUser={newUser} user={context.user.role}/>
       </View>

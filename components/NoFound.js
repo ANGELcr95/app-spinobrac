@@ -3,13 +3,13 @@ import React from "react";
 import {Text ,View , Image , StyleSheet} from 'react-native' ;
 import GLOBALS from '../Globals'
   
-const NoFound = () => {
+const NoFound = ({w=350, h=150}) => {
     return (
         <View style={Styles.container}>
           <Text style={Styles.containerText}>!Oppss</Text>
-          <Text style={Styles.containerSub}>no hay informacion...</Text>
+          <Text style={Styles.containerSub}>no hay registros...</Text>
           <Image
-            style ={{width: "100%", height:"70%"}}
+            style ={{width:w, height:h}}
             source={require('../assets/gift/404.gif') }
           />
         </View>
@@ -21,6 +21,7 @@ const Styles = StyleSheet.create({
       alignContent:'center',
       justifyContent:'center',
       flexDirection:'column',
+      height :'100%',
     },
     containerText: {
       textAlign:'center',

@@ -33,7 +33,7 @@ const [showAlert, setShowAlert] = useState(false)
   
 
   return (
-    <View style={styles.itemContainer}>
+    <View style={styles.container}>
         <AwesomeAlert
           show={showAlert}
           // showProgress={false}
@@ -59,65 +59,122 @@ const [showAlert, setShowAlert] = useState(false)
             setShowAlert(false)
           }}
         />
-      <TouchableOpacity
-      style={styles.itemContainerData}
-      onPress={()=>{
-        navigation.navigate('Reporte', {id: task.id})
-        dispatch(toggleRouteId(task.id))
-        context.upRoutedId(task.id)
-
-      }}
-      >
-        <View  style={styles.itemContainerImage} >
-          {task.file ? <Avatar.Image source={{ uri: task.file }} size={50} /> : <Avatar.Image size={50} source={require('../../../assets/img/worker.png')}/>}
+      <View style={styles.containerTitle}>
+        <Text style={styles.containerLabel}>Reportado por:</Text>
+        <Text style={styles.containerName}>{task.administrativo}</Text>
+      </View>
+      <View style={styles.itemContainer}>
+        <View style={styles.itemContainerData}>
+          <View  style={styles.itemContainerImage} >
+            {task.file ? <Avatar.Image source={{ uri: task.file }} size={50} /> : <Avatar.Image size={50} source={require('../../../assets/img/worker.png')}/>}
+          </View>
+          <View>
+            <Text style={styles.itemTitle}>{task.title}</Text>
+            <Text style={styles.date}>{date}</Text>
+            <Text style={styles.description}>{task.description}</Text>
+            {task.document_admin == context.user.dni ?
+            <TouchableOpacity
+              style={styles.updateBtn}
+              onPress={()=>{
+                navigation.navigate('Reporte', {id: task.id})
+                dispatch(toggleRouteId(task.id))
+                context.upRoutedId(task.id)
+              }}
+            >
+              <Text style={styles.updateBtnText}>Actualizar</Text>
+            </TouchableOpacity> : null
+            }
+          </View>
         </View>
-        <View>
-          <Text style={styles.itemTitle}>👷{task.title}</Text>
-          <Text style={styles.description}>{task.description}</Text>
-          <Text style={styles.date}>{date}</Text>
-        </View>
-      </TouchableOpacity>
-
-      <TouchableOpacity 
-        onPress={()=> {
-         
-          setShowAlert(true);
-        }}
-        >
-         <AntDesign name="delete" size={GLOBALS.SIZE.MEDIUM} color={GLOBALS.COLOR.ICON_DELETE} />
-      </TouchableOpacity>
+        {task.document_admin == context.user.dni ?
+          <TouchableOpacity 
+            onPress={()=> {
+            
+              setShowAlert(true);
+            }}
+            >
+            <AntDesign name="delete" size={GLOBALS.SIZE.MEDIUM} color={GLOBALS.COLOR.ICON_DELETE} />
+          </TouchableOpacity>: null
+        }
+      </View>
     
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+    container: {
+      backgroundColor: GLOBALS.COLOR_TRANSAPARENT.THETIARY,
+      padding: 18,
+      borderRadius: 20,
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      shadowColor: GLOBALS.COLOR.SECONDARY,
+      shadowOffset: {
+        width: 0,
+        height: 12,
+      },
+      shadowOpacity: 0.58,
+      shadowRadius: 16.00,
+      
+      elevation: 20,
+      marginHorizontal: 10,
+      marginVertical: 7,
+    },
+    updateBtn:{
+      backgroundColor: GLOBALS.COLOR_TRANSAPARENT.FIFTH,
+      width: 75,
+      textAlign: 'center',
+      marginVertical: 10,
+      paddingVertical:4,
+      borderRadius: 20,
+    },
+    updateBtnText:{
+      textAlign: 'center',
+      color:GLOBALS.COLOR.WHITE,
+      fontSize:GLOBALS.FONT.SMALL, 
+    },
+    containerLabel:{
+      color: GLOBALS.COLOR_TRANSAPARENT.SECONDARY_MEDIUM,
+      fontSize: GLOBALS.FONT.SMALL
+    },
+    containerName:{
+      fontSize: GLOBALS.FONT.MEDIUM,
+      fontWeight: GLOBALS.WEIGHT.SMALL,
+    },
+    containerTitle: {
+      marginBottom: 10,
+      paddingBottom: 10,
+      borderBottomColor: GLOBALS.COLOR_TRANSAPARENT.SECONDARY,
+      width: '100%',
+      borderBottomWidth: 1
+    },
     itemContainer: {
-        backgroundColor: GLOBALS.COLOR_TRANSAPARENT.SECONDARY_MEDIUM,
-        padding: 18,
-        marginVertical: 2,
-        borderRadius: 30,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      width: '100%',
+
     },
     itemContainerData: {
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       width:'70%',
     },
     itemContainerImage: {
       marginRight: 10
     },
     itemTitle: {
-        color: GLOBALS.COLOR.WHITE,
-        fontSize: GLOBALS.FONT.MEDIUM
+        color: GLOBALS.COLOR.BLACK,
+        fontSize: GLOBALS.FONT.MEDIUM,
+        fontWeight: GLOBALS.WEIGHT.MEDIUM,
     },
     description: {
         color: 'gray'
     },
     date: {
-      color: GLOBALS.COLOR.ICONS,
+      color: GLOBALS.COLOR.PRIMARY,
       fontStyle: 'italic',
       fontSize: GLOBALS.FONT.EXTRA_SMALL
     }, 
