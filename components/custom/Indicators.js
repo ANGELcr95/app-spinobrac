@@ -1,9 +1,18 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import GLOBALS from '../../Globals';
 
-const Indicators = ({ title, porcent, color, number }) => {
+const Indicators = ({ title, porcent, color, number , setRiskModal, showDataModal }) => {
   return (
+    
+    <TouchableOpacity
+    onPress={()=>{
+      if (!setRiskModal) return 
+      setRiskModal(title)
+      showDataModal()
+    }}
+    activeOpacity={setRiskModal ? 0.97: 1}
+  >
     <View
       style={{
         position: 'relative',
@@ -165,6 +174,7 @@ const Indicators = ({ title, porcent, color, number }) => {
         </View>
       </View>
     </View>
+    </TouchableOpacity>
   );
 };
 

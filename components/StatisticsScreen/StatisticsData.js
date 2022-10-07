@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, FlatList } from 'react-native';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import GLOBALS from '../../Globals';
@@ -7,9 +7,12 @@ import { useEffect } from 'react';
 import Indicators from '../custom/Indicators';
 import DropDownCustom from '../custom/DropDownCustom';
 
+import { Modal} from 'react-native-paper';
+
 import { AntDesign } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import NoFound from '../NoFound';
+import StaticsTaskModal from './StaticsScreen/StaticsTaskModal';
 
 const StatisticsData = () => {
   const { tasks } = useSelector((state) => state.tasks);
@@ -20,9 +23,14 @@ const StatisticsData = () => {
     name: ''
   });
   const [number, setnumber] = useState();
+  const [visible, setVisible] = useState(false);
+
   const [riskList, setRiskList] = useState([]);
   const [indicators, setIndicators] = useState([]);
   const [indicatorPerson, setIndicatorsPerson] = useState([]);
+  const [dataPersonRisk, setDataPersonRisk] = useState([]);
+  const [filterRisk, setFilterRisk] = useState([]);
+  const [riskModal, setRiskModal] = useState('');
 
   const porcentFunc = () => {
     let riskPorcent = riskList.map((risk) => {
@@ -60,6 +68,8 @@ const StatisticsData = () => {
         }
       }
 
+      setDataPersonRisk(riskPerson)
+
       let riskPorcent = riskList.map((risk) => {
         let porcent = 0;
         let number;
@@ -90,6 +100,29 @@ const StatisticsData = () => {
     renderReportPerson();
   }, [worker]);
 
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
+  const showDataModal = () => {
+    if (!riskModal) return
+  
+    showModal();
+    let riskFilterPerson = dataPersonRisk.filter((report)=> report.type_risk === riskModal) 
+    setFilterRisk(riskFilterPerson)
+
+  }
+
+  const renderItem = ({item}) => {
+    return <StaticsTaskModal task={item} />
+  }
+
+  useEffect(() => {
+    showDataModal();
+  }, [riskModal]);
+
+  
+
   const indicatorsRender = indicators.map((indicator) => (
     <Indicators
       title={indicator.risk}
@@ -105,13 +138,22 @@ const StatisticsData = () => {
       porcent={indicator.porcent}
       number={indicator.number}
       color={GLOBALS.COLOR.PRIMARY}
+      setRiskModal={setRiskModal}
+      showDataModal={showDataModal}
     />
   ));
 
   const [value, setValue] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
+  const containerStyle = {
+    width: '100%',
+    marginTop: '5%',
+  };
 
   return (
+    <>
+       
+  
     <View
       style={{
         width: '100%',
@@ -192,6 +234,19 @@ const StatisticsData = () => {
     
       </View>
     </View>
+    <Modal
+         contentContainerStyle={containerStyle}
+          visible={visible}
+          onDismiss={hideModal}
+        >
+      <FlatList
+          style={{ width: '100%' }}
+          data={filterRisk}
+          keyExtractor={(item) => `${item.id} `}
+          renderItem={renderItem}
+      />
+        </Modal>
+    </>
   );
 };
 

@@ -1,32 +1,16 @@
 //Dependencies react Natigation && elemets
 import React, { useEffect, useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity} from 'react-native'
-import { useNavigation } from '@react-navigation/native'
-
-//Redux && context
-import { useDispatch } from 'react-redux'
-import { toggleRouteId } from '../../../redux/routeSlice'
-import useUpContext from '../../../context/useUpContext'
+import { View, Text, StyleSheet } from 'react-native'
 
 //Styles Icons
-import { AntDesign } from '@expo/vector-icons'; 
-import GLOBALS from '../../../Globals'
-import { shortDate } from '../../../custom/timeDate'
+import GLOBALS from '../../../Globals';
+import { shortDate } from '../../../custom/timeDate';
 import { Avatar } from 'react-native-paper';
 
 
-import AwesomeAlert from 'react-native-awesome-alerts';
-import TaskList from '../TaskList'
-
-
 // se crea componente exclusivamente para poder configurar estilos
-const TaskItem = ({task, handleDelete}) => {
+const StaticsTaskModal = ({task}) => {
 const [date, setdate] = useState(null)
-const [showAlert, setShowAlert] = useState(false)
-
-  const context = useUpContext()
-  const navigation = useNavigation()
-  const dispatch = useDispatch();
 
   useEffect(() => {
     setdate(shortDate(task.date))
@@ -35,31 +19,6 @@ const [showAlert, setShowAlert] = useState(false)
 
   return (
     <View style={styles.container}>
-        <AwesomeAlert
-          show={showAlert}
-          // showProgress={false}
-          title="Eliminar"
-          titleStyle={{fontSize:36,marginBottom:10}}
-          messageStyle={{fontSize:16,marginBottom:10,textAlign:'center', color:GLOBALS.COLOR.SECONDARY, fontWeight:GLOBALS.WEIGHT.MEDIUM}}
-          message= {`Eliminara reporte (${task.description}) de ${task.title}`}
-          closeOnTouchOutside={false}
-          closeOnHardwareBackPress={false}
-          showCancelButton={true}
-          showConfirmButton={true}
-          cancelText="Cancelar"
-          confirmText="Eliminar"
-          cancelButtonStyle={{width:100,alignItems:'center'}}
-          confirmButtonStyle={{width:100,alignItems:'center'}}
-          confirmButtonColor={GLOBALS.COLOR.RED}
-          cancelButtonColor={GLOBALS.COLOR.ICONSDOWN}
-          onCancelPressed={() => {
-            setShowAlert(false)
-          }}
-          onConfirmPressed={() => {
-            handleDelete(task.id)
-            setShowAlert(false)
-          }}
-        />
       <View style={styles.containerTitle}>
         <View style={styles.containerTittles}>
           <Text style={styles.containerLabel}>Reportado por:</Text>
@@ -76,30 +35,8 @@ const [showAlert, setShowAlert] = useState(false)
             <Text style={styles.itemTitle}>{task.title}</Text>
             <Text style={styles.date}>{date}</Text>
             <Text style={styles.description}>{task.description}</Text>
-            {task.document_admin == context.user.dni ?
-            <TouchableOpacity
-              style={styles.updateBtn}
-              onPress={()=>{
-                navigation.navigate('Reporte', {id: task.id})
-                dispatch(toggleRouteId(task.id))
-                context.upRoutedId(task.id)
-              }}
-            >
-              <Text style={styles.updateBtnText}>Actualizar</Text>
-            </TouchableOpacity> : null
-            }
           </View>
         </View>
-        {task.document_admin == context.user.dni ?
-          <TouchableOpacity 
-            onPress={()=> {
-            
-              setShowAlert(true);
-            }}
-            >
-            <AntDesign name="delete" size={GLOBALS.SIZE.MEDIUM} color={GLOBALS.COLOR.ICON_DELETE} />
-          </TouchableOpacity>: null
-        }
       </View>
     
     </View>
@@ -196,4 +133,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default TaskItem
+export default StaticsTaskModal
