@@ -19,6 +19,9 @@ npx expo install expo-image-picker (para tomar imagenes)
 
 npm install @react-navigation/native-stack (para poder crear rutas)
 npm install @react-navigation/drawer (drawer left)
+npm install  expo-file-system
+npm install  expo-sharing
+npm install  exceljs
 
 @reduxjs/toolkit
 ### Development

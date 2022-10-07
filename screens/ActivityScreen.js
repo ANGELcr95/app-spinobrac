@@ -5,8 +5,21 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Animated
+  Animated,
+  PermissionsAndroid
 } from 'react-native';
+
+
+// Required to save to cache 
+import * as FileSystem from 'expo-file-system';
+// ExcelJS
+import ExcelJS from 'exceljs';
+// Share excel via share dialog
+import * as Sharing from 'expo-sharing';
+// From @types/node/buffer
+import { Buffer as NodeBuffer } from 'buffer';
+
+
 
 //Components
 import LayoutTertiary from '../components/Layouts/LayoutTertiary';
@@ -241,6 +254,96 @@ export const ActivityScreen = () => {
     hideDatePicker();
   };
 
+  const generateShareableExcel  = async () => {
+    const now = new Date();
+    const fileName = 'Actividades.xlsx';
+    const fileUri = FileSystem.cacheDirectory + fileName;
+    return new Promise((resolve, reject) => {
+      const workbook = new ExcelJS.Workbook();
+      workbook.creator = 'Me';
+      workbook.created = now;
+      workbook.modified = now;
+      // Add a sheet to work on
+      const worksheet = workbook.addWorksheet('My Sheet');
+      // Just some columns as used on ExcelJS Readme
+      let newArray = [];
+      for (let i = 0; i < activities.length; i++) {
+        let dataRow = Object.values(activities[i])
+        dataRow[3] = shortDate(dataRow[3])
+        dataRow[9]= dataRow[9].data[0]
+        dataRow.pop()
+        newArray.push(dataRow)
+      }
+      worksheet.insertRows(1, newArray)
+      // Write to file
+      workbook.xlsx.writeBuffer().then((buffer= ExcelJS.Buffer) => {
+        // Do this to use base64 encoding
+        const nodeBuffer = NodeBuffer.from(buffer);
+        const bufferStr = nodeBuffer.toString('base64');
+        FileSystem.writeAsStringAsync(fileUri, bufferStr, {
+          encoding: FileSystem.EncodingType.Base64
+        }).then(() => {
+          resolve(fileUri);
+        });
+      });
+    });
+
+  }
+
+
+  const shareExcel = async () => {
+    const shareableExcelUri = await generateShareableExcel();
+    Sharing.shareAsync(shareableExcelUri, {
+      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Android
+      dialogTitle: 'Your dialog title here', // Android and Web
+      UTI: 'com.microsoft.excel.xlsx' // iOS
+    }).catch(error => {
+      console.error('Error', error);
+    }).then(() => {
+      console.log('Return from sharing dialog');
+    });
+  }
+
+  const handleClick = async () => {
+
+    try{
+      // Check for Permission (check if permission is already given or not)
+      let isPermitedExternalStorage = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+
+      if(!isPermitedExternalStorage){
+
+        // Ask for permission
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: "Storage permission needed",
+            buttonNeutral: "Ask Me Later",
+            buttonNegative: "Cancel",
+            buttonPositive: "OK"
+          }
+        );
+
+        
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          // Permission Granted (calling our exportDataToExcel function)
+          generateShareableExcel ();
+          console.log("Permission granted");
+        } else {
+          // Permission denied
+          console.log("Permission denied");
+        }
+      }else{
+         // Already have Permission (calling our exportDataToExcel function)
+         generateShareableExcel ();
+      }
+    }catch(e){
+      console.log('Error while checking permission');
+      console.log(e);
+      return
+    }
+    
+  };
+
   return (
     <LayoutTertiary>
       <View
@@ -424,7 +527,7 @@ export const ActivityScreen = () => {
               <TouchableOpacity
                 mode="contained-tonal"
                 onPress={() => {
-                  showDatePicker()
+                  shareExcel()
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -435,11 +538,11 @@ export const ActivityScreen = () => {
               >
                 <MaterialCommunityIcons
                   style={styles.menuIcon}
-                  name="calendar"
+                  name="file-excel"
                   size={GLOBALS.SIZE.BIG}
-                  color={GLOBALS.COLOR.WHITE}
+                  color={GLOBALS.COLOR.GREEN}
                 />
-                <Text style={styles.meniTitle}>Fecha</Text>
+                <Text style={styles.meniTitle}>Exportar</Text>
               </TouchableOpacity>
         
             </View>
