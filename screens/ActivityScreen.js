@@ -6,11 +6,10 @@ import {
   Text,
   TouchableOpacity,
   Animated,
-  PermissionsAndroid
+  PermissionsAndroid,
 } from 'react-native';
 
-
-// Required to save to cache 
+// Required to save to cache
 import * as FileSystem from 'expo-file-system';
 // ExcelJS
 import ExcelJS from 'exceljs';
@@ -18,8 +17,6 @@ import ExcelJS from 'exceljs';
 import * as Sharing from 'expo-sharing';
 // From @types/node/buffer
 import { Buffer as NodeBuffer } from 'buffer';
-
-
 
 //Components
 import LayoutTertiary from '../components/Layouts/LayoutTertiary';
@@ -30,12 +27,16 @@ import ActivityList from '../components/ActivityScreen/ActivityList';
 import GLOBALS from '../Globals';
 
 //Styles
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Modal, IconButton, Snackbar } from 'react-native-paper';
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { setActivities, setDateShow, showActivities } from '../redux/dataActivitiesSlice';
+import {
+  setActivities,
+  setDateShow,
+  showActivities,
+} from '../redux/dataActivitiesSlice';
 import { getActivities } from '../services/activities';
 import { shortDate, timeDate } from '../custom/timeDate';
 
@@ -102,22 +103,22 @@ export const ActivityScreen = () => {
   const load = async () => {
     let data = await getActivities();
     data.reverse();
-       
+
     data = data.map(function (element, index) {
-      element.index = index
-      return element
+      element.index = index;
+      return element;
     });
 
     let dates = data.map(function (element, index) {
       let date = {
         date: shortDate(element.date),
-        index: index
+        index: index,
       };
       return date;
     });
 
     let hash = {};
-    dates = dates.filter(function(current) {
+    dates = dates.filter(function (current) {
       let exists = !hash[current.date];
       hash[current.date] = true;
       return exists;
@@ -133,22 +134,21 @@ export const ActivityScreen = () => {
 
   const statusActivity = (done) => {
     if (done == null) {
-      
       let dates = activities.map(function (element, index) {
         let date = {
           date: shortDate(element.date),
-          index: index
+          index: index,
         };
         return date;
       });
-  
+
       let hash = {};
-      dates = dates.filter(function(current) {
+      dates = dates.filter(function (current) {
         let exists = !hash[current.date];
         hash[current.date] = true;
         return exists;
       });
-      
+
       dispatch(showActivities(activities));
       dispatch(setDateShow(dates));
       setTitle('Todos');
@@ -157,36 +157,36 @@ export const ActivityScreen = () => {
     let status = activities.filter(
       (activity) => activity.done['data'][0] === done
     );
-      
+
     status = status.map(function (element, index) {
-      let object ={
-        administrativo: element.administrativo, 
-        date: element.date, 
-        description: element.description, 
-        document_admin: element.document_admin, 
-        document_oper: element.document_oper, 
-        done: element.done, 
-        type: element.type, 
-        file_admin: element.file_admin, 
-        file_operativo: element.file_operativo, 
-        id: element.id , 
-        index: index, 
-        operativo: element.operativo
-      }
-      
-      return object
+      let object = {
+        administrativo: element.administrativo,
+        date: element.date,
+        description: element.description,
+        document_admin: element.document_admin,
+        document_oper: element.document_oper,
+        done: element.done,
+        type: element.type,
+        file_admin: element.file_admin,
+        file_operativo: element.file_operativo,
+        id: element.id,
+        index: index,
+        operativo: element.operativo,
+      };
+
+      return object;
     });
 
     let dates = status.map(function (element, index) {
       let date = {
         date: shortDate(element.date),
-        index: index
+        index: index,
       };
       return date;
     });
 
     let hash = {};
-    dates = dates.filter(function(current) {
+    dates = dates.filter(function (current) {
       let exists = !hash[current.date];
       hash[current.date] = true;
       return exists;
@@ -206,31 +206,30 @@ export const ActivityScreen = () => {
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-  
 
   const handleConfirm = (date) => {
-    let dateUtil = timeDate(date)
+    let dateUtil = timeDate(date);
     let statusDate = activities.filter(
       (activity) => shortDate(activity.date) == dateUtil
     );
-      
+
     statusDate = statusDate.map(function (element, index) {
-      let object ={
-        administrativo: element.administrativo, 
-        date: element.date, 
-        description: element.description, 
-        document_admin: element.document_admin, 
-        document_oper: element.document_oper, 
-        done: element.done, 
-        type: element.type, 
-        file_admin: element.file_admin, 
-        file_operativo: element.file_operativo, 
-        id: element.id , 
-        index: index, 
-        operativo: element.operativo
-      }
-      
-      return object
+      let object = {
+        administrativo: element.administrativo,
+        date: element.date,
+        description: element.description,
+        document_admin: element.document_admin,
+        document_oper: element.document_oper,
+        done: element.done,
+        type: element.type,
+        file_admin: element.file_admin,
+        file_operativo: element.file_operativo,
+        id: element.id,
+        index: index,
+        operativo: element.operativo,
+      };
+
+      return object;
     });
 
     // let dates = statusDate.map(function (element, index) {
@@ -254,7 +253,7 @@ export const ActivityScreen = () => {
     hideDatePicker();
   };
 
-  const generateShareableExcel  = async () => {
+  const generateShareableExcel = async () => {
     const now = new Date();
     const fileName = 'Actividades.xlsx';
     const fileUri = FileSystem.cacheDirectory + fileName;
@@ -266,82 +265,175 @@ export const ActivityScreen = () => {
       // Add a sheet to work on
       const worksheet = workbook.addWorksheet('My Sheet');
       // Just some columns as used on ExcelJS Readme
+
+      // body.operativo,
+      // body.description,
+      // body.date,
+      // body.file_operativo,
+      // body.document_oper,
+      // body.administrativo,
+      // body.file_admin,
+      // body.document_admin,
+      // body.done
+
+      worksheet.columns = [
+        { header: 'Id', key: 'id', width: 5, horizontal: 'center' },
+        { header: 'Nombre Operativo', key: 'operativo', width: 32 },
+        {
+          header: 'Descripcion.',
+          key: 'description',
+          width: 50,
+          outlineLevel: 1,
+        },
+        { header: 'Fecha Reporte', key: 'date', width: 12, outlineLevel: 1, horizontal: 'center' },
+        { header: 'Img', key: 'file_operativo', width: 30, outlineLevel: 1 },
+        {
+          header: 'Documento Operativo',
+          key: 'document_oper',
+          width: 20,
+          outlineLevel: 1,
+        },
+        {
+          header: 'Administrativo',
+          key: 'administrativo',
+          width: 32,
+          outlineLevel: 1,
+        },
+        { header: 'Img Admin', key: 'file_admin', width: 40, outlineLevel: 1 },
+        { header: 'Estado Actividad', key: 'done', width: 20, outlineLevel: 1 },
+      ];
+
+      // Just some rows as used on ExcelJS Readme
       let newArray = [];
+
       for (let i = 0; i < activities.length; i++) {
-        let dataRow = Object.values(activities[i])
-        dataRow[3] = shortDate(dataRow[3])
-        dataRow[9]= dataRow[9].data[0]
-        dataRow.pop()
-        newArray.push(dataRow)
+        let object = {
+          id: activities[i].id,
+          operativo: activities[i].operativo,
+          description: activities[i].description,
+          date: shortDate(activities[i].date),
+          file_operativo: activities[i].file_operativo,
+          document_oper: activities[i].document_oper,
+          administrativo: activities[i].administrativo,
+          file_admin: activities[i].file_admin,
+          document_admin: activities[i].document_admin,
+          done: activities[i].done.data[0] ? 'Realizado' : 'Pendiente',
+        };
+
+        // dataRow.done = dataRow.done.data[0] ? 'Realizado': 'Pendiente'
+        newArray.push(object);
       }
-      worksheet.insertRows(1, newArray)
+      worksheet.insertRows(2, newArray);
+
+      worksheet.autoFilter = 'I1';
+
+      worksheet.eachRow(function (row, rowNumber) {
+        row.eachCell((cell, colNumber) => {
+          if (rowNumber == 1) {
+            // First set the background of header row
+            cell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'd40b11' },
+            };
+            cell.font = {
+              color: { argb: 'ffffff' },
+              size: 14,
+              bold: true,
+            };
+          }
+          // Set border of each cell
+          cell.border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' },
+          };
+        });
+        //Commit the changed row to the stream
+        row.commit();
+      });
+
+
+      const balDue = worksheet.getColumn('done')
+      // iterate over all current cells in this column
+      balDue.eachCell((cell, rowNumber) => {
+          // If the balance due is 400 or more, highlight it with gradient color
+          if (cell.value == 'Pendiente') {
+              cell.fill =  {
+                  type: 'pattern',
+                  pattern: 'solid',
+                  fgColor: { argb: 'cdcdcd' } 
+              };
+          }
+      });
+
       // Write to file
-      workbook.xlsx.writeBuffer().then((buffer= ExcelJS.Buffer) => {
+      workbook.xlsx.writeBuffer().then((buffer = ExcelJS.Buffer) => {
         // Do this to use base64 encoding
         const nodeBuffer = NodeBuffer.from(buffer);
         const bufferStr = nodeBuffer.toString('base64');
         FileSystem.writeAsStringAsync(fileUri, bufferStr, {
-          encoding: FileSystem.EncodingType.Base64
+          encoding: FileSystem.EncodingType.Base64,
         }).then(() => {
           resolve(fileUri);
         });
       });
     });
-
-  }
-
+  };
 
   const shareExcel = async () => {
     const shareableExcelUri = await generateShareableExcel();
     Sharing.shareAsync(shareableExcelUri, {
-      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Android
+      mimeType:
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // Android
       dialogTitle: 'Your dialog title here', // Android and Web
-      UTI: 'com.microsoft.excel.xlsx' // iOS
-    }).catch(error => {
-      console.error('Error', error);
-    }).then(() => {
-      console.log('Return from sharing dialog');
-    });
-  }
+      UTI: 'com.microsoft.excel.xlsx', // iOS
+    })
+      .catch((error) => {
+        console.error('Error', error);
+      })
+      .then(() => {
+        console.log('Return from sharing dialog');
+      });
+  };
 
   const handleClick = async () => {
-
-    try{
+    try {
       // Check for Permission (check if permission is already given or not)
-      let isPermitedExternalStorage = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
+      let isPermitedExternalStorage = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      );
 
-      if(!isPermitedExternalStorage){
-
+      if (!isPermitedExternalStorage) {
         // Ask for permission
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
           {
-            title: "Storage permission needed",
-            buttonNeutral: "Ask Me Later",
-            buttonNegative: "Cancel",
-            buttonPositive: "OK"
+            title: 'Storage permission needed',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
           }
         );
 
-        
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           // Permission Granted (calling our exportDataToExcel function)
-          generateShareableExcel ();
-          console.log("Permission granted");
+          generateShareableExcel();
+          console.log('Permission granted');
         } else {
           // Permission denied
-          console.log("Permission denied");
+          console.log('Permission denied');
         }
-      }else{
-         // Already have Permission (calling our exportDataToExcel function)
-         generateShareableExcel ();
+      } else {
+        // Already have Permission (calling our exportDataToExcel function)
+        generateShareableExcel();
       }
-    }catch(e){
+    } catch (e) {
       console.log('Error while checking permission');
       console.log(e);
-      return
+      return;
     }
-    
   };
 
   return (
@@ -502,11 +594,10 @@ export const ActivityScreen = () => {
                 <Text style={styles.meniTitle}>Completado</Text>
               </TouchableOpacity>
 
-              
               <TouchableOpacity
                 mode="contained-tonal"
                 onPress={() => {
-                  showDatePicker()
+                  showDatePicker();
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -527,7 +618,7 @@ export const ActivityScreen = () => {
               <TouchableOpacity
                 mode="contained-tonal"
                 onPress={() => {
-                  shareExcel()
+                  shareExcel();
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -544,7 +635,6 @@ export const ActivityScreen = () => {
                 />
                 <Text style={styles.meniTitle}>Exportar</Text>
               </TouchableOpacity>
-        
             </View>
           ) : null}
         </Animated.View>

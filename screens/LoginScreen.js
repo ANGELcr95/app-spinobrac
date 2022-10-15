@@ -18,6 +18,9 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import useUpContext from '../context/useUpContext';
 
+//LocalStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const LoginScreen = () => {
 
   const [password, setPassword] = useState(true)
@@ -33,16 +36,18 @@ const LoginScreen = () => {
 
   const handleSubmit = async () => {
       const res = await userLogin(loginUser)
-      console.log(res);
-      
       if (res) {
-        setWarning('')
-        context.upUser({
+        const objUser = {
           dni: res.document_number,
           name: res.name,
           file:res.file,
           role:res.role
-        })
+        }
+        setWarning('')
+        context.upUser(objUser)
+        const jsonValue = JSON.stringify(objUser)
+        await AsyncStorage.setItem('@storage_User', jsonValue)
+
         return
       }
 

@@ -8,12 +8,16 @@ export const StateProvider = (props) => {
     const [worker, setWorker] = useState(null)
     const [option, setOption] = useState(null)
     const [user, setUser] = useState({
-        dni:1076624748,
-        name: 'Miguel Angel Camacho Ramirez',
-        file:'http://192.168.10.17:3000/static/img/resize-image1664807228707.jpg',
-        role:'Administrativo'
+        dni:null,
+        name: '',
+        file:'',
+        role:''
     })
 
+    // dni:1076624748,
+    // name: 'Miguel Angel Camacho Ramirez',
+    // file:'http://192.168.10.17:3000/static/img/resize-image1664807228707.jpg',
+    // role:'Administrativo'
     const contextValue ={
         routedId,
         upRoutedId(routedId){

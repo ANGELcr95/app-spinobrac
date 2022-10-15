@@ -29,7 +29,7 @@ export const shortDate = (date) => {
 }
 
 
-export const mostrarSaludo = ()=>{
+export const showGreeting = ()=>{
     let text
     let date = new Date(); 
     let hour = date.getHours();

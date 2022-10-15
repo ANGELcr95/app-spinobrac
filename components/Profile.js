@@ -5,8 +5,10 @@ import GLOBALS from '../Globals'
 import { Avatar } from 'react-native-paper';
 
 import { SimpleLineIcons } from '@expo/vector-icons';
-import { mostrarSaludo } from '../custom/timeDate';
+import { showGreeting } from '../custom/timeDate';
 
+//LocalStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Profile = () => {
   const context =  useUpContext()
@@ -15,11 +17,14 @@ const Profile = () => {
     <View style={styles.container}>
       <TouchableOpacity
         mode="contained-tonal"
-        onPress={() => context.upUser({
-          dni:null,
-          name: null,
-          file:null
-        })}
+        onPress={async () => {
+          context.upUser({
+            dni:null,
+            name: null,
+            file:null
+          })
+          await AsyncStorage.removeItem('@storage_User')
+        }}
         activeOpacity={0.9}
         style={styles.boxLogout}
         ><SimpleLineIcons name="logout" size={GLOBALS.SIZE.SMALL} color={GLOBALS.COLOR.THETIARY} />
@@ -32,7 +37,7 @@ const Profile = () => {
           <Text style={styles.name}>!Hola</Text><Text style={styles.fullName}>{context.user.name}</Text>
         </View>
         <View>
-          <Text style={styles.greeting}>{mostrarSaludo()}</Text>
+          <Text style={styles.greeting}>{showGreeting()}</Text>
         </View>
       </View>
 

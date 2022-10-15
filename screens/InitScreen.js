@@ -5,10 +5,16 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import useUpContext from '../context/useUpContext'
 
+//LocalStorage
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const InitScreen = () => {
   const context = useUpContext();
   useEffect(() => {
-    console.log(context.user);
+    (async()=> {
+      const jsonValue = await AsyncStorage.getItem('@storage_User')
+      jsonValue != null && context.upUser(JSON.parse(jsonValue))
+    })()
   }, [context.user.dni])
   
 
