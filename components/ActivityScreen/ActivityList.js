@@ -14,6 +14,7 @@ import ActivityItem from './ActivityList/ActivityItem'
 import { deleteActivity, getActivities } from '../../services/activities'
 import { shortDate } from '../../custom/timeDate'
 import NoFound from '../NoFound'
+import Loading from '../Loading'
 
 const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVisibleSnack, setTitle}) => {
 
@@ -78,6 +79,15 @@ const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVis
 
   const renderItem = ({item}) => {
     return <ActivityItem dateShow={dateShow} setVisibleSnack={setVisibleSnack} activity={item} handleDelete={handleDelete} renderActivity={renderActivity} setRenderActivity={setRenderActivity} />
+  }
+
+  
+  if (!activitiesShow) {
+    return (
+      <View>
+        <Loading/>
+      </View>
+    )
   }
   
   if (activitiesShow && activitiesShow.length == 0) {

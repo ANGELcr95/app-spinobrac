@@ -1,4 +1,4 @@
-import { FlatList, RefreshControl, Text } from 'react-native'
+import { FlatList, RefreshControl, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { deleteTask, getTasks } from '../../services/reports'
 
@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import { setTask } from '../../redux/dataTasksSlice'
 import { getWorkers } from '../../services/workers'
 import { setWorkers } from '../../redux/dataWorkersSlice'
+import Loading from '../Loading'
 
 const TaskList = () => {
 
@@ -57,6 +58,14 @@ const TaskList = () => {
 
   const renderItem = ({item}) => {
     return <TaskItem task={item} handleDelete={handleDelete}/>
+  }
+
+  if (tasks && tasks.length == 0) {
+    return (
+      <View>
+        <Loading/>
+      </View>
+    )
   }
 
   return (

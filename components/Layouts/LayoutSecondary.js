@@ -14,7 +14,8 @@ const LayoutSecondary = ({children}) => {
 const styles = StyleSheet.create({
   screen:{
     flex:1,
-    position:'relative'
+    position:'relative',
+    backgroundColor:'#FFFFFF'
   }
 })
 export default LayoutSecondary

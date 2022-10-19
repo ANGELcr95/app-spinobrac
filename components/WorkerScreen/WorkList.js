@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, RefreshControl, ScrollView } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import WorkerItem from './WorkList/WorkerItem';
 import { deleteWork, getWorkers } from '../../services/workers';
+import Loading from '../Loading';
 
 const WorkList = ({ newUser }) => {
   const [workers, setWorkers] = useState([]);
@@ -34,6 +35,14 @@ const WorkList = ({ newUser }) => {
   const renderItem = ({ item }) => {
     return <WorkerItem worker={item} handleDelete={handleDelete} />;
   };
+
+  if (workers && workers.length == 0) {
+    return (
+      <View>
+        <Loading/>
+      </View>
+    )
+  }
 
   return (
     <FlatList

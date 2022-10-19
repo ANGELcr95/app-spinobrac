@@ -500,6 +500,8 @@ export const ActivityScreen = () => {
           height: '90%',
           width: '97%',
           marginHorizontal: '1.5%',
+          justifyContent: 'center',
+          alignItems: 'center',
         }}
       >
         <ActivityList

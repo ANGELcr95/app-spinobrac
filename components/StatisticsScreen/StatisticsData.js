@@ -203,7 +203,7 @@ const StatisticsData = () => {
           marginBottom:10,
         }}>
           <Text style={styles.indicatorsTitlePerson}><Ionicons name="person-sharp" size={24} color="black" /> Reportes {"\n"} Empleado</Text>
-          <Text style={styles.indicatorsTitleNumberPerson}>{indicatorPerson.length}</Text>
+          <Text style={styles.indicatorsTitleNumberPerson}>{dataPersonRisk.length}</Text>
           <View style={styles.cotainerDropDownPerson}>
             <DropDownCustom
               dataList={workers}
