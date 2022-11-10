@@ -13,6 +13,10 @@ import useUpContext from '../../../context/useUpContext';
 import { timeDate } from '../../../custom/timeDate';
 import { getWorkers } from '../../../services/workers';
 import { useSelector } from 'react-redux';
+import io from 'socket.io-client'
+
+const  socket = io(`${GLOBALS.API}`)
+
 const ReporForm = () => {
   const [task, setTask] = useState({
     title: '',
@@ -137,6 +141,7 @@ const ReporForm = () => {
       }
     }
     navigation.navigate('RiskScreen');
+    socket.emit("socketReport");
   };
   useEffect(() => {
     setTask({

@@ -9,12 +9,18 @@ import { setTask } from '../../redux/dataTasksSlice'
 import { getWorkers } from '../../services/workers'
 import { setWorkers } from '../../redux/dataWorkersSlice'
 import Loading from '../Loading'
+import io from 'socket.io-client'
+import GLOBALS from '../../Globals'
+import useUpContext from '../../context/useUpContext'
+
+const socket = io(`${GLOBALS.API}`)
 
 const TaskList = () => {
 
   const [tasks, setTasks] = useState([])
   const [refreshing, setrefreshing] = useState(false)
 
+  const context = useUpContext();
   const isFocused = useIsFocused() // sabe si retorne a la p=agina funciona como true o false
   const dispatch = useDispatch();
 
@@ -41,9 +47,21 @@ const TaskList = () => {
   }
 
   useEffect(() => {
+    socket.on("socketReport", (id) => {
+      context.upSocketReport(id)
+    });
+
+    return () => {
+      socket.off("socketReport", (id) => {
+        context.upSocketReport(id)
+      });
+    };
+  }, []);
+
+  useEffect(() => {
     loadTasks()
     loadReports()
-  }, [isFocused])
+  }, [isFocused, context.socketReport])
 
   const onRefresh = React.useCallback(async() => { // esto solo es para poder usar aasync y await con ese mtodo nativo 
     setrefreshing(true)
@@ -54,6 +72,7 @@ const TaskList = () => {
   const handleDelete = async (id) => {
     await deleteTask(id)
     await loadTasks()
+    socket.emit("socketReport");
   }
 
   const renderItem = ({item}) => {

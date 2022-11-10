@@ -1,14 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, RefreshControl, ScrollView, View } from 'react-native';
+import { FlatList, RefreshControl, ScrollView, View, Text } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import WorkerItem from './WorkList/WorkerItem';
+import useUpContext from '../../context/useUpContext';
 import { deleteWork, getWorkers } from '../../services/workers';
 import Loading from '../Loading';
+import io from 'socket.io-client'
+import GLOBALS from '../../Globals';
+const  socket = io(`${GLOBALS.API}`)
+
 
 const WorkList = ({ newUser }) => {
   const [workers, setWorkers] = useState([]);
   const [refreshing, setrefreshing] = useState(false);
+
   const isFocused = useIsFocused(); // sabe si retorne a la pagina funciona como true o false
+  const context = useUpContext();
+
 
   const loadWorkers = async () => {
       const data = await getWorkers();
@@ -17,8 +25,20 @@ const WorkList = ({ newUser }) => {
   };
 
   useEffect(() => {
+    socket.on("socketUsers", (id) => {
+      context.upSocketUser(id)
+    });
+
+    return () => {
+      socket.off("socketUsers", (id) => {
+        context.upSocketUser(id)
+      });
+    };
+  }, []);
+
+  useEffect(() => {
     loadWorkers();
-  }, [isFocused, newUser]);
+  }, [isFocused, newUser, context.socketUser]);
 
   const onRefresh = React.useCallback(async () => {
     // esto solo es para poder usar aasync y await con ese mtodo nativo
@@ -30,6 +50,7 @@ const WorkList = ({ newUser }) => {
   const handleDelete = async (dni) => {
     await deleteWork(dni);
     await loadWorkers();
+    socket.emit("socketUsers");
   };
 
   const renderItem = ({ item }) => {
@@ -58,7 +79,7 @@ const WorkList = ({ newUser }) => {
           progressBackgroundColor="gray"
         />
       }
-    />
+      />
   );
 };
 

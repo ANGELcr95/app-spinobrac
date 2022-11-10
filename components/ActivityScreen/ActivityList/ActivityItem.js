@@ -19,6 +19,9 @@ import { Avatar, Switch } from 'react-native-paper';
 import { updateActivity } from '../../../services/activities';
 import { showActivities } from '../../../redux/dataActivitiesSlice';
 
+import io from 'socket.io-client'
+const socket = io(`${GLOBALS.API}`)
+
 // se crea componente exclusivamente para poder configurar estilos
 const ActivityItem = ({
   activity,
@@ -33,6 +36,7 @@ const ActivityItem = ({
 
   const [showAlert, setShowAlert] = useState(false);
   const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const [recentlyUpdated, setRecentlyUpdated] = useState(null);
  
 
   const context = useUpContext();
@@ -62,7 +66,28 @@ const ActivityItem = ({
     setIsSwitchOn(!isSwitchOn);
     updateActivity(activity.id, { done: !isSwitchOn });
     setRenderActivity(!renderActivity);
+    socket.emit("socketUpdateActivity", {id:activity.id, switch: !isSwitchOn, renderAct: !renderActivity});
   };
+
+   useEffect(() => {
+    socket.on("socketUpdateActivity", (data) => {
+      if (activity.id === data.id) {
+        setIsSwitchOn(data.switch)
+        setRenderActivity(data.renderAct)
+        setRecentlyUpdated('Actualizado \nrecientemente')
+      }
+    });
+
+    return () => {
+      socket.off("socketUpdateActivity", (data) => {
+        if (activity.id === data.id) {
+          setIsSwitchOn(data.switch)
+          setRenderActivity(data.renderAct)
+          setRecentlyUpdated('Actualizado \n recientemente')
+        }
+      });
+    };
+  }, []);
 
   return (
     <>
@@ -148,6 +173,7 @@ const ActivityItem = ({
                 <Text style={styles.date}>{date}</Text>
               </View>
             </TouchableOpacity>
+            <Text style={styles.textrecentlyUpdated}>{recentlyUpdated}</Text>
             {context.user.dni == activity.document_admin &&
             <>
               <TouchableOpacity onPress={() => setShowAlert(true)}>
@@ -287,6 +313,10 @@ const styles = StyleSheet.create({
   switch: {
     height: 35,
   },
+  textrecentlyUpdated:{
+    fontWeight:GLOBALS.WEIGHT.MEDIUM,
+    fontSize:GLOBALS.FONT.EXTRA_SMALL,
+  }
 });
 
 export default ActivityItem;

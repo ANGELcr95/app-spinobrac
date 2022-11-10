@@ -75,6 +75,7 @@ const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVis
   const handleDelete = async (id) => {
     await deleteActivity(id)
     await loadActivities()
+    setTitle('Todos')
   }
 
   const renderItem = ({item}) => {

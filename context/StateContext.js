@@ -13,6 +13,9 @@ export const StateProvider = (props) => {
         file:'',
         role:''
     })
+    const [socketUser, setSocketUser]= useState(null)
+    const [socketReport, setSocketReport]= useState(null)
+    const [socketActivity, setSocketActivity]= useState(null)
 
     // dni:1076624748,
     // name: 'Miguel Angel Camacho Ramirez',
@@ -38,6 +41,18 @@ export const StateProvider = (props) => {
         user,
         upUser(user){
             setUser(user)
+        },
+        socketUser,
+        upSocketUser(socketUser){
+            setSocketUser(socketUser)
+        },
+        socketReport,
+        upSocketReport(socketReport){
+            setSocketReport(socketReport)
+        },
+        socketActivity,
+        upSocketActivity(socketActivity){
+            setSocketActivity(socketActivity)
         }
     }
 

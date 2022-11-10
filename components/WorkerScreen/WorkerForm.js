@@ -7,7 +7,8 @@ import { Button } from 'react-native-paper';
 import { TextInput } from 'react-native-paper';
 import { useEffect } from 'react';
 import AwesomeAlert from 'react-native-awesome-alerts';
-
+import io from 'socket.io-client'
+const  socket = io(`${GLOBALS.API}`)
 
 const WorkerForm = ({ setNewUser, newUser }) => {
   const [worker, setWorker] = useState({
@@ -17,21 +18,24 @@ const WorkerForm = ({ setNewUser, newUser }) => {
   const [showAlert, setShowAlert] = useState(false)
   const [showAlertExist, setShowAlertExist] = useState(false)
   const [disabled, setdisabled] = useState(true)
-
+  
   const handleChange = (name, value) => setWorker({ ...worker, [name]: value });
-
+  
   const handleSubmit = async () => {
     const res = await getWorker(worker.dni);
     
     if (res === 203){
+
       await saveWork({
         name: worker.name,
         dni: worker.dni,
       });
+ 
       setWorker({ name: '', dni: null });
       setNewUser(!newUser);
       setdisabled(true)
       setShowAlert(true);
+      socket.emit("socketUsers");
       return
     }
     if (res.status !== 404) {
