@@ -22,7 +22,10 @@ import { getTask, saveTask, updateTask } from '../../services/workers'
 import { Ionicons } from '@expo/vector-icons';
 import { saveActivity } from '../../services/activities';
 
-const ActivityForm = ({hideModal, setUpdateActivity, updateActivity, setTitle}) => {
+import io from 'socket.io-client'
+const socket = io(`${GLOBALS.API}`)
+
+const ActivityForm = ({hideModal, setRenderActivity, renderActivity, setVisibleSnack}) => {
   const [acivity, setAcivity] = useState({
     operativo: '',
     description: '',
@@ -104,9 +107,20 @@ const ActivityForm = ({hideModal, setUpdateActivity, updateActivity, setTitle}) 
             done: ''
           });
         }
-        setUpdateActivity(!updateActivity)
+        setRenderActivity(!renderActivity)
+        socket.emit("socketRenderActivity", !renderActivity);
+
         hideModal()
-        setTitle('Todos')
+        setVisibleSnack({
+          state:true,
+          message:'Actividad agregada con éxito'
+        })
+        setTimeout(() => {
+          setVisibleSnack({
+            state:false,
+            message:''
+          })
+        }, 2000);
   };
   useEffect(() => {
     loadReports();

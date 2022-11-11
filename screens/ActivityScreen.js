@@ -40,14 +40,17 @@ import {
 import { getActivities } from '../services/activities';
 import { shortDate, timeDate } from '../custom/timeDate';
 
+import io from 'socket.io-client'
+const socket = io(`${GLOBALS.API}`)
+
 export const ActivityScreen = () => {
+  const [stateModal, setStateModal] = useState(null)
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState('Todos');
   const [showMenu, setShowMenu] = useState(false);
   const [firstTouch, setFirstTouch] = useState(false);
   const [renderActivity, setRenderActivity] = useState(false);
-  const [updateActivity, setUpdateActivity] = useState(false);
-  const [visibleSnack, setVisibleSnack] = useState(false);
+  const [visibleSnack, setVisibleSnack] = useState({state: false,message:''});
   const containerStyle = {
     width: '80%',
     marginHorizontal: '10%',
@@ -196,6 +199,22 @@ export const ActivityScreen = () => {
     dispatch(setDateShow(dates));
     done ? setTitle('Completado') : setTitle('Pendiente');
   };
+
+  useEffect(() => {
+    activities && statusActivity(stateModal)
+  }, [activities]);
+
+  useEffect(() => {
+    socket.on("socketRenderActivity", (renderAct) => {
+      setRenderActivity(renderAct)
+    });
+
+    return () => {
+      socket.off("socketRenderActivity", (renderAct) => {
+        setRenderActivity(renderAct)
+      });
+    };
+  }, []);
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -479,9 +498,10 @@ export const ActivityScreen = () => {
           contentContainerStyle={containerStyle}
         >
           <ActivityForm
+            setVisibleSnack={setVisibleSnack}
             hideModal={hideModal}
-            setUpdateActivity={setUpdateActivity}
-            updateActivity={updateActivity}
+            setRenderActivity={setRenderActivity}
+            renderActivity={renderActivity}
             setTitle={setTitle}
           />
         </Modal>
@@ -507,7 +527,6 @@ export const ActivityScreen = () => {
         <ActivityList
           renderActivity={renderActivity}
           setRenderActivity={setRenderActivity}
-          updateActivity={updateActivity}
           setVisibleSnack={setVisibleSnack}
           setTitle={setTitle}
         />
@@ -537,6 +556,7 @@ export const ActivityScreen = () => {
                 mode="contained-tonal"
                 onPress={() => {
                   statusActivity();
+                  setStateModal(null)
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -558,6 +578,7 @@ export const ActivityScreen = () => {
                 mode="contained-tonal"
                 onPress={() => {
                   statusActivity(0);
+                  setStateModal(0)
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -579,6 +600,7 @@ export const ActivityScreen = () => {
                 mode="contained-tonal"
                 onPress={() => {
                   statusActivity(1);
+                  setStateModal(1)
                   setFirstTouch(true);
                   setShowMenu(!showMenu);
                   startImageRotateFunction();
@@ -679,10 +701,10 @@ export const ActivityScreen = () => {
           bottom: 0,
           zIndex: 1,
         }}
-        visible={visibleSnack}
+        visible={visibleSnack.state}
         onDismiss={onDismissSnackBar}
       >
-        Modidifico estado de la actividad
+        {visibleSnack.message}
       </Snackbar>
     </LayoutTertiary>
   );

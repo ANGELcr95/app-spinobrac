@@ -31,7 +31,6 @@ const WorkerForm = ({ setNewUser, newUser }) => {
         dni: worker.dni,
       });
  
-      setWorker({ name: '', dni: null });
       setNewUser(!newUser);
       setdisabled(true)
       setShowAlert(true);
@@ -63,6 +62,7 @@ const WorkerForm = ({ setNewUser, newUser }) => {
           confirmButtonColor="green"
           onConfirmPressed={() => {
           setShowAlert(false)
+          setWorker({ name: '', dni: null });
           }}
         />
           <AwesomeAlert

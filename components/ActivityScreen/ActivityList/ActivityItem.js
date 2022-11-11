@@ -56,7 +56,6 @@ const ActivityItem = ({
         break
       }
     }
-    
     activity.done['data'][0] ? setIsSwitchOn(true) : setIsSwitchOn(false);
   }, [activity]);
 
@@ -66,22 +65,20 @@ const ActivityItem = ({
     setIsSwitchOn(!isSwitchOn);
     updateActivity(activity.id, { done: !isSwitchOn });
     setRenderActivity(!renderActivity);
-    socket.emit("socketUpdateActivity", {id:activity.id, switch: !isSwitchOn, renderAct: !renderActivity});
+    socket.emit("socketActivity", {id:activity.id, renderAct: !renderActivity});
   };
 
    useEffect(() => {
-    socket.on("socketUpdateActivity", (data) => {
+    socket.on("socketActivity", (data) => {
       if (activity.id === data.id) {
-        setIsSwitchOn(data.switch)
         setRenderActivity(data.renderAct)
         setRecentlyUpdated('Actualizado \nrecientemente')
       }
     });
 
     return () => {
-      socket.off("socketUpdateActivity", (data) => {
+      socket.off("socketActivity", (data) => {
         if (activity.id === data.id) {
-          setIsSwitchOn(data.switch)
           setRenderActivity(data.renderAct)
           setRecentlyUpdated('Actualizado \n recientemente')
         }
@@ -193,9 +190,15 @@ const ActivityItem = ({
                 value={isSwitchOn}
                 onValueChange={() => {
                   updateActivityFunction()
-                  setVisibleSnack(true)
+                  setVisibleSnack({
+                    state:true,
+                    message:'Modifico estado de la actividad'
+                  })
                   setTimeout(() => {
-                    setVisibleSnack(false)
+                    setVisibleSnack({
+                      state:false,
+                      message:''
+                    })
                   }, 2000);
                 }}
               />

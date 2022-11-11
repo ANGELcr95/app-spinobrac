@@ -32,26 +32,19 @@ const DataWorkerUp = () => {
     role:null,
   });
 
-  const [role]= useState([
-    {
-      label:'Administrativo',
-      value:'Administrativo'
-    }, 
-    {
-      label: 'Operativo',
-      value: 'Operativo'
-    }
-  ])
-
+  const [role , setRole]= useState()
   const [disabled, setdisabled] = useState(true)
   const [passWord, setPassWord] = useState(null)
-
+ 
   const [showAlert, setShowAlert] = useState(false)
-
+  const [showAlertOut, setShowAlertOut] = useState(false)
+ 
   const context = useUpContext()
   const navigation = useNavigation()
 
   const [isFocus, setIsFocus] = useState(false);
+  const isFocused = useIsFocused(); // sabe si retorne a la pagina funciona como true o false
+
 
   
   
@@ -70,9 +63,28 @@ const DataWorkerUp = () => {
           role: worker.role ? worker.role: 'Operativo'
         });
         setPassWord(worker.password);
+        if ('Root' === worker.role) {
+          setRole([
+            {
+              label:'Root',
+              value:'Root'
+            }
+          ])
+        } else {
+          setRole([
+            {
+              label:'Administrativo',
+              value:'Administrativo'
+            }, 
+            {
+              label: 'Operativo',
+              value: 'Operativo'
+            }
+          ])
+        }
       })();
     }
-  }, [context.worker]);
+  }, [context.worker, isFocused]);
 
 
   const handleChange = (name, value) => setData({ ...data, [name]: value });
@@ -93,7 +105,7 @@ const DataWorkerUp = () => {
 
   const handleSubmit = async () => {
     let passwordUtil 
-    if (data.role == 'Administrativo') {
+    if (data.role == 'Administrativo' || data.role == 'Root' ) {
       if (data.password ) {
         passwordUtil = data.password
       } else {
@@ -117,8 +129,12 @@ const DataWorkerUp = () => {
   };
 
   useEffect(() => {
-    if (data.role == 'Administrativo') {
-      data.name && passWord || data.password ? setdisabled(false) : setdisabled(true)  
+    if (data.role == 'Administrativo'|| data.role == 'Root') {
+      if(data.password.length){
+        data.name && data.password.length > 4 ? setdisabled(false) : setdisabled(true)  
+      } else {
+        data.name && passWord ? setdisabled(false) : setdisabled(true)  
+      }
     } else {
       data.name ? setdisabled(false) : setdisabled(true)
     }
@@ -165,6 +181,7 @@ const DataWorkerUp = () => {
           }}
           onConfirmPressed={() => {
             setShowAlert(false)
+            setShowAlertOut(true)
             navigation.navigate('WorkerScreen')
           }}
         />

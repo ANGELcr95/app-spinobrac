@@ -16,7 +16,11 @@ import { shortDate } from '../../custom/timeDate'
 import NoFound from '../NoFound'
 import Loading from '../Loading'
 
-const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVisibleSnack, setTitle}) => {
+import io from 'socket.io-client'
+import GLOBALS from '../../Globals'
+const socket = io(`${GLOBALS.API}`)
+
+const ActivityList = ({renderActivity, setRenderActivity, setVisibleSnack, setTitle }) => {
 
   // const [activities, setActivity] = useState(useSelector((state) => state.dataActivitiesSlice.all))
   const [refreshing, setrefreshing] = useState(false)
@@ -61,21 +65,21 @@ const ActivityList = ({renderActivity, setRenderActivity, updateActivity, setVis
 
   useEffect(() => {
     loadActivities()
-  }, [isFocused, updateActivity])
+  }, [isFocused])
 
 
 
   const onRefresh = React.useCallback(async() => { // esto solo es para poder usar aasync y await con ese mtodo nativo 
     setrefreshing(true)
-    setTitle('Todos')
+    setTitle('Cargando...')
     await loadActivities()
     setrefreshing(false)
   })
   
   const handleDelete = async (id) => {
     await deleteActivity(id)
-    await loadActivities()
-    setTitle('Todos')
+    setRenderActivity(!renderActivity);
+    socket.emit("socketRenderActivity", !renderActivity);
   }
 
   const renderItem = ({item}) => {
